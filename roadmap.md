@@ -1,5 +1,6 @@
 # Synergy Labs
 - [ ] Ensure Azerbaijani navigation uses Azerbaijani text and voice, without English fallback
+- [ ] Add WASD rover driving — awaiting choice of separate simulated scene versus keeping photographic Street view
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
 - [x] Give route navigation a Google Maps-style maneuver banner and clearer trip controls
