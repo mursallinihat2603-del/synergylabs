@@ -28,7 +28,8 @@ export default function MarsMap(props:MarsMapProps) {
  useEffect(()=>{if(!ready||!map.current)return;const m=map.current;let cancelled=false;setStatus('Loading NASA imagery…');
   void import('leaflet').then(L=>{
    tiles.current?.remove();compareTiles.current?.remove();
-   const layer=L.tileLayer(`https://trek.nasa.gov/tiles/Mars/EQ/${products[props.layer]}/1.0.0/default/default028mm/{z}/{y}/{x}.jpg`,{tileSize:256,noWrap:true,bounds:[[-90,-180],[90,180]],maxNativeZoom:8}).addTo(m);tiles.current=layer;
+   const extension=props.layer==='THEMIS'?'png':'jpg';
+   const layer=L.tileLayer(`https://trek.nasa.gov/tiles/Mars/EQ/${products[props.layer]}/1.0.0/default/default028mm/{z}/{y}/{x}.${extension}`,{tileSize:256,noWrap:true,bounds:[[-90,-180],[90,180]],maxNativeZoom:8}).addTo(m);tiles.current=layer;
    layer.on('tileerror',()=>{if(!cancelled){setStatus('NASA tiles unavailable · USGS backup mosaic');layer.remove();}});
    layer.on('load',()=>{if(!cancelled)setStatus(s=>s.includes('unavailable')?s:'');});
    if(props.compare){const w=L.tileLayer.wms('https://planetarymaps.usgs.gov/cgi-bin/mapserv?map=/maps/mars/mars_simp_cyl.map',{layers:'MOLA_color',format:'image/png',transparent:true,version:'1.1.1',crs:L.CRS.EPSG4326});w.addTo(m);compareTiles.current=w;const el=w.getContainer();if(el)el.style.clipPath=`inset(0 ${100-current.current.swipe}% 0 0)`; w.on('tileerror',()=>{setStatus('Comparison imagery unavailable · Viking backup remains visible');w.remove();});}
