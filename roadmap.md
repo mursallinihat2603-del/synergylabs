@@ -6,6 +6,7 @@
 - [x] Name remaining blue and orange markers, including hazard points and reports
 - [ ] Separate hidden Utopia-area landmark labels
 - [ ] Improve rover realism with a detailed model, textured uneven terrain and suspension
+- [ ] Carry the planner vehicle selection into rover driving
 - [x] Make Jezero–Perseverance calculated route clearly visible in both 2D and 3D
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
