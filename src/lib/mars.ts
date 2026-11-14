@@ -1,6 +1,7 @@
 import places from '@/data/landmarks.json';
 import hazardData from '@/data/hazards.json';
-import { Graph, astar } from 'javascript-astar';
+import pathfinding from 'javascript-astar';
+const { Graph, astar } = pathfinding;
 export type Place = (typeof places)[number];
 export type Coordinate = { lat: number; lng: number };
 export const landmarks = places;
