@@ -7,7 +7,7 @@ import {categories} from '@/lib/mars';
 
 const icons=[Mountain,Wind,Waves,Circle,Radiation,Snowflake,Orbit];
 export function MapTools({layer,onLayer,active,onActive,compare,onCompare,swipe,onSwipe}:{layer:string;onLayer:(s:string)=>void;active:string[];onActive:(s:string[])=>void;compare:boolean;onCompare:(s:boolean)=>void;swipe:number;onSwipe:(s:number)=>void}){
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  const [open,setOpen]=useState<'layers'|'hazards'|null>(null);
  return <div className="map-tools">
   <Popover open={open==='layers'} onOpenChange={v=>setOpen(v?'layers':null)}><PopoverTrigger asChild><Button variant="map" aria-label={t("Map layers")}><Layers/><span>{t("Layers")}</span></Button></PopoverTrigger><PopoverContent className="map-settings" side="top" align="start" sideOffset={8}><div className="panel-heading"><Layers/>{t("Map layers")}<Button variant="ghost" size="icon" aria-label={t("Close map layers")} onClick={()=>setOpen(null)}><X/></Button></div>{([['Viking','Viking color mosaic'],['MOLA','MOLA elevation'],['THEMIS','THEMIS day IR']] as const).map(([id,name])=><Button key={id} className="layer-option" variant={layer===id?'layerActive':'layer'} aria-pressed={layer===id} onClick={()=>onLayer(id)}><span className={`layer-thumb layer-${id.toLowerCase()}`}/>{t(name)}{layer===id&&<Check/>}</Button>)}<label className="compare-row">{t("Compare layers")}<input type="checkbox" checked={compare} onChange={e=>onCompare(e.target.checked)}/></label>{compare&&<input aria-label={t("Layer comparison slider")} type="range" min={0} max={100} value={swipe} onChange={e=>onSwipe(Number(e.target.value))}/>}</PopoverContent></Popover>

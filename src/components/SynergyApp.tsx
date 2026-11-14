@@ -18,7 +18,7 @@ const MarsAssistant=lazy(()=>import('@/components/MarsAssistant'));
 
 type Report=Coordinate&{name:string};
 export function SynergyApp({page='map'}:{page?:'map'|'planner'|'library'|'about'}){
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  const [detailsOpen,setDetailsOpen]=useState(false);
  const [assistantOpen,setAssistantOpen]=useState(false);
  const [streetOpen,setStreetOpen]=useState(false);

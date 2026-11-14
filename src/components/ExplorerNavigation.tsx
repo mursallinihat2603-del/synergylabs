@@ -4,7 +4,7 @@ import {Map,Route,BookOpen,Info} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 
 export function ExplorerNavigation({page}:{page:string}) {
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  return <nav className="explorer-nav" aria-label={t("Main navigation")}>{[
   {to:'/' as const,name:'Explore',icon:Map,id:'map'},
   {to:'/planner' as const,name:'Route planner',icon:Route,id:'planner'},

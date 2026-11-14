@@ -43,10 +43,10 @@ function HazardZone({coordinates,color,onClick}:{coordinates:number[][];color:st
  return <group><mesh geometry={geometry} onClick={e=>{e.stopPropagation();onClick();}}><meshBasicMaterial color={color??''} transparent opacity={0.2} depthWrite={false} side={DoubleSide}/></mesh><Line points={surfaceLine(coordinates.map(c=>({lng:c[0]??0,lat:c[1]??0})))} color={color??''} lineWidth={1.5}/></group>;
 }
 
-function GlobeLabel({name,color}:{name:string;color:string}){
+function GlobeLabel({name,color,below=false}:{name:string;color:string;below?:boolean}){
  const [texture,setTexture]=useState<CanvasTexture|null>(null);
  useEffect(()=>{const canvas=document.createElement('canvas');canvas.width=512;canvas.height=64;const ctx=canvas.getContext('2d');if(!ctx)return;ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillStyle=color;ctx.fillText(name,256,40);const t=new CanvasTexture(canvas);t.colorSpace=SRGBColorSpace;setTexture(t);return()=>t.dispose();},[name,color]);
- return texture?<sprite position={[0,0.085,0]} scale={[0.65,0.081,1]}><spriteMaterial map={texture} transparent depthTest/></sprite>:null;
+ return texture?<sprite position={[0,below?-0.085:0.085,0]} scale={[0.65,0.081,1]}><spriteMaterial map={texture} transparent depthTest/></sprite>:null;
 }
 function CompareSurface({texture,swipe}:{texture:CanvasTexture;swipe:number}){
  const geometry=useMemo(()=>{const g=new SphereGeometry(2.003,96,48,Math.PI,Math.PI*2*swipe/100);const uv=g.attributes['uv'],pos=g.attributes['position'];if(uv&&pos)for(let i=0;i<pos.count;i++){const c=globeCoordinate({x:pos.getX(i),y:pos.getY(i),z:pos.getZ(i)});uv.setXY(i,(c.lng+180)/360,(c.lat+90)/180);}return g;},[swipe]);
@@ -73,7 +73,7 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
    if(h.geometry.type==='Polygon'){const ring=h.geometry.coordinates[0] as number[][];const first=ring[0];if(!first)return null;return <HazardZone key={h.properties.id} coordinates={ring} color={color??''} onClick={()=>selectHazard(h,{lng:first[0]??0,lat:first[1]??0})}/>;}
    const [lng,lat]=h.geometry.coordinates as number[];const p={lng:lng??0,lat:lat??0};return <mesh key={h.properties.id} position={globePosition(p,2.027)} onClick={e=>{e.stopPropagation();selectHazard(h,p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={color??''}/></mesh>;
   })}
-  {landmarks.map(p=><mesh key={p.id} position={globePosition(p,2.032)} onClick={e=>{e.stopPropagation();props.onSelect(p);}}><sphereGeometry args={[p.id===props.selected.id?0.025:0.014,10,8]}/><meshBasicMaterial color={p.id===props.selected.id?(colors['primary']??''):(colors['cyan']??'')}/>{<GlobeLabel name={t(p.name)} color={colors['cyan']??''}/>}</mesh>)}
+  {landmarks.map(p=><mesh key={p.id} position={globePosition(p,2.032)} onClick={e=>{e.stopPropagation();props.onSelect(p);}}><sphereGeometry args={[p.id===props.selected.id?0.025:0.014,10,8]}/><meshBasicMaterial color={p.id===props.selected.id?(colors['primary']??''):(colors['cyan']??'')}/>{<GlobeLabel name={t(p.name)} below={p.type==='Landing site'} color={colors['cyan']??''}/>}</mesh>)}
   {!landmarks.some(p=>p.id===props.selected.id)&&<mesh position={globePosition(props.selected,2.035)}><sphereGeometry args={[0.025,10,8]}/><meshBasicMaterial color={(colors['primary']??'')}/><GlobeLabel name={t(props.selected.name)} color={colors['primary']??''}/></mesh>}
   {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''}/></mesh>)}
   {props.fastRoute&&<Line points={surfaceLine(props.fastRoute,2.025)} color={colors['muted-foreground']??''} lineWidth={2} dashed dashSize={0.06} gapSize={0.04}/>}
@@ -83,7 +83,7 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
 }
 
 export default function MarsGlobe(props:MarsMapProps){
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  const {texture,status}=useImagery(props.layer);const comparison=useImagery(props.compare?'MOLA':'Viking');const controls=useRef<ComponentRef<typeof OrbitControls>>(null);const host=useRef<HTMLDivElement>(null);const [cursor,setCursor]=useState<Coordinate>(props.selected),[colors,setColors]=useState<Record<string,string>>({}),[failed,setFailed]=useState(false);
  useEffect(()=>{const css=getComputedStyle(document.documentElement);const names=['primary','cyan','background','muted-foreground',...['slopes','dust','sand','craters','radiation','temperature','historic'].map(c=>`hazard-${c}`)];const values:Record<string,string>={};const canvas=document.createElement('canvas');const context=canvas.getContext('2d',{willReadFrequently:true});for(const name of names){if(!context)continue;context.clearRect(0,0,1,1);context.fillStyle=css.getPropertyValue(`--${name}`).trim();context.fillRect(0,0,1,1);const pixel=context.getImageData(0,0,1,1).data;values[name]=`rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;}setColors(values);},[]);
  const zoom=(factor:number)=>{const orbit=controls.current;if(!orbit)return;const position=orbit.object.position;const distance=Math.max(2.6,Math.min(28,position.length()*factor));position.normalize().multiplyScalar(distance);orbit.update();};

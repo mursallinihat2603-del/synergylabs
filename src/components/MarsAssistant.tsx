@@ -19,7 +19,7 @@ import logo from '@/assets/synergy-logo-symbol.asset.json';
 import type {AssistantExplorerContext} from '@/lib/assistant/context';
 
 function Chat({userId,initial,selectedName,explorerContext}:{userId:string;initial:UIMessage[];selectedName:string;explorerContext:AssistantExplorerContext}){
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  const input=useRef<HTMLTextAreaElement>(null);
  const transport=useMemo(()=>new DefaultChatTransport({api:'/api/assistant',body:{selectedName,explorerContext},headers:async()=>{
   const {data}=await supabase.auth.getSession();return data.session?{Authorization:`Bearer ${data.session.access_token}`}:{Authorization:''};
@@ -39,7 +39,7 @@ function Chat({userId,initial,selectedName,explorerContext}:{userId:string;initi
 }
 
 export default function MarsAssistant({selectedName,explorerContext,onClose}:{selectedName:string;explorerContext:AssistantExplorerContext;onClose:()=>void}){
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  const {user,ready}=useAccount();const queryClient=useQueryClient();const load=useServerFn(getAssistantHistory);
  const [error,setError]=useState('');
  const history=useQuery({queryKey:['assistant-history',user?.id],queryFn:()=>load(),enabled:!!user,staleTime:0});
