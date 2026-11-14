@@ -3,6 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import type OpenSeadragon from 'openseadragon';
 import {ArrowLeft,Plus,Minus,LocateFixed,Maximize,ExternalLink} from 'lucide-react';
 import {Button} from '@/components/ui/button';
+import {isPanoramaKey,panoramaDirection} from '@/lib/panorama-controls';
 import section0 from '@/assets/glen-detail-0.asset.json';
 import section1 from '@/assets/glen-detail-1.asset.json';
 import section2 from '@/assets/glen-detail-2.asset.json';
@@ -17,17 +18,29 @@ import preview from '@/assets/glen-torridon-preview.asset.json';
 const sections=[section0,section1,section2,section3,section4,section5,section6,section7,section8,section9];
 
 export default function RoverPanorama({onClose}:{onClose:()=>void}){
- const {t,language}=useLanguage();
+ const {t}=useLanguage();
  const host=useRef<HTMLDivElement>(null),viewer=useRef<OpenSeadragon.Viewer|null>(null),shell=useRef<HTMLDivElement>(null);
  const [status,setStatus]=useState('Loading rover panorama…');
  const [failed,setFailed]=useState(false);
  useEffect(()=>{
-  let alive=true;
+  let alive=true;let frame=0;let previous=0;const keys=new Set<string>();
   void import('openseadragon').then(({default:OSD})=>{
    if(!alive||!host.current)return;
    const previewSource={type:'image',url:preview.url,buildPyramid:false};
    const v=OSD({element:host.current,showNavigationControl:false,showNavigator:false,maxZoomPixelRatio:2,visibilityRatio:0.7,constrainDuringPan:true,animationTime:0.3,gestureSettingsTouch:{pinchToZoom:true},tileSources:previewSource});
    viewer.current=v;
+   const tick=(now:number)=>{
+    if(!alive)return;
+    const elapsed=previous?Math.min((now-previous)/1000,.05):0;previous=now;
+    const direction=panoramaDirection(keys);
+    if(direction.x||direction.y){
+     const pixels=new OSD.Point(direction.x*360*elapsed,direction.y*360*elapsed);
+     v.viewport.panBy(v.viewport.deltaPointsFromPixels(pixels,true),true);v.viewport.applyConstraints(true);
+    }
+    const center=v.viewport.getCenter(true);host.current?.setAttribute('data-pan-center',`${center.x.toFixed(6)},${center.y.toFixed(6)}`);
+    frame=requestAnimationFrame(tick);
+   };
+   frame=requestAnimationFrame(tick);
    v.addOnceHandler('open',()=>{
     if(!alive)return;
     setStatus('Loading 20,000-pixel detail…');
@@ -37,14 +50,18 @@ export default function RoverPanorama({onClose}:{onClose:()=>void}){
    v.addHandler('open-failed',()=>{if(alive){setStatus('Panorama could not load. Please try again.');setFailed(true);}});
   });
   const escape=(e:KeyboardEvent)=>{if(e.key==='Escape'&&!document.fullscreenElement)onClose();};
+  const keyDown=(e:KeyboardEvent)=>{if(!isPanoramaKey(e.code)||e.ctrlKey||e.metaKey||e.altKey)return;const target=e.target;if(target instanceof HTMLElement&&(target.isContentEditable||target.closest('input,textarea,select')))return;e.preventDefault();keys.add(e.code);};
+  const keyUp=(e:KeyboardEvent)=>{keys.delete(e.code);};
+  const clear=()=>{keys.clear();previous=0;};
   document.addEventListener('keydown',escape);
-  return()=>{alive=false;viewer.current?.destroy();viewer.current=null;document.removeEventListener('keydown',escape);};
+  document.addEventListener('keydown',keyDown);document.addEventListener('keyup',keyUp);window.addEventListener('blur',clear);document.addEventListener('visibilitychange',clear);
+  return()=>{alive=false;cancelAnimationFrame(frame);viewer.current?.destroy();viewer.current=null;document.removeEventListener('keydown',escape);document.removeEventListener('keydown',keyDown);document.removeEventListener('keyup',keyUp);window.removeEventListener('blur',clear);document.removeEventListener('visibilitychange',clear);};
  },[onClose]);
  const zoom=(factor:number)=>{viewer.current?.viewport.zoomBy(factor);viewer.current?.viewport.applyConstraints();};
  return <div className="rover-panorama" ref={shell} role="dialog" aria-modal="true" aria-label={t("Mars street view")}>
   <header className="panorama-header"><Button variant="map" onClick={onClose}><ArrowLeft/>{t("Back to map")}</Button><div><h1>Glen Torridon</h1><span>{t("Gale Crater · Curiosity Mastcam · November–December 2019")}</span></div></header>
-  <div className="panorama-canvas" ref={host} aria-label={t("Detailed NASA rover panorama")}/>
+  <div className="panorama-canvas" ref={host} tabIndex={0} aria-keyshortcuts="W A S D" aria-label={t("Detailed NASA rover panorama")}/>
   <div className="panorama-tools"><Button variant="map" size="icon" title={t("Zoom in")} onClick={()=>zoom(1.5)}><Plus/></Button><Button variant="map" size="icon" title={t("Zoom out")} onClick={()=>zoom(1/1.5)}><Minus/></Button><Button variant="map" title={t("Recenter panorama")} onClick={()=>viewer.current?.viewport.goHome()}><LocateFixed/>{t("Recenter")}</Button><Button variant="map" size="icon" title={t("Fullscreen")} onClick={()=>{if(document.fullscreenElement)void document.exitFullscreen();else void shell.current?.requestFullscreen().catch(()=>setStatus('Fullscreen is unavailable on this device.'));}}><Maximize/></Button></div>
-  <footer className="panorama-footer"><div><span className={failed?'error-text':''} role="status">{status}</span><small>{t("NASA/JPL-Caltech/MSSS · Photographed rover location only; no continuous street coverage.")}</small></div><Button variant="ghost" asChild><a href="https://science.nasa.gov/photojournal/curiositys-18-billion-pixel-panorama/" target="_blank" rel="noreferrer">{t("NASA source")}<ExternalLink/></a></Button></footer>
+  <footer className="panorama-footer"><div><span className={failed?'error-text':''} role="status">{t(status)}</span><small>{t("NASA/JPL-Caltech/MSSS · Photographed rover location only; no continuous street coverage.")}</small></div><Button variant="ghost" asChild><a href="https://science.nasa.gov/photojournal/curiositys-18-billion-pixel-panorama/" target="_blank" rel="noreferrer">{t("NASA source")}<ExternalLink/></a></Button></footer>
  </div>;
 }
