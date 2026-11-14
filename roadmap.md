@@ -1,9 +1,10 @@
 # Synergy Labs
-- [ ] Reduce 3D rotation and zoom sensitivity
-- [ ] Verify and refine phone layouts across map, planner, library, about, panorama, and assistant
-- [ ] Check all existing feature flows and fix confirmed errors
-- [ ] Add a built-in AI assistant after the visitor’s conversation and history preferences are resolved
-- [ ] Add visible recenter controls in both maps and an authentic high-detail NASA panorama viewer
+- [x] Reduce 3D rotation and zoom sensitivity
+- [x] Verify and refine phone layouts across map, planner, library, about, panorama, and assistant sign-in
+- [x] Check main existing feature flows and fix confirmed errors, including report-button overlap and panorama rendering
+- [ ] Verify signed-in AI replies and account-history restoration — no auth users exist yet; first visitor sign-in required
+- [x] Add a built-in AI assistant with one account-scoped conversation and Google/Lovable sign-in
+- [x] Add visible recenter controls in both maps and a 20,000-pixel authentic NASA panorama viewer
 - [x] Keep the planner outside the map by default; explicit pin/unpin, route calculation, and desktop/mobile 2D/3D verified
 - [x] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints; trip flow verified, device audio requires checking in preview
 - [ ] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
