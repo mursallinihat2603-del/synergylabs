@@ -3,7 +3,7 @@ import {useChat} from '@ai-sdk/react';
 import {DefaultChatTransport,type UIMessage} from 'ai';
 import {useServerFn} from '@tanstack/react-start';
 import {useQuery,useQueryClient} from '@tanstack/react-query';
-import {X,LogOut,MessageCircle} from 'lucide-react';
+import {X,LogOut,MessageCircle,Trash2} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {Conversation,ConversationContent,ConversationScrollButton} from '@/components/ai-elements/conversation';
 import {Message,MessageContent,MessageResponse} from '@/components/ai-elements/message';
@@ -13,7 +13,7 @@ import {Shimmer} from '@/components/ai-elements/shimmer';
 import {useAccount} from './AccountProvider';
 import {supabase} from '@/integrations/supabase/client';
 import {lovable} from '@/integrations/lovable';
-import {getAssistantHistory} from '@/lib/assistant/history.functions';
+import {getAssistantHistory,saveAssistantHistory} from '@/lib/assistant/history.functions';
 import logo from '@/assets/synergy-logo-symbol.asset.json';
 
 function Chat({userId,initial,selectedName}:{userId:string;initial:UIMessage[];selectedName:string}){
@@ -21,12 +21,14 @@ function Chat({userId,initial,selectedName}:{userId:string;initial:UIMessage[];s
  const transport=useMemo(()=>new DefaultChatTransport({api:'/api/assistant',body:{selectedName},headers:async()=>{
   const {data}=await supabase.auth.getSession();return data.session?{Authorization:`Bearer ${data.session.access_token}`}:{Authorization:''};
  }}),[selectedName]);
- const {messages,sendMessage,status,stop,error}=useChat({id:userId,messages:initial,transport});
- const busy=status==='submitted'||status==='streaming';
+ const {messages,setMessages,sendMessage,status,stop,error}=useChat({id:userId,messages:initial,transport});
+ const busy=status==='submitted'||status==='streaming';const save=useServerFn(saveAssistantHistory);const qc=useQueryClient();
+ const remove=(ids:string[]|'all')=>{const next=ids==='all'?[]:messages.filter(m=>!ids.includes(m.id));setMessages(next);void save({data:{messages:next}}).then(()=>qc.setQueryData(['assistant-history',userId],next));};
  useEffect(()=>{if(!busy)input.current?.focus();},[busy]);
  return <><Conversation className="assistant-conversation"><ConversationContent>
  {!messages.length&&<div className="assistant-empty"><img src={logo.url} alt=""/><h2>Mars field assistant</h2></div>}
- {messages.map(message=><Message key={message.id} from={message.role}><MessageContent>{message.parts.map((part,i)=>part.type==='text'?<MessageResponse key={i}>{part.text}</MessageResponse>:part.type==='reasoning'?<Reasoning key={i} defaultOpen={false} isStreaming={part.state==='streaming'}><ReasoningTrigger/><ReasoningContent>{part.text}</ReasoningContent></Reasoning>:null)}</MessageContent></Message>)}
+ {messages.length>0&&!busy&&<Button variant="ghost" size="sm" className="assistant-clear" onClick={()=>{if(confirm('Delete the whole conversation?'))remove('all');}}><Trash2/>Clear conversation</Button>}
+ {messages.map(message=><Message key={message.id} from={message.role} className="assistant-message"><MessageContent>{message.parts.map((part,i)=>part.type==='text'?<MessageResponse key={i}>{part.text}</MessageResponse>:part.type==='reasoning'?<Reasoning key={i} defaultOpen={false} isStreaming={part.state==='streaming'}><ReasoningTrigger/><ReasoningContent>{part.text}</ReasoningContent></Reasoning>:null)}</MessageContent>{!busy&&<Button variant="ghost" size="icon" className="assistant-delete" title="Delete message" aria-label="Delete message" onClick={()=>remove([message.id])}><Trash2/></Button>}</Message>)}
  {busy&&<Shimmer>Thinking…</Shimmer>}
  </ConversationContent><ConversationScrollButton/></Conversation>
  {error&&<p className="assistant-error" role="alert">{error.message}</p>}

@@ -108,3 +108,10 @@
 .assistant-login{display:flex;flex:1;flex-direction:column;justify-content:center;gap:12px;padding:28px}.assistant-login>svg{width:32px;height:32px;color:var(--cyan)}.assistant-login h2{font-size:22px}.assistant-login p{margin:0 0 12px}.assistant-login small{margin-top:8px}
 .assistant-composer{padding:12px;border-top:1px solid var(--border);flex-shrink:0}.assistant-composer textarea{color:var(--foreground);min-height:64px}.assistant-composer [data-slot=input-group]{background:var(--card)}.assistant-error{color:var(--destructive);padding:8px 14px;font-size:11px;overflow-wrap:anywhere;margin:0}
 @media(max-width:700px){.assistant-panel{inset:8px 8px 64px;width:auto;max-width:none;border-radius:6px}.assistant-trigger{right:12px;bottom:64px}.assistant-trigger span{display:none}.assistant-trigger{width:34px;padding:0}.assistant-login{padding:22px}.assistant-composer textarea{font-size:16px}.assistant-heading span{font-size:15px}}
+.assistant-clear{align-self:flex-end}
+.assistant-message{position:relative}
+.assistant-delete{opacity:.55;width:1.75rem;height:1.75rem;align-self:flex-start}
+.assistant-delete:hover,.assistant-delete:focus-visible{opacity:1}
+/* keep Sol clock clear of the fixed assistant button */
+.synergy-shell .sol-clock{right:150px}
+@media(max-width:700px){.synergy-shell .sol-clock{right:56px}}
