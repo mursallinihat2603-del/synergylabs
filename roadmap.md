@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Add realistic simulated rover challenges: terrain traction, slope strain, battery management and recoverable damage
 - [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
 - [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
 - [x] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
