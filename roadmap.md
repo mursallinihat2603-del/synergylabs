@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Diagnose why publishing reports up to date while preview changes are missing from the live site
 - [ ] Add shared 2D/3D choice and a textured interactive Mars globe with landmarks, hazards, reports and routes
 - [ ] Verify 3D selection, routing, layers and desktop/mobile display
 - [x] Match uploaded design: cyan header and navigation, terrain-first map, floating controls, bottom details
