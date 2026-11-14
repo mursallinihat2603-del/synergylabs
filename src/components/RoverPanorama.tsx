@@ -13,7 +13,8 @@ export default function RoverPanorama({onClose}:{onClose:()=>void}){
   let alive=true;
   void import('openseadragon').then(({default:OSD})=>{
    if(!alive||!host.current)return;
-   const v=OSD({element:host.current,showNavigationControl:false,showNavigator:false,maxZoomPixelRatio:2,visibilityRatio:0.7,constrainDuringPan:true,animationTime:0.3,gestureSettingsTouch:{pinchToZoom:true},tileSources:{type:'image',url:preview.url,buildPyramid:false}});
+   const previewSource={type:'image',url:preview.url,buildPyramid:false};
+   const v=OSD({element:host.current,showNavigationControl:false,showNavigator:false,maxZoomPixelRatio:2,visibilityRatio:0.7,constrainDuringPan:true,animationTime:0.3,gestureSettingsTouch:{pinchToZoom:true},tileSources:previewSource});
    viewer.current=v;
    v.addOnceHandler('open',()=>{
     if(!alive)return;
