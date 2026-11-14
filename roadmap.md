@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Add a checkered finish flag at the chosen driving route endpoint
 - [ ] Add realistic simulated rover challenges: terrain traction, slope strain, battery management and recoverable damage
 - [ ] Make the selected calculated route clearly visible on the suspension-driving terrain
 - [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
