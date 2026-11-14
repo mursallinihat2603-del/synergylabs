@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Keep interface motion in global CSS, respect reduced-motion preferences, and never animate map containers or alter camera state for decoration.
 - Ground assistant replies in validated explorer context and an isolated server prompt; preserve model and streaming behavior when improving answer quality.
 - Group secondary map settings in accessible popovers and keep primary page navigation in the shared header (bottom navigation on phones) so controls do not compete with terrain or planner space.
 - The assistant keeps one account-scoped UIMessage transcript with owner-only RLS; map access stays public, and AI requests validate the bearer token before reading or saving history.
