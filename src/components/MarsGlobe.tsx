@@ -1,7 +1,7 @@
 import {useEffect,useMemo,useRef,useState,type ComponentRef} from 'react';
 import {Canvas,useFrame,useThree} from '@react-three/fiber';
-import {OrbitControls,Html,Line,Environment,Lightformer} from '@react-three/drei';
-import {BufferGeometry,Float32BufferAttribute,CanvasTexture,SRGBColorSpace,Vector2,Vector3,ShapeUtils,DoubleSide} from 'three';
+import {OrbitControls,Line,Environment,Lightformer} from '@react-three/drei';
+import {BufferGeometry,Float32BufferAttribute,CanvasTexture,SRGBColorSpace,Vector2,Vector3,ShapeUtils,DoubleSide,SphereGeometry} from 'three';
 import {Plus,Minus,LocateFixed} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {landmarks,hazards,modeledElevation,type Coordinate} from '@/lib/mars';
@@ -42,6 +42,16 @@ function HazardZone({coordinates,color,onClick}:{coordinates:number[][];color:st
  return <group><mesh geometry={geometry} onClick={e=>{e.stopPropagation();onClick();}}><meshBasicMaterial color={color??''} transparent opacity={0.2} depthWrite={false} side={DoubleSide}/></mesh><Line points={surfaceLine(coordinates.map(c=>({lng:c[0]??0,lat:c[1]??0})))} color={color??''} lineWidth={1.5}/></group>;
 }
 
+function GlobeLabel({name,color}:{name:string;color:string}){
+ const [texture,setTexture]=useState<CanvasTexture|null>(null);
+ useEffect(()=>{const canvas=document.createElement('canvas');canvas.width=512;canvas.height=64;const ctx=canvas.getContext('2d');if(!ctx)return;ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillStyle=color;ctx.fillText(name,256,40);const t=new CanvasTexture(canvas);t.colorSpace=SRGBColorSpace;setTexture(t);return()=>t.dispose();},[name,color]);
+ return texture?<sprite position={[0,0.085,0]} scale={[0.65,0.081,1]}><spriteMaterial map={texture} transparent depthTest/></sprite>:null;
+}
+function CompareSurface({texture,swipe}:{texture:CanvasTexture;swipe:number}){
+ const geometry=useMemo(()=>{const g=new SphereGeometry(2.003,96,48,Math.PI,Math.PI*2*swipe/100);const uv=g.attributes['uv'],pos=g.attributes['position'];if(uv&&pos)for(let i=0;i<pos.count;i++){const c=globeCoordinate({x:pos.getX(i),y:pos.getY(i),z:pos.getZ(i)});uv.setXY(i,(c.lng+180)/360,(c.lat+90)/180);}return g;},[swipe]);
+ useEffect(()=>()=>geometry.dispose(),[geometry]);return <mesh geometry={geometry}><meshStandardMaterial map={texture} roughness={1}/></mesh>;
+}
+
 function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{props:MarsMapProps;texture:CanvasTexture;compareTexture:CanvasTexture|null;colors:Record<string,string>;controls:React.RefObject<ComponentRef<typeof OrbitControls>|null>;ready:()=>void;onCursor:(p:Coordinate)=>void}){
  const {camera,size,invalidate}=useThree();const signaled=useRef(false);
  useFrame(()=>{if(!signaled.current){signaled.current=true;requestAnimationFrame(ready);}});
@@ -54,15 +64,15 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
   <ambientLight intensity={1.1}/><directionalLight position={[5,4,6]} intensity={2}/>
   <Environment resolution={64}><Lightformer intensity={1} position={[0,5,0]} scale={[10,10,1]}/></Environment>
   <mesh onPointerMove={e=>onCursor(globeCoordinate(e.point))} onClick={e=>{e.stopPropagation();props.onPoint(globeCoordinate(e.point));}}><sphereGeometry args={[2,96,48]}/><meshStandardMaterial map={texture} roughness={1}/></mesh>
-  {props.compare&&compareTexture&&props.swipe>0&&<mesh rotation={[0,0,0]}><sphereGeometry args={[2.003,96,48,Math.PI,Math.PI*2*props.swipe/100]}/><meshStandardMaterial map={compareTexture} roughness={1}/></mesh>}
+  {props.compare&&compareTexture&&props.swipe>0&&<CompareSurface texture={compareTexture} swipe={props.swipe}/>}
   {hazards.filter(h=>props.active.includes(h.properties.category)).map(h=>{
    const color=colors[`hazard-${h.properties.category}`]??(colors['primary']??'');
    if(h.geometry.type==='Polygon'){const ring=h.geometry.coordinates[0] as number[][];const first=ring[0];if(!first)return null;return <HazardZone key={h.properties.id} coordinates={ring} color={color??''} onClick={()=>selectHazard(h,{lng:first[0]??0,lat:first[1]??0})}/>;}
    const [lng,lat]=h.geometry.coordinates as number[];const p={lng:lng??0,lat:lat??0};return <mesh key={h.properties.id} position={globePosition(p,2.027)} onClick={e=>{e.stopPropagation();selectHazard(h,p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={color??''}/></mesh>;
   })}
-  {landmarks.map(p=><mesh key={p.id} position={globePosition(p,2.032)} onClick={e=>{e.stopPropagation();props.onSelect(p);}}><sphereGeometry args={[p.id===props.selected.id?0.025:0.014,10,8]}/><meshBasicMaterial color={p.id===props.selected.id?(colors['primary']??''):(colors['cyan']??'')}/>{(p.id===props.selected.id||p.type!=='Landing site')&&<Html center distanceFactor={8} occlude zIndexRange={[2,0]}><span className="globe-label">{p.name}</span></Html>}</mesh>)}
-  {!landmarks.some(p=>p.id===props.selected.id)&&<mesh position={globePosition(props.selected,2.035)}><sphereGeometry args={[0.025,10,8]}/><meshBasicMaterial color={(colors['primary']??'')}/><Html center distanceFactor={8} occlude zIndexRange={[2,0]}><span className="globe-label">{props.selected.name}</span></Html></mesh>}
-  {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><Html center distanceFactor={8} occlude zIndexRange={[2,0]}><span className="globe-label">⚑ {p.name}</span></Html></mesh>)}
+  {landmarks.map(p=><mesh key={p.id} position={globePosition(p,2.032)} onClick={e=>{e.stopPropagation();props.onSelect(p);}}><sphereGeometry args={[p.id===props.selected.id?0.025:0.014,10,8]}/><meshBasicMaterial color={p.id===props.selected.id?(colors['primary']??''):(colors['cyan']??'')}/>{(p.id===props.selected.id||p.type!=='Landing site')&&<GlobeLabel name={p.name} color={colors['cyan']??''}/>}</mesh>)}
+  {!landmarks.some(p=>p.id===props.selected.id)&&<mesh position={globePosition(props.selected,2.035)}><sphereGeometry args={[0.025,10,8]}/><meshBasicMaterial color={(colors['primary']??'')}/><GlobeLabel name={props.selected.name} color={colors['primary']??''}/></mesh>}
+  {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''}/></mesh>)}
   {props.fastRoute&&<Line points={surfaceLine(props.fastRoute,2.025)} color={colors['muted-foreground']??''} lineWidth={2} dashed dashSize={0.06} gapSize={0.04}/>}
   {props.route&&<Line points={surfaceLine(props.route,2.03)} color={(colors['primary']??'')} lineWidth={3}/>}
   <OrbitControls ref={controls} enablePan={false} minDistance={2.6} maxDistance={28} enableDamping={false}/>
@@ -75,5 +85,5 @@ export default function MarsGlobe(props:MarsMapProps){
  const zoom=(factor:number)=>{const orbit=controls.current;if(!orbit)return;const position=orbit.object.position;const distance=Math.max(2.6,Math.min(28,position.length()*factor));position.normalize().multiplyScalar(distance);orbit.update();};
  return <><div className="mars-map mars-globe" ref={host} aria-label="Interactive 3D Mars globe">
   {failed?<div className="map-loading">3D is unavailable on this device. Choose 2D.</div>:texture&&colors['background']?<Canvas frameloop="demand" dpr={[1,1.5]} camera={{position:[0,0,8],fov:42}} gl={{antialias:true}} fallback={<div className="map-loading">3D is unavailable on this device. Choose 2D.</div>} onCreated={({gl})=>{gl.domElement.addEventListener('webglcontextlost',()=>setFailed(true),{once:true});}}><Scene props={props} texture={texture} compareTexture={comparison.texture} colors={colors} controls={controls} ready={()=>{if(host.current)host.current.setAttribute('data-scene-ready','true');}} onCursor={setCursor}/></Canvas>:<div className="map-loading">{status||'Loading Mars…'}</div>}
- </div><div className="map-navigation"><Button variant="map" size="icon" title="Zoom in" onClick={()=>zoom(0.8)}><Plus/></Button><Button variant="map" size="icon" title="Zoom out" onClick={()=>zoom(1.25)}><Minus/></Button><Button variant="map" size="icon" title="Center selected location" onClick={()=>{const orbit=controls.current;if(!orbit)return;orbit.object.position.set(...globePosition(props.selected,7.4));orbit.update();}}><LocateFixed/></Button></div><div className="map-readout"><span>{cursor.lat.toFixed(2)}°, {cursor.lng.toFixed(2)}°</span><span>3D globe · USGS / NASA imagery</span><span>Surface relief not to scale</span></div>{status&&<div className="tile-status">{status}</div>}</>;
+ </div><div className="map-navigation"><Button variant="map" size="icon" title="Zoom in" onClick={()=>zoom(0.8)}><Plus/></Button><Button variant="map" size="icon" title="Zoom out" onClick={()=>zoom(1.25)}><Minus/></Button><Button variant="map" size="icon" title="Center selected location" onClick={()=>{const orbit=controls.current;if(!orbit)return;orbit.object.position.set(...globePosition(props.selected,7.4));orbit.update();}}><LocateFixed/></Button></div><div className="map-readout"><span>{cursor.lat.toFixed(2)}°, {cursor.lng.toFixed(2)}°</span><span>3D globe · USGS / NASA imagery</span><span>Spherical surface · no measured relief</span></div>{status&&<div className="tile-status">{status}</div>}</>;
 }
