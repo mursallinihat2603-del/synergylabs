@@ -1,4 +1,6 @@
 # Synergy Labs
+- [ ] Add voice navigation — waiting for choice of spoken guidance, voice commands, or both
+- [ ] Verify the published URL includes the latest 3D update — requires publishing the saved changes
 - [ ] Separate overlapping preview selectors, search and planner controls
 - [ ] Diagnose why publishing reports up to date while preview changes are missing from the live site
 - [ ] Add shared 2D/3D choice and a textured interactive Mars globe with landmarks, hazards, reports and routes
