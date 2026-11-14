@@ -1,5 +1,5 @@
 # Synergy Labs
-- [ ] Ensure Azerbaijani navigation uses Azerbaijani text and voice, without English fallback
+- [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
 - [ ] Add WASD rover driving — awaiting choice of separate simulated scene versus keeping photographic Street view
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
