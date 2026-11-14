@@ -229,7 +229,8 @@ body{font-size:13px}
 .direction-banner{display:flex;gap:14px;align-items:center;position:relative;padding:20px 16px;background:var(--navigation);color:var(--navigation-foreground);border-radius:8px}
 .direction-banner>svg{width:40px;height:40px}
 .direction-banner>div{min-width:0;flex:1}
-.direction-banner h3{font-size:20px;line-height:1.3;text-transform:capitalize;overflow-wrap:anywhere;margin:5px 0 4px}
+.direction-banner h3{font-size:20px;line-height:1.3;overflow-wrap:anywhere;margin:5px 0 4px}
+.direction-banner h3::first-letter{text-transform:uppercase}
 .direction-banner small{color:var(--navigation-foreground);opacity:.85;display:block;overflow-wrap:anywhere}
 .direction-distance{font-family:var(--font-display);font-size:24px}
 .direction-simulation{position:absolute;right:8px;top:6px;font-size:7px;opacity:.8}
@@ -244,6 +245,7 @@ body{font-size:13px}
 .planner-panel .panel-heading{flex-wrap:wrap;line-height:1.4}.planner-panel .sample-tag{flex-shrink:0}
 .route-modes button{white-space:normal;min-height:40px;height:auto;line-height:1.3}
 .location-title button[title]{flex-shrink:0}
+.location-title button[title]:not(.details-toggle):not(.plan-map-button){order:2}
 .location-title button:has(.saved-icon){order:2}
 .panorama-canvas:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
 :root{--navigation:oklch(.37 .07 166);--navigation-foreground:oklch(.98 .008 160)}
