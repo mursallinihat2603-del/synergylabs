@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Increase 3D globe rotation and zoom sensitivity
 - [ ] Improve vehicle momentum, braking, steering, mass and collision response without bypassing suspension
 - [ ] Stop driving and steering immediately when the battery reaches 0%
 - [ ] Add a checkered finish flag at the chosen driving route endpoint
