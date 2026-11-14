@@ -27,12 +27,13 @@ function Terrain({palette}:{palette:Palette}){
 function Rover({keys,paused,reset,host,vehicle}:{keys:React.RefObject<Set<string>>;paused:boolean;reset:number;palette:Palette;host:React.RefObject<HTMLDivElement|null>;vehicle:string}){
  const body=useRef<RapierRigidBody>(null),heading=useRef(0),speed=useRef(0),suspension=useRef(Array(6).fill(.55));
  const {world,rapier}=useRapier(),controller=useRef<ReturnType<typeof world.createVehicleController>|null>(null);
- useEffect(()=>{const b=body.current;if(!b)return;const c=world.createVehicleController(b);c.indexUpAxis=1;c.setIndexForwardAxis=2;
+ const setupController=()=>{const b=body.current;if(!b||controller.current)return;const c=world.createVehicleController(b);c.indexUpAxis=1;c.setIndexForwardAxis=2;
   for(const x of [-1,1])for(const z of [-1,0,1]){const i=c.numWheels();c.addWheel({x,y:0,z},{x:0,y:-1,z:0},{x:-1,y:0,z:0},ROVER_PHYSICS.suspensionLength,.3);c.setWheelSuspensionStiffness(i,ROVER_PHYSICS.stiffness);c.setWheelSuspensionCompression(i,ROVER_PHYSICS.compression);c.setWheelSuspensionRelaxation(i,ROVER_PHYSICS.relaxation);c.setWheelMaxSuspensionTravel(i,ROVER_PHYSICS.maxTravel);c.setWheelMaxSuspensionForce(i,15000);c.setWheelFrictionSlip(i,3);}
-  controller.current=c;return()=>{controller.current=null;world.removeVehicleController(c);};
- },[world]);
+  controller.current=c;
+ };
+ useEffect(()=>()=>{const c=controller.current;if(c)world.removeVehicleController(c);controller.current=null;},[world]);
  useEffect(()=>{body.current?.setTranslation({x:0,y:1.1,z:0},true);body.current?.setLinvel({x:0,y:0,z:0},true);body.current?.setAngvel({x:0,y:0,z:0},true);body.current?.setRotation(new Quaternion(),true);heading.current=0;speed.current=0;},[reset]);
- useBeforePhysicsStep(()=>{if(paused)return;const c=controller.current,b=body.current;if(!c||!b)return;const input=roverInput(keys.current),target=roverTargetSpeed(vehicle,keys.current);const forward=new Vector3(0,0,-1).applyQuaternion(b.rotation());const velocity=b.linvel(),longitudinal=new Vector3(velocity.x,velocity.y,velocity.z).dot(forward);for(let i=0;i<6;i++){c.setWheelEngineForce(i,Math.abs(longitudinal)<target?input.throttle*95:0);c.setWheelBrake(i,input.throttle?0:4);c.setWheelSteering(i,input.steer*(i%3===0?.35:i%3===2?-.35:0));}c.updateVehicle(1/60,rapier.QueryFilterFlags.EXCLUDE_DYNAMIC);for(let i=0;i<6;i++)suspension.current[i]=c.wheelSuspensionLength(i)??.55;});
+ useBeforePhysicsStep(()=>{if(paused)return;setupController();const c=controller.current,b=body.current;if(!c||!b)return;const input=roverInput(keys.current),target=roverTargetSpeed(vehicle,keys.current);const forward=new Vector3(0,0,-1).applyQuaternion(b.rotation());const velocity=b.linvel(),longitudinal=new Vector3(velocity.x,velocity.y,velocity.z).dot(forward);for(let i=0;i<6;i++){c.setWheelEngineForce(i,Math.abs(longitudinal)<target?-input.throttle*250:0);c.setWheelBrake(i,input.throttle?0:4);c.setWheelSteering(i,-input.steer*(i%3===0?.35:i%3===2?-.35:0));}c.updateVehicle(1/60,rapier.QueryFilterFlags.EXCLUDE_DYNAMIC);for(let i=0;i<6;i++)suspension.current[i]=c.wheelSuspensionLength(i)??.55;host.current?.setAttribute('data-suspension',suspension.current.map(v=>v.toFixed(3)).join(','));});
  useFrame(({camera},dt)=>{
   const b=body.current;if(!b)return;const delta=Math.min(dt,.05),input=roverInput(keys.current);
   const position=b.translation(),rotation=b.rotation();const forward=new Vector3(0,0,-1).applyQuaternion(rotation);heading.current=Math.atan2(-forward.x,-forward.z);
