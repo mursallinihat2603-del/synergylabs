@@ -1,5 +1,5 @@
 # Synergy Labs
-- [ ] Keep the planner outside the map by default; allow visitors to pin it over the map and verify both views
+- [x] Keep the planner outside the map by default; explicit pin/unpin, route calculation, and desktop/mobile 2D/3D verified
 - [x] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints; trip flow verified, device audio requires checking in preview
 - [ ] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
 - [x] Separate overlapping preview selectors, search and planner controls
