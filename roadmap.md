@@ -1,10 +1,10 @@
 # Synergy Labs
-- [ ] Improve assistant answer quality and Mars context; verify a real signed-in conversation where available
-- [ ] Simplify the full interface with grouped map tools, clearer navigation and expandable landmark details; verify desktop and mobile flows
+- [x] Improve assistant answer quality and Mars context; verified signed-in route answers, follow-ups and history restoration
+- [x] Simplify the full interface with grouped map tools, clearer navigation and expandable landmark details; desktop and mobile flows verified
 - [x] Reduce 3D rotation and zoom sensitivity
 - [x] Verify and refine phone layouts across map, planner, library, about, panorama, and assistant sign-in
 - [x] Check main existing feature flows and fix confirmed errors, including report-button overlap and panorama rendering
-- [ ] Verify signed-in AI replies and account-history restoration — no auth users exist yet; first visitor sign-in required
+- [x] Verify signed-in AI replies and account-history restoration
 - [x] Add a built-in AI assistant with one account-scoped conversation and Google/Lovable sign-in
 - [x] Add visible recenter controls in both maps and a 20,000-pixel authentic NASA panorama viewer
 - [x] Keep the planner outside the map by default; explicit pin/unpin, route calculation, and desktop/mobile 2D/3D verified
