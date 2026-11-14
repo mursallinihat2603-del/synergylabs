@@ -30,6 +30,8 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- The assistant keeps one account-scoped UIMessage transcript with owner-only RLS; map access stays public, and AI requests validate the bearer token before reading or saving history.
+- Compose assistant chat with AI Elements and stream Lovable AI Responses server-side; preserve full message history and explicit cancellation.
 - Ground view uses original NASA rover panoramas with source credits in a lazy-loaded deep-zoom viewer; never imply continuous street coverage or synthesize missing photographic detail.
 - Keep planner and map in separate layout tracks by default; only an explicit visitor pin action may overlay the planner, and resize the 2D map when its track changes.
 - Navigation uses pure Mars bearings and manual simulated waypoints, never Earth GPS; device speech synthesis provides local, no-login spoken directions without billed public AI endpoints.

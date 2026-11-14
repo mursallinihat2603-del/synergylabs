@@ -2,8 +2,18 @@ import {useEffect,useRef,useState} from 'react';
 import type OpenSeadragon from 'openseadragon';
 import {ArrowLeft,Plus,Minus,LocateFixed,Maximize,ExternalLink} from 'lucide-react';
 import {Button} from '@/components/ui/button';
-import detail from '@/assets/glen-torridon-detail.asset.json';
+import section0 from '@/assets/glen-detail-0.asset.json';
+import section1 from '@/assets/glen-detail-1.asset.json';
+import section2 from '@/assets/glen-detail-2.asset.json';
+import section3 from '@/assets/glen-detail-3.asset.json';
+import section4 from '@/assets/glen-detail-4.asset.json';
+import section5 from '@/assets/glen-detail-5.asset.json';
+import section6 from '@/assets/glen-detail-6.asset.json';
+import section7 from '@/assets/glen-detail-7.asset.json';
+import section8 from '@/assets/glen-detail-8.asset.json';
+import section9 from '@/assets/glen-detail-9.asset.json';
 import preview from '@/assets/glen-torridon-preview.asset.json';
+const sections=[section0,section1,section2,section3,section4,section5,section6,section7,section8,section9];
 
 export default function RoverPanorama({onClose}:{onClose:()=>void}){
  const host=useRef<HTMLDivElement>(null),viewer=useRef<OpenSeadragon.Viewer|null>(null),shell=useRef<HTMLDivElement>(null);
@@ -19,7 +29,8 @@ export default function RoverPanorama({onClose}:{onClose:()=>void}){
    v.addOnceHandler('open',()=>{
     if(!alive)return;
     setStatus('Loading 20,000-pixel detail…');
-    v.addTiledImage({tileSource:{type:'image',url:detail.url,buildPyramid:false},replace:true,index:0,success:()=>{if(!alive)return;setStatus('20,000 × 5,171 pixels · Original NASA photography');v.viewport.goHome(true);host.current?.setAttribute('data-detail-ready','true');},error:()=>{if(alive){setStatus('Full detail unavailable · preview shown');setFailed(true);}}});
+    let loaded=0;
+    sections.forEach((section,i)=>v.addTiledImage({tileSource:{type:'image',url:section.url,buildPyramid:false},x:i/10,y:0,width:0.1,success:()=>{if(!alive)return;loaded++;if(loaded===sections.length){setStatus('20,000 × 5,171 pixels · Original NASA photography');v.viewport.goHome(true);host.current?.setAttribute('data-detail-ready','true');}},error:()=>{if(alive){setStatus('Some detail unavailable · preview remains visible');setFailed(true);}}}));
    });
    v.addHandler('open-failed',()=>{if(alive){setStatus('Panorama could not load. Please try again.');setFailed(true);}});
   });
