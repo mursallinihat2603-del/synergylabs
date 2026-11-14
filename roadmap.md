@@ -1,6 +1,6 @@
 # Synergy Labs
-- [ ] Add voice navigation — waiting for choice of spoken guidance, voice commands, or both
-- [ ] Verify the published URL includes the latest 3D update — requires publishing the saved changes
+- [ ] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints
+- [ ] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
 - [x] Separate overlapping preview selectors, search and planner controls
 - [x] Diagnose missing live updates: current public URL serves the older version without 3D; no draft exists
 - [x] Add shared 2D/3D choice and a textured interactive Mars globe with landmarks, hazards, reports and routes
