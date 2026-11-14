@@ -222,4 +222,38 @@ body{font-size:13px}
  .assistant-heading span{font-size:16px}.assistant-composer textarea{font-size:16px}
  .coordinate-inputs input{width:100%}
 }
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+/* UI-only motion: map canvases and camera state stay untouched. */
+:root{--motion-fast:160ms;--motion-enter:360ms;--motion-ease:cubic-bezier(.22,1,.36,1)}
+@keyframes ui-reveal{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+@keyframes ui-slide-in{from{opacity:0;translate:24px 0}to{opacity:1;translate:0 0}}
+@keyframes ui-dialog-in{from{opacity:0;scale:.96;translate:0 8px}to{opacity:1;scale:1;translate:0 0}}
+@keyframes ui-fade-in{from{opacity:0}to{opacity:1}}
+@keyframes ui-check-in{from{opacity:0;scale:.6;rotate:-20deg}to{opacity:1;scale:1;rotate:0deg}}
+@media(prefers-reduced-motion:no-preference){
+ .synergy-shell [data-slot=button],.map-settings [data-slot=button],.report-modal [data-slot=button]{transition:background-color var(--motion-fast),color var(--motion-fast),border-color var(--motion-fast),box-shadow var(--motion-fast),scale var(--motion-fast) var(--motion-ease)}
+ .synergy-shell [data-slot=button]:active:not(:disabled),.map-settings [data-slot=button]:active:not(:disabled){scale:.96}
+ .explorer-nav>a svg,.map-tools>button svg,.assistant-trigger svg,.street-trigger svg{transition:translate var(--motion-fast) var(--motion-ease),rotate var(--motion-fast) var(--motion-ease)}
+ .explorer-nav>a[aria-current=page] svg{animation:ui-check-in 300ms var(--motion-ease)}
+ .location-panel,.planner-panel,.content-page>h1,.content-page>.section-eyebrow,.library-tools,.route-stats,.navigation-guide{animation:ui-reveal var(--motion-enter) var(--motion-ease) both}
+ .details-expanded .location-body,.details-expanded .location-risk,.details-expanded .conditions{animation:ui-reveal var(--motion-enter) var(--motion-ease) both}
+ .details-expanded .location-risk{animation-delay:50ms}.details-expanded .conditions{animation-delay:90ms}
+ .assistant-panel{animation:ui-slide-in var(--motion-enter) var(--motion-ease) both}
+ .assistant-message,.search-results{animation:ui-reveal 240ms var(--motion-ease) both}
+ .modal-backdrop,.rover-panorama{animation:ui-fade-in 240ms ease-out both}
+ .report-modal{animation:ui-dialog-in var(--motion-enter) var(--motion-ease) both}
+ .library-grid article,.source-list article{animation:ui-reveal 420ms var(--motion-ease) both;transition:border-color 200ms,translate 200ms var(--motion-ease),box-shadow 200ms}
+ .library-grid article:nth-child(2),.source-list article:nth-child(2){animation-delay:45ms}
+ .library-grid article:nth-child(3),.source-list article:nth-child(3){animation-delay:90ms}
+ .library-grid article:nth-child(n+4),.source-list article:nth-child(n+4){animation-delay:135ms}
+ .map-settings .layer-option>svg{animation:ui-check-in 220ms var(--motion-ease)}
+ .toggle:before,.hazard-row input:before{transition:left 180ms var(--motion-ease),background-color 180ms}
+ .hazard-row input,.toggle{transition:background-color 180ms,border-color 180ms}
+ .search-wrap,.library-search{transition:border-color 180ms,box-shadow 180ms}
+ .search-wrap:focus-within,.library-search:focus-within{border-color:var(--cyan);box-shadow:0 0 0 2px color-mix(in oklch,var(--cyan) 12%,transparent)}
+ @media(hover:hover){
+  .explorer-nav>a:hover svg,.assistant-trigger:hover svg{translate:0 -2px}
+  .map-tools>button:hover svg{rotate:-8deg}.street-trigger:hover svg{rotate:8deg}
+  .library-grid article:hover{translate:0 -3px;border-color:var(--cyan);box-shadow:var(--panel-shadow)}
+ }
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
