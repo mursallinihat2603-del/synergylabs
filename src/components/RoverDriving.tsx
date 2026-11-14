@@ -7,6 +7,7 @@ import {Quaternion,Vector3,PlaneGeometry,RepeatWrapping,SRGBColorSpace} from 'th
 import VehicleAppearance, {type VehiclePalette} from '@/components/VehicleAppearance';
 import {vehicleAppearance} from '@/lib/vehicle-appearance';
 import DrivingTelemetry,{type DriveTelemetry} from '@/components/DrivingTelemetry';
+import RouteFinishFlag from '@/components/RouteFinishFlag';
 import {SAND_ZONES,terrainCondition,mobilityFactor,freshDriveCondition,stepDriveCondition,impactDamage,drivingRoutePoints} from '@/lib/rover-challenges';
 import terrainAsset from '@/assets/rover-ground.asset.json';
 import {ArrowLeft,ArrowUp,ArrowDown,RotateCcw,RotateCw,LocateFixed,Pause,Play} from 'lucide-react';
@@ -29,6 +30,12 @@ function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair}:{keys:R
   controller.current=c;
  };
  useEffect(()=>()=>{const c=controller.current;if(c)world.removeVehicleController(c);controller.current=null;},[world]);
+ useEffect(()=>{
+  if(!import.meta.env.DEV)return;
+  const debugWindow=window as Window & {__rover?:{state:()=>DriveTelemetry;teleport:(x:number,z:number)=>void;sim:(seconds:number,boost?:boolean)=>void}};
+  debugWindow.__rover={state:()=>({...telemetry.current,condition:{...telemetry.current.condition}}),teleport:(x,z)=>{body.current?.setTranslation({x,y:roverTerrainHeight(x,z)+1.1,z},true);body.current?.setLinvel({x:0,y:0,z:0},true);},sim:(seconds,boost=false)=>{for(let elapsed=0;elapsed<seconds;elapsed+=1/60){const p=body.current?.translation();if(!p)return;const ground=terrainCondition(p.x,p.z);telemetry.current.condition=stepDriveCondition(telemetry.current.condition,Math.min(1/60,seconds-elapsed),{moving:!repair,boost,sand:ground.sand,slope:ground.slope,speed:speed.current,repair});}}};
+  return()=>{delete debugWindow.__rover;};
+ },[telemetry,repair]);
  useEffect(()=>{body.current?.setTranslation({x:0,y:1.1,z:0},true);body.current?.setLinvel({x:0,y:0,z:0},true);body.current?.setAngvel({x:0,y:0,z:0},true);body.current?.setRotation(new Quaternion(),true);heading.current=0;speed.current=0;},[reset]);
  useBeforePhysicsStep(()=>{if(paused)return;setupController();const c=controller.current,b=body.current;if(!c||!b)return;const input=roverInput(keys.current),target=roverTargetSpeed(vehicle,keys.current);const forward=new Vector3(0,0,-1).applyQuaternion(b.rotation());const velocity=b.linvel(),longitudinal=new Vector3(velocity.x,velocity.y,velocity.z).dot(forward);for(let i=0;i<6;i++){c.setWheelEngineForce(i,0);c.setWheelBrake(i,input.throttle?0:4);c.setWheelSteering(i,0);}c.updateVehicle(1/60,rapier.QueryFilterFlags.EXCLUDE_DYNAMIC);for(let i=0;i<6;i++)suspension.current[i]=c.wheelSuspensionLength(i)??.55;host.current?.setAttribute('data-suspension',suspension.current.map(v=>v.toFixed(3)).join(','));});
  useFrame(({camera},dt)=>{
@@ -58,7 +65,7 @@ export default function RoverDriving({onClose,onPhotos,vehicle,route}:{onClose:(
  {rocks.map((r,i)=><RigidBody name="driving-rock" key={i} type="fixed" colliders="hull" position={[r.x,roverTerrainHeight(r.x,r.z)+r.size/2,r.z]}><mesh scale={[r.size,r.size*.65,r.size*.9]} castShadow receiveShadow><dodecahedronGeometry args={[1,0]}/><meshStandardMaterial color={palette.rock} roughness={1}/></mesh></RigidBody>)}
  {SAND_ZONES.map((zone,i)=><mesh key={`sand-${i}`} position={[zone.x,roverTerrainHeight(zone.x,zone.z)+.08,zone.z]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[zone.radius,48]}/><meshStandardMaterial color={palette.accent} roughness={1} transparent opacity={.35} depthWrite={false}/></mesh>)}
  {Array.from({length:14},(_,i)=><mesh key={i} position={[(i-7)*22,5,-135]} scale={[22,9+(i%3)*6,12]}><coneGeometry args={[1,1,6]}/><meshStandardMaterial color={palette.rock}/></mesh>)}
- <>{drivingRoute.length>1&&<><Line points={drivingRoute} color={palette.wheel} lineWidth={13}/><Line points={drivingRoute} color={palette.accent} lineWidth={7}/>{drivingRoute.filter((_,i)=>i%40===0).map((point,i)=><mesh key={`route-${i}`} position={[point[0],point[1]+.4,point[2]]}><coneGeometry args={[.18,.7,8]}/><meshStandardMaterial color={palette.body}/></mesh>)}</>}</><Rover keys={keys} paused={paused} reset={reset} palette={palette} host={host} vehicle={vehicle} telemetry={telemetry} repair={repair}/></Physics></Suspense></Canvas>}</div>
+ <>{drivingRoute.length>1&&<><Line points={drivingRoute} color={palette.wheel} lineWidth={11} depthTest={false}/><Line points={drivingRoute} color={palette.accent} lineWidth={5} depthTest={false}/>{drivingRoute.filter((_,i)=>i%40===0).map((point,i)=><mesh key={`route-${i}`} position={[point[0],point[1]+.4,point[2]]}><coneGeometry args={[.18,.7,8]}/><meshStandardMaterial color={palette.body}/></mesh>)}{drivingRoute.at(-1)&&<RouteFinishFlag point={drivingRoute.at(-1)??[0,0,0]} palette={palette}/>}</>}</><Rover keys={keys} paused={paused} reset={reset} palette={palette} host={host} vehicle={vehicle} telemetry={telemetry} repair={repair}/></Physics></Suspense></Canvas>}</div>
  <DrivingTelemetry telemetry={telemetry} repair={repair} onRepair={()=>setRepair(v=>!v)}/>
  {route&&<div className="driving-route-label">{t(vehicle)} · {label('Route preview · compressed simulation scale','Маршрут · сжатый масштаб симуляции','Marşrut · sıxılmış simulyasiya miqyası')}</div>}
  <div className="driving-actions"><Button variant="map" size="icon" title={t('Recenter')} onClick={()=>{keys.current.clear();setReset(r=>r+1);}}><LocateFixed/></Button><Button variant="map" size="icon" title={paused?t('Resume trip'):t('Pause trip')} onClick={()=>{keys.current.clear();setPaused(v=>!v);}}>{paused?<Play/>:<Pause/>}</Button></div>
