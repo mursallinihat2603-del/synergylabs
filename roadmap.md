@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Provide the complete site source ZIP with local media, excluding secrets and generated output
 - [x] Add rover voice settings with arrival speech, volume and mute
 - [x] Show arrival text in the chosen language after reaching the driving route finish
 - [x] Verify and restore Shift boost with a visible hold control
