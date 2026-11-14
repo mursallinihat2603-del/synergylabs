@@ -1,0 +1,3 @@
+# Rover-driving assets
+- Perseverance rover: NASA/JPL, https://science.nasa.gov/3d-resources/mars-2020-perseverance-rover/. NASA public-domain educational simulation usage; source credited, no endorsement implied. https://www.nasa.gov/nasa-brand-center/images-and-media/
+- Rocky terrain 02 texture: Poly Haven, https://polyhaven.com/a/rocky_terrain_02, CC0: https://polyhaven.com/license. Illustrative terrestrial texture, not measured Mars imagery.
