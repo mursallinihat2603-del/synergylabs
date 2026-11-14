@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Keep planner and map in separate layout tracks by default; only an explicit visitor pin action may overlay the planner, and resize the 2D map when its track changes.
 - Navigation uses pure Mars bearings and manual simulated waypoints, never Earth GPS; device speech synthesis provides local, no-login spoken directions without billed public AI endpoints.
 - Lazy-load the demand-rendered R3F globe behind ClientOnly; 2D and 3D share explorer state and pure Mars coordinate conversions so landmarks, reports and routes stay aligned. The globe wrapper signals data-scene-ready after imagery draws.
 - Keep each main view in a TanStack content route and share the explorer shell; navigation must resolve to real pages.
