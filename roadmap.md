@@ -1,4 +1,7 @@
 # Synergy Labs
+- [ ] Check all existing feature flows and fix confirmed errors
+- [ ] Add a built-in AI assistant after the visitor’s conversation and history preferences are resolved
+- [ ] Add visible recenter controls in both maps and an authentic high-detail NASA panorama viewer
 - [x] Keep the planner outside the map by default; explicit pin/unpin, route calculation, and desktop/mobile 2D/3D verified
 - [x] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints; trip flow verified, device audio requires checking in preview
 - [ ] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
