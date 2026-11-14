@@ -222,6 +222,33 @@ body{font-size:13px}
  .assistant-heading span{font-size:16px}.assistant-composer textarea{font-size:16px}
  .coordinate-inputs input{width:100%}
 }
+.header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.language-trigger{height:36px;padding:0 10px;font-size:11px;gap:6px}
+.language-menu{width:224px;background:var(--panel-bg);padding:12px;box-shadow:var(--panel-shadow)}
+.language-menu>button{width:100%;height:40px;justify-content:space-between;margin-top:4px}
+.direction-banner{display:flex;gap:14px;align-items:center;position:relative;padding:20px 16px;background:var(--navigation);color:var(--navigation-foreground);border-radius:8px}
+.direction-banner>svg{width:40px;height:40px}
+.direction-banner>div{min-width:0;flex:1}
+.direction-banner h3{font-size:20px;line-height:1.3;text-transform:capitalize;overflow-wrap:anywhere;margin:5px 0 4px}
+.direction-banner small{color:var(--navigation-foreground);opacity:.85;display:block;overflow-wrap:anywhere}
+.direction-distance{font-family:var(--font-display);font-size:24px}
+.direction-simulation{position:absolute;right:8px;top:6px;font-size:7px;opacity:.8}
+.next-direction{display:flex;gap:8px;align-items:center;padding:12px 2px;font-size:11px;color:var(--muted-foreground)}
+.next-direction>svg{width:15px}
+.turn-detail{font-size:11px;margin:8px 0 16px}
+.trip-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--border);padding-top:14px}
+.trip-summary>div{min-width:0}.trip-summary b{display:block;font-family:var(--font-display);font-size:26px;color:var(--success)}
+.trip-summary b small{font-size:15px;color:var(--success)}
+.trip-summary span{display:block;font-size:11px;overflow-wrap:anywhere;margin-top:4px;color:var(--muted-foreground)}
+.navigation-actions{gap:6px}.navigation-actions button:last-child{flex:1}
+.planner-panel .panel-heading{flex-wrap:wrap;line-height:1.4}.planner-panel .sample-tag{flex-shrink:0}
+.route-modes button{white-space:normal;min-height:40px;height:auto;line-height:1.3}
+.location-title button[title]{flex-shrink:0}
+.location-title button:has(.saved-icon){order:2}
+.panorama-canvas:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
+:root{--navigation:oklch(.37 .07 166);--navigation-foreground:oklch(.98 .008 160)}
+@media(max-width:1100px){.explorer-nav>a{padding:0 8px;font-size:10px}.app-header{gap:10px}}
+@media(max-width:760px){.language-trigger{padding:0 8px}.header-actions{gap:6px}.explorer-nav>a{font-size:9px;white-space:normal;text-align:center;line-height:1.2}.direction-banner{padding:18px 14px}.direction-banner h3{font-size:19px}}
 /* UI-only motion: map canvases and camera state stay untouched. */
 :root{--motion-fast:160ms;--motion-enter:360ms;--motion-ease:cubic-bezier(.22,1,.36,1)}
 @keyframes ui-reveal{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}

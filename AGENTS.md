@@ -30,6 +30,8 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Localize interface and reference data through the shared language provider; persist language locally after hydration and keep scientific identifiers and user-written content unchanged.
+- Pan the photographic panorama with held physical WASD keys using frame-based viewport offsets; clean up keyboard handlers and never imply geographic travel.
 - Keep interface motion in global CSS, respect reduced-motion preferences, and never animate map containers or alter camera state for decoration.
 - Ground assistant replies in validated explorer context and an isolated server prompt; preserve model and streaming behavior when improving answer quality.
 - Group secondary map settings in accessible popovers and keep primary page navigation in the shared header (bottom navigation on phones) so controls do not compete with terrain or planner space.
