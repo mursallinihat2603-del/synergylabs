@@ -1,14 +1,15 @@
 import {useEffect,useState,type RefObject} from 'react';
-import {Battery,ShieldCheck,Waves,Mountain,Wrench} from 'lucide-react';
+import {Battery,ShieldCheck,Waves,Mountain,Wrench,Flag} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {useLanguage} from '@/components/LanguageProvider';
 import {freshDriveCondition,type DriveCondition} from '@/lib/rover-challenges';
-export type DriveTelemetry={condition:DriveCondition;sand:boolean;slope:number;speed:number};
+export type DriveTelemetry={condition:DriveCondition;sand:boolean;slope:number;speed:number;arrived?:boolean};
 export default function DrivingTelemetry({telemetry,repair,onRepair}:{telemetry:RefObject<DriveTelemetry>;repair:boolean;onRepair:()=>void}) {
  const {language}=useLanguage(),[reading,setReading]=useState<DriveTelemetry>({condition:freshDriveCondition(),sand:false,slope:0,speed:0});
  const label=(en:string,ru:string,az:string)=>language==='ru'?ru:language==='az'?az:en;
  useEffect(()=>{const interval=setInterval(()=>setReading({...telemetry.current,condition:{...telemetry.current.condition}}),250);return()=>clearInterval(interval);},[telemetry]);
  return <section className="driving-telemetry" aria-label={label('Simulated vehicle status','Состояние транспорта · симуляция','Simulyasiya nəqliyyat vəziyyəti')}>
+  {reading.arrived&&<div role="status" className="flex basis-full items-center gap-2 border-b border-border pb-2 text-sm font-semibold text-foreground"><Flag className="text-primary"/>{label('You have arrived at your destination','Вы прибыли в пункт назначения','Təyinat yerinə çatdınız')}</div>}
   <span title={label('Battery','Батарея','Batareya')}><Battery/><b>{Math.ceil(reading.condition.battery)}%</b></span>
   <span title={label('Vehicle integrity','Состояние корпуса','Nəqliyyat bütövlüyü')}><ShieldCheck/><b>{Math.round(reading.condition.integrity)}%</b></span>
   <span><Mountain/>{Math.round(reading.slope)}°</span>
