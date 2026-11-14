@@ -37,6 +37,7 @@ use the editor.
 - Keep driving challenge rules and compressed route projection in pure rover-challenges helpers; render telemetry separately so status updates do not rebuild the Canvas. Terrain and route use the same height sampler.
 - Detect driving arrival against the compressed route endpoint, latch it in telemetry until recenter or route change, and render the message through the shared language context.
 - Keep rover arrival speech opt-in with local volume controls; reuse bundled Azerbaijani arrival audio and matched device voices for other languages, never public billed speech endpoints.
+- Derive rover maneuver cues from the calculated driving polyline and current rover position; localize text and speak once per maneuver through the existing opt-in voice controls.
 - Keep vehicle handling constants in vehicle-physics; apply bounded horizontal impulses to Rapier bodies for momentum and preserve terrain tilt while applying manual yaw for reliable A/D steering with the suspension controller.
 - Use dev-only window.__rover.state(), teleport(x,z), and sim(seconds,boost) to reproduce terrain and battery conditions; data-scene-ready, data-surface, data-battery and data-integrity expose live browser checks without production debug access.
 - Localize interface and reference data through the shared language provider; persist language locally after hydration and keep scientific identifiers and user-written content unchanged.

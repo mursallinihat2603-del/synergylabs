@@ -8,6 +8,7 @@ import VehicleAppearance, {type VehiclePalette} from '@/components/VehicleAppear
 import {vehicleAppearance} from '@/lib/vehicle-appearance';
 import DrivingTelemetry,{type DriveTelemetry} from '@/components/DrivingTelemetry';
 import RouteFinishFlag from '@/components/RouteFinishFlag';
+import {roverGuidance,type DrivingPoint} from '@/lib/rover-guidance';
 import {driveVelocityChange,vehicleMass,steeringRate,VEHICLE_HANDLING} from '@/lib/vehicle-physics';
 import {SAND_ZONES,terrainCondition,mobilityFactor,freshDriveCondition,stepDriveCondition,impactDamage,drivingRoutePoints,poweredDriveInput,reachedRouteFinish} from '@/lib/rover-challenges';
 import terrainAsset from '@/assets/rover-ground.asset.json';
@@ -23,7 +24,7 @@ function Terrain({palette}:{palette:Palette}){
  useEffect(()=>()=>{texture.dispose();geometry.dispose();},[texture,geometry]);
  return <RigidBody type="fixed" colliders="trimesh"><mesh geometry={geometry} receiveShadow><meshStandardMaterial map={texture} color={palette.ground} roughness={1}/></mesh></RigidBody>;
 }
-function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair,finish}:{keys:React.RefObject<Set<string>>;paused:boolean;reset:number;palette:Palette;host:React.RefObject<HTMLDivElement|null>;vehicle:string;telemetry:React.RefObject<DriveTelemetry>;repair:boolean;finish:[number,number,number]|undefined}){
+function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair,finish,route}:{keys:React.RefObject<Set<string>>;paused:boolean;reset:number;palette:Palette;host:React.RefObject<HTMLDivElement|null>;vehicle:string;telemetry:React.RefObject<DriveTelemetry>;repair:boolean;finish:[number,number,number]|undefined;route:readonly DrivingPoint[]}){
  const body=useRef<RapierRigidBody>(null),heading=useRef(0),speed=useRef(0),suspension=useRef(Array(6).fill(.55));
  const {world,rapier}=useRapier(),controller=useRef<ReturnType<typeof world.createVehicleController>|null>(null);
  const setupController=()=>{const b=body.current;if(!b||controller.current)return;const c=world.createVehicleController(b);c.indexUpAxis=1;c.setIndexForwardAxis=2;
@@ -43,6 +44,7 @@ function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair,finish}:
  useFrame(({camera},dt)=>{
   const b=body.current;if(!b)return;const delta=Math.min(dt,.05),input=roverInput(keys.current);if(input.throttle||input.steer)b.wakeUp();
   const location=b.translation(),terrain=terrainCondition(location.x,location.z);
+  telemetry.current.guidance=roverGuidance(route,location);
   if(!paused&&reachedRouteFinish(location,finish))telemetry.current.arrived=true;
   if(!paused)telemetry.current.condition=stepDriveCondition(telemetry.current.condition,delta,{moving:!!input.throttle||!!input.steer,boost:keys.current.has('ShiftLeft')||keys.current.has('ShiftRight'),sand:terrain.sand,slope:terrain.slope,speed:speed.current,repair});
   telemetry.current.sand=terrain.sand;telemetry.current.slope=terrain.slope;telemetry.current.speed=speed.current;
@@ -83,7 +85,7 @@ export default function RoverDriving({onClose,onPhotos,vehicle,route}:{onClose:(
  {rocks.map((r,i)=><RigidBody name="driving-rock" key={i} type="fixed" colliders="hull" position={[r.x,roverTerrainHeight(r.x,r.z)+r.size/2,r.z]}><mesh scale={[r.size,r.size*.65,r.size*.9]} castShadow receiveShadow><dodecahedronGeometry args={[1,0]}/><meshStandardMaterial color={palette.rock} roughness={1}/></mesh></RigidBody>)}
  {SAND_ZONES.map((zone,i)=><mesh key={`sand-${i}`} position={[zone.x,roverTerrainHeight(zone.x,zone.z)+.08,zone.z]} rotation={[-Math.PI/2,0,0]}><circleGeometry args={[zone.radius,48]}/><meshStandardMaterial color={palette.accent} roughness={1} transparent opacity={.35} depthWrite={false}/></mesh>)}
  {Array.from({length:14},(_,i)=><mesh key={i} position={[(i-7)*22,5,-135]} scale={[22,9+(i%3)*6,12]}><coneGeometry args={[1,1,6]}/><meshStandardMaterial color={palette.rock}/></mesh>)}
- <>{drivingRoute.length>1&&<><Line points={drivingRoute} color={palette.wheel} lineWidth={11} depthTest={false}/><Line points={drivingRoute} color={palette.accent} lineWidth={5} depthTest={false}/>{drivingRoute.filter((_,i)=>i%40===0).map((point,i)=><mesh key={`route-${i}`} position={[point[0],point[1]+.4,point[2]]}><coneGeometry args={[.18,.7,8]}/><meshStandardMaterial color={palette.body}/></mesh>)}{drivingRoute.at(-1)&&<RouteFinishFlag point={drivingRoute.at(-1)??[0,0,0]} palette={palette}/>}</>}</><Rover keys={keys} paused={paused} reset={reset} palette={palette} host={host} vehicle={vehicle} telemetry={telemetry} repair={repair} finish={drivingRoute.at(-1)}/></Physics></Suspense></Canvas>}</div>
+ <>{drivingRoute.length>1&&<><Line points={drivingRoute} color={palette.wheel} lineWidth={11} depthTest={false}/><Line points={drivingRoute} color={palette.accent} lineWidth={5} depthTest={false}/>{drivingRoute.filter((_,i)=>i%40===0).map((point,i)=><mesh key={`route-${i}`} position={[point[0],point[1]+.4,point[2]]}><coneGeometry args={[.18,.7,8]}/><meshStandardMaterial color={palette.body}/></mesh>)}{drivingRoute.at(-1)&&<RouteFinishFlag point={drivingRoute.at(-1)??[0,0,0]} palette={palette}/>}</>}</><Rover keys={keys} paused={paused} reset={reset} palette={palette} host={host} vehicle={vehicle} telemetry={telemetry} repair={repair} finish={drivingRoute.at(-1)} route={drivingRoute}/></Physics></Suspense></Canvas>}</div>
  <DrivingTelemetry telemetry={telemetry} repair={repair} onRepair={()=>setRepair(v=>!v)}/>
  {route&&<div className="driving-route-label">{t(vehicle)} · {label('Route preview · compressed simulation scale','Маршрут · сжатый масштаб симуляции','Marşrut · sıxılmış simulyasiya miqyası')}</div>}
  <div className="driving-actions"><Button variant="map" title={label('Hold to boost','Удерживайте для ускорения','Sürətləndirmək üçün saxlayın')} aria-label="Boost" onPointerDown={e=>{e.currentTarget.setPointerCapture(e.pointerId);keys.current.add('ShiftLeft');}} onPointerUp={()=>keys.current.delete('ShiftLeft')} onPointerCancel={()=>keys.current.delete('ShiftLeft')}>⇧</Button><Button variant="map" size="icon" title={t('Recenter')} onClick={()=>{keys.current.clear();setReset(r=>r+1);}}><LocateFixed/></Button><Button variant="map" size="icon" title={paused?t('Resume trip'):t('Pause trip')} onClick={()=>{keys.current.clear();setPaused(v=>!v);}}>{paused?<Play/>:<Pause/>}</Button></div>
