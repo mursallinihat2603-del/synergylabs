@@ -1,5 +1,5 @@
 # Synergy Labs
-- [ ] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints
+- [x] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints; trip flow verified, device audio requires checking in preview
 - [ ] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
 - [x] Separate overlapping preview selectors, search and planner controls
 - [x] Diagnose missing live updates: current public URL serves the older version without 3D; no draft exists
