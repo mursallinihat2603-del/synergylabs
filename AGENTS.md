@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Keep browser installation manifest-only with bundled icons and root head links; do not cache the app or register an app-shell service worker without an offline request.
 - Select device navigation voices by the chosen language and block unmatched fallback; missing voices keep written guidance available.
 - Play bundled generated Azerbaijani maneuver recordings so public navigation speaks without installed voices or billed public AI endpoints; retain dynamic distances as written guidance.
 - Keep rover driving in a lazy-loaded client-only R3F scene with Rapier collisions and Mars gravity; label the terrain as simulated and retain real photographic Street view separately.

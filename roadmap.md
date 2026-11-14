@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Add browser-installed desktop support with app identity and icons, without offline caching
 - [x] Enable rover voice guidance automatically with mute and volume controls retained
 - [x] Add route-based rover turn instructions and matching speech in the chosen language
 - [x] Provide the complete site source ZIP with local media, excluding secrets and generated output
