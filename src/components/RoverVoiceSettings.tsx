@@ -34,7 +34,7 @@ export default function RoverVoiceSettings({arrived}:{arrived:boolean}) {
  useEffect(()=>{if(arrived&&!lastArrival.current)speak();lastArrival.current=arrived;},[arrived,speak]);
  useEffect(()=>{if(!enabled||volume===0)stop();},[enabled,volume,stop]);
  return <Popover><PopoverTrigger asChild><Button variant="map" size="icon" aria-label={label('Voice settings','Настройки голоса','Səs parametrləri')} title={label('Voice settings','Настройки голоса','Səs parametrləri')}>{enabled&&volume>0?<Volume2/>:<VolumeX/>}</Button></PopoverTrigger>
-  <PopoverContent className="z-[90] max-w-[calc(100vw-24px)] space-y-4" align="start">
+  <PopoverContent className="z-[90] max-w-[calc(100vw-24px)] space-y-4" align="start" onEscapeKeyDown={e=>{e.stopPropagation();}}>
    <h2 className="text-base">{label('Voice settings','Настройки голоса','Səs parametrləri')}</h2>
    <div className="flex items-center justify-between gap-3"><label htmlFor="rover-voice-enabled">{label('Spoken arrival','Озвучивать прибытие','Səsli çatma bildirişi')}</label><Switch id="rover-voice-enabled" checked={enabled} onCheckedChange={setEnabled}/></div>
    <div className="flex justify-between text-muted-foreground"><span>{label('Volume','Громкость','Səs səviyyəsi')}</span><span>{volume}%</span></div>
