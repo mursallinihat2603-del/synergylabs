@@ -1,6 +1,6 @@
 # Synergy Labs
-- [ ] Add rover voice settings with arrival speech, volume and mute
-- [ ] Show arrival text in the chosen language after reaching the driving route finish
+- [x] Add rover voice settings with arrival speech, volume and mute
+- [x] Show arrival text in the chosen language after reaching the driving route finish
 - [x] Verify and restore Shift boost with a visible hold control
 - [x] Restore A/D left and right turning, including stationary steering
 - [x] Increase 3D globe rotation and zoom sensitivity
