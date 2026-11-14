@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Ensure Azerbaijani navigation uses Azerbaijani text and voice, without English fallback
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
 - [x] Give route navigation a Google Maps-style maneuver banner and clearer trip controls
