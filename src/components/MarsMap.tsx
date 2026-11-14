@@ -1,3 +1,4 @@
+import {useLanguage} from '@/components/LanguageProvider';
 import {useEffect,useRef,useState} from 'react';
 import type {Map as LeafletMap,LayerGroup,TileLayer} from 'leaflet';
 import {landmarks,hazards,distance,type Place,type Coordinate,modeledElevation} from '@/lib/mars';
@@ -7,6 +8,7 @@ import {Plus,Minus,LocateFixed} from 'lucide-react';
 export type MarsMapProps={layer:string;active:string[];selected:Place;onSelect:(p:Place)=>void;onPoint:(p:Coordinate)=>void;route?:Coordinate[]|undefined;fastRoute?:Coordinate[]|undefined;compare:boolean;swipe:number;reports:{lat:number;lng:number;name:string}[]};
 const products:Record<string,string>={Viking:'Mars_Viking_MDIM21_ClrMosaic_global_232m',MOLA:'Mars_MGS_MOLA_ClrShade_merge_global_463m',THEMIS:'THEMIS_DayIR_ControlledMosaics_100m_v2_oct2018'};
 export default function MarsMap(props:MarsMapProps) {
+ const {t,language}=useLanguage();
  const host=useRef<HTMLDivElement>(null),map=useRef<LeafletMap|null>(null),overlays=useRef<LayerGroup|null>(null),tiles=useRef<TileLayer|null>(null),compareTiles=useRef<TileLayer|null>(null);
  const current=useRef(props);current.current=props;
  const [ready,setReady]=useState(false),[status,setStatus]=useState('Loading NASA imagery…'),[cursor,setCursor]=useState<Coordinate>({lat:-13.9,lng:-59.2}),[scale,setScale]=useState(500);
@@ -54,5 +56,5 @@ export default function MarsMap(props:MarsMapProps) {
  useEffect(()=>{const m=map.current;if(!ready||!m||!routeKey)return;const pts=routeKey.split('|').map(x=>x.split(',').map(Number) as [number,number]);void import('leaflet').then(L=>m.fitBounds(L.latLngBounds(pts),{padding:[90,100],maxZoom:6}));},[routeKey,ready]);
  useEffect(()=>{if(ready)map.current?.panTo([props.selected.lat,props.selected.lng],{animate:true});// eslint-disable-next-line react-hooks/exhaustive-deps
  },[selectedKey,ready]);
- return <><div ref={host} className="mars-map" aria-label="Interactive Mars map"/><div className="map-navigation"><Button variant="map" size="icon" title="Zoom in" onClick={()=>map.current?.zoomIn()}><Plus/></Button><Button variant="map" size="icon" title="Zoom out" onClick={()=>map.current?.zoomOut()}><Minus/></Button><Button variant="map" className="recenter-button" title="Recenter map" onClick={()=>map.current?.setView([props.selected.lat,props.selected.lng],5)}><LocateFixed/><span>Recenter</span></Button></div><div className="map-readout"><span>{Math.abs(cursor.lat).toFixed(2)}° {cursor.lat<0?'S':'N'} &nbsp; {Math.abs(cursor.lng).toFixed(2)}° {cursor.lng<0?'W':'E'}</span><span>{modeledElevation(cursor).toLocaleString()} m · modeled elevation</span><div className="scale-bar">{scale.toLocaleString()} km</div></div>{status&&<div className="tile-status">{status}</div>}</>;
+ return <><div ref={host} className="mars-map" aria-label={t("Interactive Mars map")}/><div className="map-navigation"><Button variant="map" size="icon" title={t("Zoom in")} onClick={()=>map.current?.zoomIn()}><Plus/></Button><Button variant="map" size="icon" title={t("Zoom out")} onClick={()=>map.current?.zoomOut()}><Minus/></Button><Button variant="map" className="recenter-button" title={t("Recenter map")} onClick={()=>map.current?.setView([props.selected.lat,props.selected.lng],5)}><LocateFixed/><span>{t("Recenter")}</span></Button></div><div className="map-readout"><span>{Math.abs(cursor.lat).toFixed(2)}° {cursor.lat<0?'S':'N'} &nbsp; {Math.abs(cursor.lng).toFixed(2)}° {cursor.lng<0?'W':'E'}</span><span>{modeledElevation(cursor).toLocaleString()} {t("m · modeled elevation")}</span><div className="scale-bar">{scale.toLocaleString()} {t("km")}</div></div>{status&&<div className="tile-status">{status}</div>}</>;
 }

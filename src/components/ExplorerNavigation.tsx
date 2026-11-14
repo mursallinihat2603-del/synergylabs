@@ -1,9 +1,11 @@
+import {useLanguage} from '@/components/LanguageProvider';
 import {Link} from '@tanstack/react-router';
 import {Map,Route,BookOpen,Info} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 
 export function ExplorerNavigation({page}:{page:string}) {
- return <nav className="explorer-nav" aria-label="Main navigation">{[
+ const {t,language}=useLanguage();
+ return <nav className="explorer-nav" aria-label={t("Main navigation")}>{[
   {to:'/' as const,name:'Explore',icon:Map,id:'map'},
   {to:'/planner' as const,name:'Route planner',icon:Route,id:'planner'},
   {to:'/library' as const,name:'Field guide',icon:BookOpen,id:'library'},
