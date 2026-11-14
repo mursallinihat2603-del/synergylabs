@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Reduce 3D rotation and zoom sensitivity
 - [ ] Verify and refine phone layouts across map, planner, library, about, panorama, and assistant
 - [ ] Check all existing feature flows and fix confirmed errors
 - [ ] Add a built-in AI assistant after the visitor’s conversation and history preferences are resolved

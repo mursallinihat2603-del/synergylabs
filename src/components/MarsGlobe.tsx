@@ -75,7 +75,7 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
   {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''}/></mesh>)}
   {props.fastRoute&&<Line points={surfaceLine(props.fastRoute,2.025)} color={colors['muted-foreground']??''} lineWidth={2} dashed dashSize={0.06} gapSize={0.04}/>}
   {props.route&&<Line points={surfaceLine(props.route,2.03)} color={(colors['primary']??'')} lineWidth={3}/>}
-  <OrbitControls ref={controls} enablePan={false} minDistance={2.6} maxDistance={28} enableDamping={false}/>
+  <OrbitControls ref={controls} enablePan={false} minDistance={2.6} maxDistance={28} rotateSpeed={0.35} zoomSpeed={0.5} enableDamping={false}/>
  </>;
 }
 
