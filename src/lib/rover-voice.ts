@@ -1,0 +1,1 @@
+export const ROVER_VOICE_DEFAULT_ENABLED=true;
