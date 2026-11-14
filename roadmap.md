@@ -1,7 +1,8 @@
 # Synergy Labs
 - [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
 - [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
-- [ ] Add WASD rover driving — awaiting choice of separate simulated scene versus keeping photographic Street view
+- [ ] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
+- [ ] Name remaining blue and orange markers, including hazard points and reports
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
 - [x] Give route navigation a Google Maps-style maneuver banner and clearer trip controls

@@ -32,6 +32,7 @@ use the editor.
 ## App architecture
 - Select device navigation voices by the chosen language and block unmatched fallback; missing voices keep written guidance available.
 - Play bundled generated Azerbaijani maneuver recordings so public navigation speaks without installed voices or billed public AI endpoints; retain dynamic distances as written guidance.
+- Keep rover driving in a lazy-loaded client-only R3F scene with Rapier collisions and Mars gravity; label the terrain as simulated and retain real photographic Street view separately.
 - Localize interface and reference data through the shared language provider; persist language locally after hydration and keep scientific identifiers and user-written content unchanged.
 - Pan the photographic panorama with held physical WASD keys using frame-based viewport offsets; clean up keyboard handlers and never imply geographic travel.
 - Keep interface motion in global CSS, respect reduced-motion preferences, and never animate map containers or alter camera state for decoration.
