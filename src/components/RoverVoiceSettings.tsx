@@ -9,10 +9,11 @@ import {navigationVoice,speechLocales,unavailableVoice} from '@/lib/navigation-v
 import {azerbaijaniDirectionAudio} from '@/lib/azerbaijani-navigation-audio';
 import {maneuverPhrase} from '@/lib/navigation';
 import type {RoverGuidance} from '@/lib/rover-guidance';
+import {ROVER_VOICE_DEFAULT_ENABLED} from '@/lib/rover-voice';
 
 export default function RoverVoiceSettings({arrived,guidance}:{arrived:boolean;guidance?:RoverGuidance|undefined}) {
  const {language,t}=useLanguage();
- const [enabled,setEnabled]=useState(false),[volume,setVolume]=useState(80),[available,setAvailable]=useState(false),[error,setError]=useState('');
+ const [enabled,setEnabled]=useState(ROVER_VOICE_DEFAULT_ENABLED),[volume,setVolume]=useState(80),[available,setAvailable]=useState(false),[error,setError]=useState('');
  const audio=useRef<HTMLAudioElement|null>(null),lastCue=useRef('');
  const label=(en:string,ru:string,az:string)=>language==='ru'?ru:language==='az'?az:en;
  const stop=useCallback(()=>{audio.current?.pause();audio.current=null;window.speechSynthesis?.cancel();},[]);
@@ -35,7 +36,7 @@ export default function RoverVoiceSettings({arrived,guidance}:{arrived:boolean;g
   update();window.speechSynthesis?.addEventListener('voiceschanged',update);
   return()=>{stop();window.speechSynthesis?.removeEventListener('voiceschanged',update);};
  },[language,stop]);
- const cue=arrived?'arrived':guidance?.key??'';
+ const cue=arrived?`${language}-arrived`:guidance?`${language}-${guidance.key}`:'';
  useEffect(()=>{if(!cue){lastCue.current='';return;}if(enabled&&available&&cue!==lastCue.current){speak();lastCue.current=cue;}},[cue,enabled,available,speak]);
  useEffect(()=>{if(!enabled||volume===0)stop();},[enabled,volume,stop]);
  return <Popover><PopoverTrigger asChild><Button variant="map" size="icon" aria-label={label('Voice settings','Настройки голоса','Səs parametrləri')} title={label('Voice settings','Настройки голоса','Səs parametrləri')}>{enabled&&volume>0?<Volume2/>:<VolumeX/>}</Button></PopoverTrigger>

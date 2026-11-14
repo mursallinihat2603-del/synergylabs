@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Enable rover voice guidance automatically with mute and volume controls retained
 - [ ] Add route-based rover turn instructions and matching optional speech in the chosen language
 - [x] Provide the complete site source ZIP with local media, excluding secrets and generated output
 - [x] Add rover voice settings with arrival speech, volume and mute
