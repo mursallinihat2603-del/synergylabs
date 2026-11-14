@@ -20,3 +20,4 @@
 - [x] Verify desktop, mobile, routing rules and main interactions- [ ] Fix 2D/3D view resetting on zoom/rotate after selecting Jezero/Perseverance and calculating a route
 - [ ] Let visitors delete assistant messages
 - [ ] Ad campaign: choose channel (paused)
+- [ ] Stop the AI assistant button overlapping the temperature panel
