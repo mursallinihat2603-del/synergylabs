@@ -1,0 +1,4 @@
+export function roverInput(keys:ReadonlySet<string>){return {throttle:Number(keys.has('KeyW'))-Number(keys.has('KeyS')),steer:Number(keys.has('KeyA'))-Number(keys.has('KeyD'))};}
+export const ROVER_PHYSICS={gravity:3.71,suspensionLength:.55,stiffness:30,compression:4.4,relaxation:4.8,maxTravel:.35,boost:1.8};
+export function roverTargetSpeed(vehicle:string,keys:ReadonlySet<string>){const base=vehicle==='Heavy Rover'?2:vehicle==='Walking EVA'?1:3.3;return base*(keys.has('ShiftLeft')||keys.has('ShiftRight')?ROVER_PHYSICS.boost:1);}
+export function roverTerrainHeight(x:number,z:number){return .15*Math.sin(x*.22)*Math.cos(z*.19)+.09*Math.sin(z*.6)+.05*Math.cos(x*.9+z*.3);}

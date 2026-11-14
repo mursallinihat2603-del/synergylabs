@@ -1,7 +1,7 @@
 import {useLanguage} from '@/components/LanguageProvider';
 import {useEffect,useRef,useState} from 'react';
 import type OpenSeadragon from 'openseadragon';
-import {ArrowLeft,Plus,Minus,LocateFixed,Maximize,ExternalLink} from 'lucide-react';
+import {ArrowLeft,Plus,Minus,LocateFixed,Maximize,ExternalLink,Gamepad2} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {isPanoramaKey,panoramaDirection} from '@/lib/panorama-controls';
 import section0 from '@/assets/glen-detail-0.asset.json';
@@ -17,8 +17,8 @@ import section9 from '@/assets/glen-detail-9.asset.json';
 import preview from '@/assets/glen-torridon-preview.asset.json';
 const sections=[section0,section1,section2,section3,section4,section5,section6,section7,section8,section9];
 
-export default function RoverPanorama({onClose}:{onClose:()=>void}){
- const {t}=useLanguage();
+export default function RoverPanorama({onClose,onDrive}:{onClose:()=>void;onDrive:()=>void}){
+ const {t,language}=useLanguage();
  const host=useRef<HTMLDivElement>(null),viewer=useRef<OpenSeadragon.Viewer|null>(null),shell=useRef<HTMLDivElement>(null);
  const [status,setStatus]=useState('Loading rover panorama…');
  const [failed,setFailed]=useState(false);
@@ -59,7 +59,7 @@ export default function RoverPanorama({onClose}:{onClose:()=>void}){
  },[onClose]);
  const zoom=(factor:number)=>{viewer.current?.viewport.zoomBy(factor);viewer.current?.viewport.applyConstraints();};
  return <div className="rover-panorama" ref={shell} role="dialog" aria-modal="true" aria-label={t("Mars street view")}>
-  <header className="panorama-header"><Button variant="map" onClick={onClose}><ArrowLeft/>{t("Back to map")}</Button><div><h1>Glen Torridon</h1><span>{t("Gale Crater · Curiosity Mastcam · November–December 2019")}</span></div></header>
+  <header className="panorama-header"><Button variant="map" onClick={onClose}><ArrowLeft/>{t("Back to map")}</Button><div><h1>Glen Torridon</h1><span>{t("Gale Crater · Curiosity Mastcam · November–December 2019")}</span></div><Button variant="map" onClick={onDrive}><Gamepad2/>{language==='az'?'Rover sürmə':language==='ru'?'Вождение марсохода':'Drive rover'}</Button></header>
   <div className="panorama-canvas" ref={host} tabIndex={0} aria-keyshortcuts="W A S D" aria-label={t("Detailed NASA rover panorama")}/>
   <div className="panorama-tools"><Button variant="map" size="icon" title={t("Zoom in")} onClick={()=>zoom(1.5)}><Plus/></Button><Button variant="map" size="icon" title={t("Zoom out")} onClick={()=>zoom(1/1.5)}><Minus/></Button><Button variant="map" title={t("Recenter panorama")} onClick={()=>viewer.current?.viewport.goHome()}><LocateFixed/>{t("Recenter")}</Button><Button variant="map" size="icon" title={t("Fullscreen")} onClick={()=>{if(document.fullscreenElement)void document.exitFullscreen();else void shell.current?.requestFullscreen().catch(()=>setStatus('Fullscreen is unavailable on this device.'));}}><Maximize/></Button></div>
   <footer className="panorama-footer"><div><span className={failed?'error-text':''} role="status">{t(status)}</span><small>{t("NASA/JPL-Caltech/MSSS · Photographed rover location only; no continuous street coverage.")}</small></div><Button variant="ghost" asChild><a href="https://science.nasa.gov/photojournal/curiositys-18-billion-pixel-panorama/" target="_blank" rel="noreferrer">{t("NASA source")}<ExternalLink/></a></Button></footer>

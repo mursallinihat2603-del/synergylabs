@@ -1,7 +1,17 @@
 # Synergy Labs
 - [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
 - [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
-- [ ] Add WASD rover driving — awaiting choice of separate simulated scene versus keeping photographic Street view
+- [x] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
+- [x] Open rover driving directly from Street view so WASD controls the rover, not photographic panning
+- [x] Name remaining blue and orange markers, including hazard points and reports
+- [ ] Separate hidden Utopia-area landmark labels
+- [ ] Improve rover realism with a detailed model, textured uneven terrain and suspension
+- [ ] Carry the planner vehicle selection into rover driving
+- [ ] Give each vehicle a distinct researched appearance; current NASA model is shared
+- [ ] Add hold-Shift speed boost
+- [x] Increase 3D rotation and zoom sensitivity
+- [ ] Show the calculated route within the illustrative rover-driving terrain
+- [ ] Finish Jezero–Perseverance verification during active navigation; close-up rendering was corrected but full flow remains unverified
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
 - [x] Give route navigation a Google Maps-style maneuver banner and clearer trip controls

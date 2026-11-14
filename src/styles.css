@@ -24,6 +24,11 @@
 
 .rover-panorama,.panorama-loading{position:fixed;inset:0;z-index:80;background:var(--background)}
 .rover-panorama{display:flex;flex-direction:column}
+.rover-driving{position:fixed;inset:0;z-index:80;background:var(--background);display:flex;flex-direction:column}
+.driving-route-label{position:absolute;bottom:24px;right:20px;background:var(--panel-bg);padding:10px;max-width:45%;font-size:10px;color:var(--foreground)}
+:root{--rover-ground:oklch(.55 .08 48);--rover-rock:oklch(.41 .045 48);--rover-sky:oklch(.72 .025 63)}
+.driving-header{display:flex;gap:20px;align-items:center;padding:16px 24px;border-bottom:1px solid var(--border);background:var(--background);z-index:2}.driving-header>div{flex:1;min-width:0}.driving-header h1{font-size:22px}.driving-header small{display:block;margin-top:5px}.driving-scene{flex:1;min-height:0}.driving-actions{position:absolute;top:110px;right:20px;display:flex;gap:6px}.driving-pad{position:absolute;bottom:24px;left:24px;display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,52px);gap:6px;touch-action:none}.driving-pad button{height:52px;display:flex;gap:5px;touch-action:none}.driving-pad button:first-child{grid-column:2}.driving-pad button:nth-child(2){grid-column:1;grid-row:2}.driving-pad button:nth-child(3){grid-column:2;grid-row:2}.driving-pad button:nth-child(4){grid-column:3;grid-row:2}.driving-pad kbd{font-size:10px}.panorama-header>button:last-child{margin-left:auto}
+@media(max-width:700px){.driving-header{padding:12px;gap:8px;flex-wrap:wrap}.driving-header h1{font-size:18px}.driving-header small{font-size:9px}.driving-header button{font-size:10px;padding:8px}.driving-pad{left:12px;bottom:12px}.driving-actions{top:120px;right:12px}.panorama-header{flex-wrap:wrap}}
 .panorama-loading{display:grid;place-content:center;gap:16px;color:var(--cyan)}
 .panorama-header{display:flex;align-items:center;gap:24px;padding:18px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
 .panorama-header h1{font-size:24px}.panorama-header span{font-size:11px;color:var(--muted-foreground)}
