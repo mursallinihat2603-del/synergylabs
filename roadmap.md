@@ -6,8 +6,8 @@
 - [x] Name remaining blue and orange markers, including hazard points and reports
 - [ ] Separate hidden Utopia-area landmark labels
 - [ ] Improve rover realism with a detailed model, textured uneven terrain and suspension
-- [ ] Carry the planner vehicle selection into rover driving
-- [ ] Give each vehicle a distinct researched appearance; current NASA model is shared
+- [x] Carry the planner vehicle selection into rover driving
+- [x] Give each selected vehicle a distinct illustrative appearance: walking astronaut, enclosed pressurized rover, heavy cargo rover
 - [ ] Add hold-Shift speed boost
 - [x] Increase 3D rotation and zoom sensitivity
 - [ ] Show the calculated route within the illustrative rover-driving terrain
