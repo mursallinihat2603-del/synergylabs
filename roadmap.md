@@ -21,3 +21,4 @@
 - [x] Let visitors delete assistant messages
 - [ ] Ad campaign: choose channel (paused)
 - [x] Stop the AI assistant button overlapping the temperature panel
+- [x] Google Maps–style spoken turns (slight/sharp/U-turn, 'In X km, turn left') and auto drive
