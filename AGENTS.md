@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Ground assistant replies in validated explorer context and an isolated server prompt; preserve model and streaming behavior when improving answer quality.
 - Group secondary map settings in accessible popovers and keep primary page navigation in the shared header (bottom navigation on phones) so controls do not compete with terrain or planner space.
 - The assistant keeps one account-scoped UIMessage transcript with owner-only RLS; map access stays public, and AI requests validate the bearer token before reading or saving history.
 - Compose assistant chat with AI Elements and stream Lovable AI Responses server-side; preserve full message history and explicit cancellation.
