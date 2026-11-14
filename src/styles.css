@@ -112,3 +112,6 @@
 .assistant-message{position:relative}
 .assistant-delete{opacity:.55;width:1.75rem;height:1.75rem;align-self:flex-start}
 .assistant-delete:hover,.assistant-delete:focus-visible{opacity:1}
+/* keep Sol clock clear of the fixed assistant button */
+.synergy-shell .sol-clock{right:150px}
+@media(max-width:700px){.synergy-shell .sol-clock{right:56px}}
