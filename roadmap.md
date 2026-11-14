@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Restore A/D left and right turning, including stationary steering
 - [ ] Increase 3D globe rotation and zoom sensitivity
 - [ ] Improve vehicle momentum, braking, steering, mass and collision response without bypassing suspension
 - [ ] Stop driving and steering immediately when the battery reaches 0%
