@@ -1,0 +1,1 @@
+export function roverInput(keys:ReadonlySet<string>){return {throttle:Number(keys.has('KeyW'))-Number(keys.has('KeyS')),steer:Number(keys.has('KeyA'))-Number(keys.has('KeyD'))};}
