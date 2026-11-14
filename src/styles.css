@@ -72,3 +72,25 @@
  .map-workspace:has(.planner-panel) .sol-clock{bottom:8px;right:12px}
  .map-workspace.planner-pinned .planner-panel{top:206px;left:12px;right:56px;bottom:auto;width:auto;max-height:calc(100% - 218px);padding:14px}
 }
+.map-navigation{overflow:visible;border:0;box-shadow:none;gap:4px;align-items:flex-end}
+.map-navigation button{border:1px solid var(--border);border-radius:5px}
+.map-navigation .recenter-button{width:auto;height:34px;padding:0 10px;gap:6px;font-size:10px}
+.street-trigger{position:absolute;top:76px;left:25px;z-index:6;height:32px;font-size:10px}
+.map-workspace:has(.planner-panel) .street-trigger{top:72px;left:18px}
+.rover-panorama,.panorama-loading{position:fixed;inset:0;z-index:80;background:var(--background)}
+.rover-panorama{display:flex;flex-direction:column}
+.panorama-loading{display:grid;place-content:center;gap:16px;color:var(--cyan)}
+.panorama-header{display:flex;align-items:center;gap:24px;padding:18px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
+.panorama-header h1{font-size:24px}.panorama-header span{font-size:11px;color:var(--muted-foreground)}
+.panorama-canvas{flex:1;min-height:0;width:100%;position:relative;touch-action:none}
+.panorama-tools{position:absolute;right:24px;top:110px;z-index:2;display:flex;gap:5px}
+.panorama-footer{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 24px;border-top:1px solid var(--border);flex-shrink:0}
+.panorama-footer span{font-size:11px;color:var(--cyan)}.panorama-footer small{display:block;margin-top:6px;font-size:10px}
+@media(max-width:700px){
+ .street-trigger,.map-workspace:has(.planner-panel) .street-trigger{top:73px;left:auto;right:12px;height:30px;font-size:9px}
+ .map-workspace:has(.planner-panel) .street-trigger{top:65px}
+ .panorama-header{padding:12px;gap:12px;align-items:flex-start}.panorama-header h1{font-size:18px}.panorama-header span{font-size:9px;display:block}.panorama-header button{font-size:10px;padding:0 10px}
+ .panorama-tools{right:12px;top:110px}.panorama-tools button{height:34px}
+ .panorama-footer{padding:12px;align-items:flex-start;flex-direction:column;gap:4px}.panorama-footer small{font-size:9px}.panorama-footer a{font-size:10px;padding:0;height:28px}
+ .map-navigation .recenter-button{font-size:8px;padding:0 6px}
+}
