@@ -1,7 +1,8 @@
 import {describe,it,expect} from 'vitest';
-import {freshDriveCondition,mobilityFactor,stepDriveCondition,impactDamage,drivingRoutePoints,terrainCondition} from '@/lib/rover-challenges';
+import {freshDriveCondition,mobilityFactor,stepDriveCondition,impactDamage,drivingRoutePoints,terrainCondition,poweredDriveInput} from '@/lib/rover-challenges';
 import {roverTerrainHeight} from '@/lib/rover-driving';
 describe('simulated terrain challenges',()=>{
+ it('0% battery disables forward, reverse and steering input',()=>{for(const throttle of [-1,1])for(const steer of [-1,1])expect(poweredDriveInput(0,{throttle,steer})).toEqual({throttle:0,steer:0});expect(mobilityFactor({...freshDriveCondition(),battery:0},false,0)).toBe(0);expect(poweredDriveInput(1,{throttle:1,steer:1})).toEqual({throttle:1,steer:1});});
  it('soft sand reduces traction',()=>expect(mobilityFactor(freshDriveCondition(),true,0)).toBeLessThan(mobilityFactor(freshDriveCondition(),false,0)));
  it('steeper slopes reduce speed',()=>expect(mobilityFactor(freshDriveCondition(),false,25)).toBeLessThan(mobilityFactor(freshDriveCondition(),false,0)));
  it('boost consumes more battery',()=>{const input={moving:true,boost:false,sand:false,slope:0,speed:2,repair:false};expect(stepDriveCondition(freshDriveCondition(),10,{...input,boost:true}).battery).toBeLessThan(stepDriveCondition(freshDriveCondition(),10,input).battery);});

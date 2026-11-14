@@ -8,7 +8,7 @@ import VehicleAppearance, {type VehiclePalette} from '@/components/VehicleAppear
 import {vehicleAppearance} from '@/lib/vehicle-appearance';
 import DrivingTelemetry,{type DriveTelemetry} from '@/components/DrivingTelemetry';
 import RouteFinishFlag from '@/components/RouteFinishFlag';
-import {SAND_ZONES,terrainCondition,mobilityFactor,freshDriveCondition,stepDriveCondition,impactDamage,drivingRoutePoints} from '@/lib/rover-challenges';
+import {SAND_ZONES,terrainCondition,mobilityFactor,freshDriveCondition,stepDriveCondition,impactDamage,drivingRoutePoints,poweredDriveInput} from '@/lib/rover-challenges';
 import terrainAsset from '@/assets/rover-ground.asset.json';
 import {ArrowLeft,ArrowUp,ArrowDown,RotateCcw,RotateCw,LocateFixed,Pause,Play} from 'lucide-react';
 import {Button} from '@/components/ui/button';
@@ -41,11 +41,16 @@ function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair}:{keys:R
  useFrame(({camera},dt)=>{
   const b=body.current;if(!b)return;const delta=Math.min(dt,.05),input=roverInput(keys.current);if(input.throttle||input.steer)b.wakeUp();
   const location=b.translation(),terrain=terrainCondition(location.x,location.z);
-  if(!paused)telemetry.current.condition=stepDriveCondition(telemetry.current.condition,delta,{moving:!!input.throttle,boost:keys.current.has('ShiftLeft')||keys.current.has('ShiftRight'),sand:terrain.sand,slope:terrain.slope,speed:speed.current,repair});
+  if(!paused)telemetry.current.condition=stepDriveCondition(telemetry.current.condition,delta,{moving:!!input.throttle||!!input.steer,boost:keys.current.has('ShiftLeft')||keys.current.has('ShiftRight'),sand:terrain.sand,slope:terrain.slope,speed:speed.current,repair});
   telemetry.current.sand=terrain.sand;telemetry.current.slope=terrain.slope;telemetry.current.speed=speed.current;
   host.current?.setAttribute('data-battery',telemetry.current.condition.battery.toFixed(2));host.current?.setAttribute('data-integrity',telemetry.current.condition.integrity.toFixed(2));host.current?.setAttribute('data-surface',terrain.sand?'sand':'firm');
-  const target=paused?0:input.throttle*roverTargetSpeed(vehicle,keys.current)*mobilityFactor(telemetry.current.condition,terrain.sand,terrain.slope);speed.current+=(target-speed.current)*(1-Math.exp(-delta*3));
-  if(!paused){const r=b.rotation(),q=new Quaternion(r.x,r.y,r.z,r.w);q.multiply(new Quaternion().setFromAxisAngle(new Vector3(0,1,0),input.steer*delta*1.1));b.setRotation(q,true);const direction=new Vector3(0,0,-1).applyQuaternion(q);b.setLinvel({x:direction.x*speed.current,y:b.linvel().y,z:direction.z*speed.current},true);}
+  const powered=poweredDriveInput(telemetry.current.condition.battery,input);
+  const target=paused?0:powered.throttle*roverTargetSpeed(vehicle,keys.current)*mobilityFactor(telemetry.current.condition,terrain.sand,terrain.slope);speed.current=telemetry.current.condition.battery<=0?0:speed.current+(target-speed.current)*(1-Math.exp(-delta*3));
+  const shutdown=telemetry.current.condition.battery<=0;
+  b.setEnabledTranslations(!shutdown,true,!shutdown,true);b.setEnabledRotations(!shutdown,!shutdown,!shutdown,true);
+  if(shutdown){b.setLinvel({x:0,y:b.linvel().y,z:0},true);b.setAngvel({x:0,y:0,z:0},true);}
+  telemetry.current.speed=speed.current;
+  if(!paused&&!shutdown){const r=b.rotation(),q=new Quaternion(r.x,r.y,r.z,r.w);q.multiply(new Quaternion().setFromAxisAngle(new Vector3(0,1,0),powered.steer*delta*1.1));b.setRotation(q,true);const direction=new Vector3(0,0,-1).applyQuaternion(q);b.setLinvel({x:direction.x*speed.current,y:b.linvel().y,z:direction.z*speed.current},true);}
   const position=b.translation(),rotation=b.rotation();const forward=new Vector3(0,0,-1).applyQuaternion(rotation);heading.current=Math.atan2(-forward.x,-forward.z);
   const offset=new Vector3(0,3.3,6).applyQuaternion(rotation);camera.position.lerp(new Vector3(position.x,position.y,position.z).add(offset),1-Math.exp(-delta*5));const look=new Vector3(position.x,position.y+.65,position.z).addScaledVector(forward,2);camera.lookAt(look);
   host.current?.setAttribute('data-rover-position',`${position.x.toFixed(3)},${position.z.toFixed(3)}`);host.current?.setAttribute('data-rover-heading',heading.current.toFixed(3));host.current?.setAttribute('data-scene-ready','true');

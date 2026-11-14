@@ -5,6 +5,9 @@ export const SAND_ZONES = [{x:0,z:-17,radius:6},{x:16,z:-51,radius:10},{x:-22,z:
 export const CHALLENGE_RULES = {sandGrip:.38,steepSlope:18,batteryDrain:.16,boostDrain:.45,recharge:.35,repair:3};
 export type DriveCondition = {battery:number;integrity:number;travel:number};
 export const freshDriveCondition = ():DriveCondition => ({battery:100,integrity:100,travel:0});
+export function poweredDriveInput(battery:number,input:{throttle:number;steer:number}) {
+  return battery>0?input:{throttle:0,steer:0};
+}
 export function terrainCondition(x:number,z:number) {
   const dx=(roverTerrainHeight(x+.4,z)-roverTerrainHeight(x-.4,z))/.8;
   const dz=(roverTerrainHeight(x,z+.4)-roverTerrainHeight(x,z-.4))/.8;
