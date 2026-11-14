@@ -30,7 +30,7 @@ function Chat({userId,initial,selectedName,explorerContext}:{userId:string;initi
  useEffect(()=>{if(!busy)input.current?.focus();},[busy]);
  return <><Conversation className="assistant-conversation"><ConversationContent>
  {!messages.length&&<div className="assistant-empty"><img src={logo.url} alt=""/><h2>{t("Mars field assistant")}</h2></div>}
- {messages.length>0&&!busy&&<Button variant="ghost" size="sm" className="assistant-clear" onClick={()=>{if(confirm('Delete the whole conversation?'))remove('all');}}><Trash2/>{t("Clear conversation")}</Button>}
+ {messages.length>0&&!busy&&<Button variant="ghost" size="sm" className="assistant-clear" onClick={()=>{if(confirm(t('Delete the whole conversation?')))remove('all');}}><Trash2/>{t("Clear conversation")}</Button>}
  {messages.map(message=><Message key={message.id} from={message.role} className="assistant-message"><MessageContent>{message.parts.map((part,i)=>part.type==='text'?<MessageResponse key={i}>{part.text}</MessageResponse>:part.type==='reasoning'?<Reasoning key={i} defaultOpen={false} isStreaming={part.state==='streaming'}><ReasoningTrigger/><ReasoningContent>{part.text}</ReasoningContent></Reasoning>:null)}</MessageContent>{!busy&&<Button variant="ghost" size="icon" className="assistant-delete" title={t("Delete message")} aria-label={t("Delete message")} onClick={()=>remove([message.id])}><Trash2/></Button>}</Message>)}
  {busy&&<Shimmer>{t("Thinking…")}</Shimmer>}
  </ConversationContent><ConversationScrollButton/></Conversation>
