@@ -250,7 +250,7 @@ body{font-size:13px}
 .panorama-canvas:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
 :root{--navigation:oklch(.37 .07 166);--navigation-foreground:oklch(.98 .008 160)}
 @media(max-width:1100px){.explorer-nav>a{padding:0 8px;font-size:10px}.app-header{gap:10px}}
-@media(max-width:760px){.language-trigger{padding:0 8px}.header-actions{gap:6px}.explorer-nav>a{font-size:9px;white-space:normal;text-align:center;line-height:1.2}.direction-banner{padding:18px 14px}.direction-banner h3{font-size:19px}}
+@media(max-width:760px){.language-trigger{padding:0 8px}.header-actions{gap:6px}.explorer-nav>a{font-size:9px;white-space:normal;text-align:center;line-height:1.2}.direction-banner{padding:18px 14px}.direction-banner h3{font-size:19px}.map-workspace:has(.planner-panel) .street-trigger{top:auto;bottom:16px;right:12px}}
 /* UI-only motion: map canvases and camera state stay untouched. */
 :root{--motion-fast:160ms;--motion-enter:360ms;--motion-ease:cubic-bezier(.22,1,.36,1)}
 @keyframes ui-reveal{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
