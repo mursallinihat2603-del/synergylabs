@@ -22,6 +22,9 @@ export default function MarsMap(props:MarsMapProps) {
    m.on('click',e=>current.current.onPoint({lat:e.latlng.lat,lng:e.latlng.lng}));
    const updateScale=()=>{const c=m.getCenter(),p=m.latLngToContainerPoint(c);const b=m.containerPointToLatLng([p.x+100,p.y]);setScale(Math.round(distance(c,b)));};
    m.on('zoomend',updateScale);updateScale();
+   const resize=new ResizeObserver(()=>{m.invalidateSize({pan:false});updateScale();});
+   resize.observe(host.current);
+   m.on('unload',()=>resize.disconnect());
    setReady(true);
   });return()=>{alive=false;map.current?.remove();map.current=null;};
  },[]);
