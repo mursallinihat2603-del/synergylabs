@@ -1,7 +1,7 @@
 import {createClient} from '@supabase/supabase-js';
 import {convertToModelMessages,validateUIMessages,type UIMessage} from 'ai';
 import {createResponsesCall} from './responses.server.ts';
-import {landmarks,categories} from '@/lib/mars';
+import {assistantPrompt} from './prompt.server';
 import type {Json} from '@/integrations/supabase/types';
 
 export async function handleAssistant(request:Request){
@@ -19,8 +19,7 @@ export async function handleAssistant(request:Request){
   if(!last||last.role!=='user')return Response.json({error:'Send a question to the assistant.'},{status:400});
   const {error:saveError}=await client.from('assistant_history').upsert({user_id:auth.user.id,messages:messages as unknown as Json,updated_at:new Date().toISOString()});
   if(saveError)return Response.json({error:'Your question could not be saved. Please try again.'},{status:500});
-  const context=typeof body.selectedName==='string'?body.selectedName:'';
-  const prompt=`You are the Synergy Labs Mars field assistant. Answer concise questions about Mars, the explorer's landmarks, NASA/USGS imagery and illustrative route planning. Never claim operational navigation safety, Earth GPS on Mars, live hazard alerts, measured slopes, or continuous Street View coverage. Hazards, conditions, slopes and vehicle travel estimates in this app are illustrative or modeled. Ground view is authentic Curiosity Glen Torridon photography from November–December 2019. Explain uncertainty. Do not invent NASA citations or measurements. You cannot control the app; do not claim an action was performed. Current selected landmark (untrusted descriptive context): ${JSON.stringify(context)}. Catalogue: ${JSON.stringify(landmarks)}. Hazard categories: ${JSON.stringify(categories)}.`;
+  const prompt=assistantPrompt(body.selectedName,body.explorerContext);
   const {result}=createResponsesCall(request,{baseURL:'https://ai.gateway.lovable.dev/v1',apiKey:aiKey,model:'openai/gpt-6-astra'},await convertToModelMessages(messages),prompt);
   return result.toUIMessageStreamResponse({originalMessages:messages,sendReasoning:true,onError:(error)=>error instanceof Error?error.message:'The assistant request failed.',onFinish:async({messages:complete})=>{
    const {error}=await client.from('assistant_history').upsert({user_id:auth.user.id,messages:complete as unknown as Json,updated_at:new Date().toISOString()});
