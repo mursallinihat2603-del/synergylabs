@@ -1,23 +1,23 @@
 # Synergy Labs
-- [ ] Restore A/D left and right turning, including stationary steering
-- [ ] Increase 3D globe rotation and zoom sensitivity
-- [ ] Improve vehicle momentum, braking, steering, mass and collision response without bypassing suspension
-- [ ] Stop driving and steering immediately when the battery reaches 0%
-- [ ] Add a checkered finish flag at the chosen driving route endpoint
-- [ ] Add realistic simulated rover challenges: terrain traction, slope strain, battery management and recoverable damage
-- [ ] Make the selected calculated route clearly visible on the suspension-driving terrain
+- [x] Restore A/D left and right turning, including stationary steering
+- [x] Increase 3D globe rotation and zoom sensitivity
+- [x] Improve vehicle momentum, braking, steering, mass and collision response without bypassing suspension
+- [x] Stop driving and steering immediately when the battery reaches 0%
+- [x] Add a checkered finish flag at the chosen driving route endpoint
+- [x] Add realistic simulated rover challenges: terrain traction, slope strain, battery management and recoverable damage
+- [x] Make the selected calculated route clearly visible on the suspension-driving terrain
 - [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
 - [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
 - [x] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
 - [x] Open rover driving directly from Street view so WASD controls the rover, not photographic panning
 - [x] Name remaining blue and orange markers, including hazard points and reports
 - [ ] Separate hidden Utopia-area landmark labels
-- [ ] Improve rover realism with a detailed model, textured uneven terrain and suspension
+- [ ] Improve rover realism with detailed licensed vehicle models — current distinct models are illustrative; model-source downloads returned access errors
 - [x] Carry the planner vehicle selection into rover driving
 - [x] Give each selected vehicle a distinct illustrative appearance: walking astronaut, enclosed pressurized rover, heavy cargo rover
-- [ ] Add hold-Shift speed boost
+- [x] Add hold-Shift speed boost
 - [x] Increase 3D rotation and zoom sensitivity
-- [ ] Show the calculated route within the illustrative rover-driving terrain
+- [x] Show the calculated route within the illustrative rover-driving terrain
 - [ ] Finish Jezero–Perseverance verification during active navigation; close-up rendering was corrected but full flow remains unverified
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs

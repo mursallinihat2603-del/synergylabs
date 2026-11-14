@@ -5,4 +5,4 @@ export function driveVelocityChange(current:number,target:number,seconds:number)
  const limit=(target===0?VEHICLE_HANDLING.braking:VEHICLE_HANDLING.acceleration)*Math.min(seconds,.05);
  return Math.max(-limit,Math.min(limit,target-current));
 }
-export function steeringRate(steer:number,speed:number){return steer*VEHICLE_HANDLING.turnRate*Math.min(1,Math.abs(speed)/.8)*Math.sign(speed);}
+export function steeringRate(steer:number,speed:number){return steer*VEHICLE_HANDLING.turnRate*Math.max(.65,Math.min(1,Math.abs(speed)/.8))*(speed<-.2?-1:1);}
