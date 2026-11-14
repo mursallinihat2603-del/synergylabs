@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Improve assistant answer quality and Mars context; verify a real signed-in conversation where available
 - [ ] Simplify the full interface with grouped map tools, clearer navigation and expandable landmark details; verify desktop and mobile flows
 - [x] Reduce 3D rotation and zoom sensitivity
 - [x] Verify and refine phone layouts across map, planner, library, about, panorama, and assistant sign-in
