@@ -1,0 +1,3 @@
+import {createFileRoute} from '@tanstack/react-router';
+import {SynergyApp} from '@/components/SynergyApp';
+export const Route=createFileRoute('/planner')({head:()=>({meta:[{title:'Mars Route Planner | Synergy Labs'},{name:'description',content:'Compare illustrative safest and fastest routes across Mars with vehicle estimates and modeled terrain profiles.'},{property:'og:title',content:'Mars Route Planner | Synergy Labs'},{property:'og:description',content:'Plan an exploratory route across the Red Planet.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:()=> <SynergyApp page="planner"/>});

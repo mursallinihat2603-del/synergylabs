@@ -81,14 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Synergy Labs" },
+      { name: "description", content: "Mars surface exploration with NASA and USGS mapping." },
+      { name: "author", content: "Synergy Labs" },
+      { property: "og:title", content: "Synergy Labs" },
+      { property: "og:description", content: "Explore the Red Planet." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {

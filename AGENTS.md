@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## App architecture
+- Keep each main view in a TanStack content route and share the explorer shell; navigation must resolve to real pages.
+- Dynamically import Leaflet after hydration and override EPSG4326 distance with the Mars radius; Earth Mercator and Earth-distance calculations are not appropriate.
+- Keep updateable landmark and hazard data in src/data JSON; scientific imagery comes from verified NASA tiles with a USGS mosaic fallback.
+- Use the maintained javascript-astar engine for illustrative grid routing, and label modeled slopes separately from measured scientific data.
+- Keep personal field notes in browser storage because the requested product explicitly has local-only favorites and reports without login.

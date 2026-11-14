@@ -1,0 +1,3 @@
+import {createFileRoute} from '@tanstack/react-router';
+import {SynergyApp} from '@/components/SynergyApp';
+export const Route=createFileRoute('/about')({head:()=>({meta:[{title:'Data Sources & Credits | Synergy Labs'},{name:'description',content:'NASA Mars Trek and USGS imagery credits, data limitations, and modeled hazard guidance for Synergy Labs.'},{property:'og:title',content:'Data Sources | Synergy Labs'},{property:'og:description',content:'The science, imagery and limitations behind the Mars explorer.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:()=> <SynergyApp page="about"/>});
