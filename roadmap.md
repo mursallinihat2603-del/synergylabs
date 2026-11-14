@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Provide audible Azerbaijani directions without relying on installed device voices
 - [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
 - [ ] Add WASD rover driving — awaiting choice of separate simulated scene versus keeping photographic Street view
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
