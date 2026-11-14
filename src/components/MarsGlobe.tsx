@@ -53,12 +53,13 @@ function CompareSurface({texture,swipe}:{texture:CanvasTexture;swipe:number}){
 }
 
 function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{props:MarsMapProps;texture:CanvasTexture;compareTexture:CanvasTexture|null;colors:Record<string,string>;controls:React.RefObject<ComponentRef<typeof OrbitControls>|null>;ready:()=>void;onCursor:(p:Coordinate)=>void}){
- const {camera,size,invalidate}=useThree();const signaled=useRef(false);
+ const {camera,size,invalidate}=useThree();const signaled=useRef(false);const viewKey=`${props.selected.id}:${props.selected.lat}:${props.selected.lng}|${props.route?.map(p=>`${p.lat.toFixed(3)},${p.lng.toFixed(3)}`).join(';')??''}|${size.width>size.height}`;
  useFrame(()=>{if(!signaled.current){signaled.current=true;requestAnimationFrame(ready);}});
  useEffect(()=>{
   const points=props.route?.length?props.route:[props.selected];const direction=new Vector3();points.forEach(p=>direction.add(new Vector3(...globePosition(p,1))));if(direction.length()<0.01)direction.set(...globePosition(props.selected,1));
   const distance=Math.max(7.4,5.3/(size.width/size.height));camera.position.copy(direction.normalize().multiplyScalar(distance));camera.lookAt(0,0,0);controls.current?.target.set(0,0,0);controls.current?.update();invalidate();
- },[props.selected,props.route,camera,size.width,size.height,controls,invalidate]);
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[viewKey,camera,controls,invalidate]);
  const selectHazard=(h:typeof hazards[number],p:Coordinate)=>props.onSelect({id:h.properties.id,name:h.properties.name,...p,elevation:modeledElevation(p),size:'Illustrative zone',type:'Hazard · '+h.properties.source,rating:h.properties.rating,description:h.properties.source});
  return <>
   <ambientLight intensity={1.1}/><directionalLight position={[5,4,6]} intensity={2}/>
