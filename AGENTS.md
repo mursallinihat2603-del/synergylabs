@@ -33,6 +33,10 @@ use the editor.
 - Select device navigation voices by the chosen language and block unmatched fallback; missing voices keep written guidance available.
 - Play bundled generated Azerbaijani maneuver recordings so public navigation speaks without installed voices or billed public AI endpoints; retain dynamic distances as written guidance.
 - Keep rover driving in a lazy-loaded client-only R3F scene with Rapier collisions and Mars gravity; label the terrain as simulated and retain real photographic Street view separately.
+- Render planner vehicle choices through VehicleAppearance with distinct illustrative astronaut, enclosed-cabin and cargo silhouettes; shared driving physics and suspension remain independent of appearance.
+- Keep driving challenge rules and compressed route projection in pure rover-challenges helpers; render telemetry separately so status updates do not rebuild the Canvas. Terrain and route use the same height sampler.
+- Keep vehicle handling constants in vehicle-physics; apply bounded horizontal impulses to Rapier bodies for momentum and preserve terrain tilt while applying manual yaw for reliable A/D steering with the suspension controller.
+- Use dev-only window.__rover.state(), teleport(x,z), and sim(seconds,boost) to reproduce terrain and battery conditions; data-scene-ready, data-surface, data-battery and data-integrity expose live browser checks without production debug access.
 - Localize interface and reference data through the shared language provider; persist language locally after hydration and keep scientific identifiers and user-written content unchanged.
 - Pan the photographic panorama with held physical WASD keys using frame-based viewport offsets; clean up keyboard handlers and never imply geographic travel.
 - Keep interface motion in global CSS, respect reduced-motion preferences, and never animate map containers or alter camera state for decoration.

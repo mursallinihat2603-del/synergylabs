@@ -9,6 +9,7 @@ import {landmarks,hazards,modeledElevation,type Coordinate} from '@/lib/mars';
 import {globePosition,globeCoordinate,surfaceLine} from '@/lib/mars-globe';
 import type {MarsMapProps} from './MarsMap';
 import backup from '@/assets/mars-backup.asset.json';
+import {GLOBE_SENSITIVITY} from '@/lib/vehicle-physics';
 
 const products:Record<string,string>={Viking:'Mars_Viking_MDIM21_ClrMosaic_global_232m',MOLA:'Mars_MGS_MOLA_ClrShade_merge_global_463m',THEMIS:'THEMIS_DayIR_ControlledMosaics_100m_v2_oct2018'};
 function loadImage(url:string):Promise<HTMLImageElement>{return new Promise((resolve,reject)=>{const image=new Image();image.crossOrigin='anonymous';image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('Imagery unavailable'));image.src=url;});}
@@ -79,7 +80,7 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
   {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''}/></mesh>)}
   {props.fastRoute&&<Line points={surfaceLine(props.fastRoute,2.025)} color={colors['muted-foreground']??''} lineWidth={2} dashed dashSize={0.06} gapSize={0.04}/>}
   {props.route&&<Line points={surfaceLine(props.route,shortRoute?2.0015:2.03)} color={(colors['primary']??'')} lineWidth={5}/>}
-  <OrbitControls ref={controls} enablePan={false} minDistance={shortRoute?2.02:2.6} maxDistance={28} rotateSpeed={shortRoute?.04:.6} zoomSpeed={0.8} enableDamping={false}/>
+  <OrbitControls ref={controls} enablePan={false} minDistance={shortRoute?2.02:2.6} maxDistance={28} rotateSpeed={shortRoute?GLOBE_SENSITIVITY.closeRotation:GLOBE_SENSITIVITY.rotation} zoomSpeed={GLOBE_SENSITIVITY.zoom} enableDamping={false}/>
  </>;
 }
 
