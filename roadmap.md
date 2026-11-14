@@ -2,6 +2,7 @@
 - [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
 - [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
 - [ ] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
+- [ ] Open rover driving directly from Street view so WASD controls the rover, not photographic panning
 - [ ] Name remaining blue and orange markers, including hazard points and reports
 - [ ] Make Jezero–Perseverance calculated route clearly visible in both 2D and 3D
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
