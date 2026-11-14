@@ -44,7 +44,7 @@ export function routeBetween(start: Coordinate,end: Coordinate,safest=true) {
  const ix=(p:Coordinate):[number,number]=>[Math.max(0,Math.min(n-1,Math.round((p.lng-minLng)/(maxLng-minLng)*(n-1)))),Math.max(0,Math.min(n-1,Math.round((p.lat-minLat)/(maxLat-minLat)*(n-1))))];
  const [sx,sy]=ix(start),[ex,ey]=ix(end); const sr=grid[sx],er=grid[ex];if(!sr||!er)return null;sr[sy]=1;er[ey]=1;
  const graph=new Graph(grid,{diagonal:true}); const a=graph.grid[sx]?.[sy],b=graph.grid[ex]?.[ey];if(!a||!b)return null;const path=astar.search(graph,a,b);
- if(!path.length&&distance(start,end)>1) return null;
+ if(!path.length&&a!==b&&distance(start,end)>1) return null;
  const points=[start,...path.map(p=>coord(p.x,p.y)),end];
  const crossed=[...new Set(points.flatMap(p=>localHazards(p).map(h=>h.properties.id)))];
  const km=points.slice(1).reduce((sum,p,i)=>sum+distance(points[i]??start,p),0);
