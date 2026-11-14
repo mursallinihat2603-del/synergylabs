@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Lazy-load the demand-rendered R3F globe behind ClientOnly; 2D and 3D share explorer state and pure Mars coordinate conversions so landmarks, reports and routes stay aligned. The globe wrapper signals data-scene-ready after imagery draws.
 - Keep each main view in a TanStack content route and share the explorer shell; navigation must resolve to real pages.
 - Dynamically import Leaflet after hydration and override EPSG4326 distance with the Mars radius; Earth Mercator and Earth-distance calculations are not appropriate.
 - Keep updateable landmark and hazard data in src/data JSON; scientific imagery comes from verified NASA tiles with a USGS mosaic fallback.
