@@ -4,6 +4,7 @@
 - [x] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
 - [x] Open rover driving directly from Street view so WASD controls the rover, not photographic panning
 - [x] Name remaining blue and orange markers, including hazard points and reports
+- [ ] Separate hidden Utopia-area landmark labels
 - [x] Make Jezero–Perseverance calculated route clearly visible in both 2D and 3D
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
