@@ -16,6 +16,11 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        map: "bg-card/90 text-foreground border border-border shadow-sm hover:bg-accent",
+        glow: "bg-accent text-foreground border border-ring shadow hover:bg-secondary",
+        layer: "bg-transparent text-muted-foreground justify-start hover:bg-accent px-2",
+        layerActive: "bg-secondary text-foreground justify-start border border-border px-2",
+        nav: "bg-transparent text-muted-foreground rounded-none hover:text-foreground",
       },
       size: {
         default: "h-9 px-4 py-2",

@@ -1,6 +1,7 @@
 import places from '@/data/landmarks.json';
 import hazardData from '@/data/hazards.json';
-import { Graph, astar } from 'javascript-astar';
+import pathfinding from 'javascript-astar';
+const { Graph, astar } = pathfinding;
 export type Place = (typeof places)[number];
 export type Coordinate = { lat: number; lng: number };
 export const landmarks = places;
@@ -23,7 +24,10 @@ export function inside(point: Coordinate, coordinates: number[][]) {
  let yes=false;
  for(let i=0,j=coordinates.length-1;i<coordinates.length;j=i++) {
   const a=coordinates[i],b=coordinates[j];
-  if((a[1]>point.lat)!==(b[1]>point.lat)&&point.lng<(b[0]-a[0])*(point.lat-a[1])/(b[1]-a[1])+a[0]) yes=!yes;
+  if(!a||!b)continue;
+  const [ax,ay]=a,[bx,by]=b;
+  if(ax===undefined||ay===undefined||bx===undefined||by===undefined)continue;
+  if((ay>point.lat)!==(by>point.lat)&&point.lng<(bx-ax)*(point.lat-ay)/(by-ay)+ax) yes=!yes;
  }
  return yes;
 }
@@ -37,13 +41,13 @@ export function routeBetween(start: Coordinate,end: Coordinate,safest=true) {
   if(safest&&hs.some(h=>h.properties.slope>25)) return 0;
   return 1+hs.length*(safest?18:0.5);
  }));
- const ix=(p:Coordinate)=>[Math.max(0,Math.min(n-1,Math.round((p.lng-minLng)/(maxLng-minLng)*(n-1)))),Math.max(0,Math.min(n-1,Math.round((p.lat-minLat)/(maxLat-minLat)*(n-1))))];
- const [sx,sy]=ix(start),[ex,ey]=ix(end); grid[sx][sy]=1;grid[ex][ey]=1;
- const graph=new Graph(grid,{diagonal:true}); const path=astar.search(graph,graph.grid[sx][sy],graph.grid[ex][ey]);
- if(!path.length&&distance(start,end)>1) return null;
+ const ix=(p:Coordinate):[number,number]=>[Math.max(0,Math.min(n-1,Math.round((p.lng-minLng)/(maxLng-minLng)*(n-1)))),Math.max(0,Math.min(n-1,Math.round((p.lat-minLat)/(maxLat-minLat)*(n-1))))];
+ const [sx,sy]=ix(start),[ex,ey]=ix(end); const sr=grid[sx],er=grid[ex];if(!sr||!er)return null;sr[sy]=1;er[ey]=1;
+ const graph=new Graph(grid,{diagonal:true}); const a=graph.grid[sx]?.[sy],b=graph.grid[ex]?.[ey];if(!a||!b)return null;const path=astar.search(graph,a,b);
+ if(!path.length&&a!==b&&distance(start,end)>1) return null;
  const points=[start,...path.map(p=>coord(p.x,p.y)),end];
  const crossed=[...new Set(points.flatMap(p=>localHazards(p).map(h=>h.properties.id)))];
- const km=points.slice(1).reduce((sum,p,i)=>sum+distance(points[i],p),0);
+ const km=points.slice(1).reduce((sum,p,i)=>sum+distance(points[i]??start,p),0);
  const maxSlope=Math.max(3,...hazards.filter(h=>crossed.includes(h.properties.id)).map(h=>h.properties.slope));
  return {points,km,crossed,maxSlope,score:Math.max(0,100-crossed.length*12-maxSlope),profile:points.filter((_,i)=>i%Math.max(1,Math.floor(points.length/25))===0).map(p=>modeledElevation(p))};
 }
