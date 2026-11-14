@@ -1,8 +1,10 @@
 # Synergy Labs
-- [ ] Separate overlapping preview selectors, search and planner controls
-- [ ] Diagnose why publishing reports up to date while preview changes are missing from the live site
-- [ ] Add shared 2D/3D choice and a textured interactive Mars globe with landmarks, hazards, reports and routes
-- [ ] Verify 3D selection, routing, layers and desktop/mobile display
+- [ ] Add voice navigation — waiting for choice of spoken guidance, voice commands, or both
+- [ ] Verify the published URL includes the latest 3D update — requires publishing the saved changes
+- [x] Separate overlapping preview selectors, search and planner controls
+- [x] Diagnose missing live updates: current public URL serves the older version without 3D; no draft exists
+- [x] Add shared 2D/3D choice and a textured interactive Mars globe with landmarks, hazards, reports and routes
+- [x] Verify 3D selection, routing, layers and desktop/mobile display
 - [x] Match uploaded design: cyan header and navigation, terrain-first map, floating controls, bottom details
 - [x] Interactive equirectangular Mars map, layers, landmarks and hazard overlays
 - [x] Route planner with illustrative hazard-weighted routing and profile
