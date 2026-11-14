@@ -8,6 +8,7 @@ import VehicleAppearance, {type VehiclePalette} from '@/components/VehicleAppear
 import {vehicleAppearance} from '@/lib/vehicle-appearance';
 import DrivingTelemetry,{type DriveTelemetry} from '@/components/DrivingTelemetry';
 import RouteFinishFlag from '@/components/RouteFinishFlag';
+import {driveVelocityChange,vehicleMass,steeringRate,VEHICLE_HANDLING} from '@/lib/vehicle-physics';
 import {SAND_ZONES,terrainCondition,mobilityFactor,freshDriveCondition,stepDriveCondition,impactDamage,drivingRoutePoints,poweredDriveInput} from '@/lib/rover-challenges';
 import terrainAsset from '@/assets/rover-ground.asset.json';
 import {ArrowLeft,ArrowUp,ArrowDown,RotateCcw,RotateCw,LocateFixed,Pause,Play} from 'lucide-react';
@@ -50,12 +51,21 @@ function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair}:{keys:R
   b.setEnabledTranslations(!shutdown,true,!shutdown,true);b.setEnabledRotations(!shutdown,!shutdown,!shutdown,true);
   if(shutdown){b.setLinvel({x:0,y:b.linvel().y,z:0},true);b.setAngvel({x:0,y:0,z:0},true);}
   telemetry.current.speed=speed.current;
-  if(!paused&&!shutdown){const r=b.rotation(),q=new Quaternion(r.x,r.y,r.z,r.w);q.multiply(new Quaternion().setFromAxisAngle(new Vector3(0,1,0),powered.steer*delta*1.1));b.setRotation(q,true);const direction=new Vector3(0,0,-1).applyQuaternion(q);b.setLinvel({x:direction.x*speed.current,y:b.linvel().y,z:direction.z*speed.current},true);}
+  if(!paused&&!shutdown){
+   const direction=new Vector3(0,0,-1).applyQuaternion(b.rotation());direction.y=0;direction.normalize();
+   const velocity=b.linvel(),longitudinal=velocity.x*direction.x+velocity.z*direction.z;
+   const mass=b.mass(),dv=driveVelocityChange(longitudinal,target,delta),lateralX=velocity.x-direction.x*longitudinal,lateralZ=velocity.z-direction.z*longitudinal;
+   const grip=1-Math.exp(-VEHICLE_HANDLING.grip*(terrain.sand?.38:1)*delta);
+   b.applyImpulse({x:mass*(direction.x*dv-lateralX*grip),y:0,z:mass*(direction.z*dv-lateralZ*grip)},true);
+   const angular=b.angvel(),turn=steeringRate(powered.steer,longitudinal);
+   b.setAngvel({x:angular.x,y:angular.y+(turn-angular.y)*(1-Math.exp(-delta*4)),z:angular.z},true);
+   speed.current=longitudinal;telemetry.current.speed=longitudinal;
+  }
   const position=b.translation(),rotation=b.rotation();const forward=new Vector3(0,0,-1).applyQuaternion(rotation);heading.current=Math.atan2(-forward.x,-forward.z);
   const offset=new Vector3(0,3.3,6).applyQuaternion(rotation);camera.position.lerp(new Vector3(position.x,position.y,position.z).add(offset),1-Math.exp(-delta*5));const look=new Vector3(position.x,position.y+.65,position.z).addScaledVector(forward,2);camera.lookAt(look);
   host.current?.setAttribute('data-rover-position',`${position.x.toFixed(3)},${position.z.toFixed(3)}`);host.current?.setAttribute('data-rover-heading',heading.current.toFixed(3));host.current?.setAttribute('data-scene-ready','true');
  });
- return <RigidBody ref={body} colliders={false} position={[0,1.1,0]} linearDamping={.2} angularDamping={2} friction={1} onCollisionEnter={({other})=>{if(other.rigidBodyObject?.name==='driving-rock')telemetry.current.condition=impactDamage(telemetry.current.condition,speed.current);}}><CuboidCollider args={[.8,.3,1.2]} position={[0,.2,0]} mass={vehicle==='Heavy Rover'?450:300}/><VehicleAppearance vehicle={vehicle} palette={palette} suspension={suspension} speed={speed}/></RigidBody>;
+ return <RigidBody ref={body} colliders={false} position={[0,1.1,0]} linearDamping={.2} angularDamping={2} friction={1} ccd onCollisionEnter={({other})=>{if(other.rigidBodyObject?.name==='driving-rock')telemetry.current.condition=impactDamage(telemetry.current.condition,speed.current);}}><CuboidCollider args={vehicle==='Walking EVA'?[.3,.75,.3]:[.8,.3,1.2]} position={[0,vehicle==='Walking EVA'?.3:.2,0]} mass={vehicleMass(vehicle)}/><VehicleAppearance vehicle={vehicle} palette={palette} suspension={suspension} speed={speed}/></RigidBody>;
 }
 export default function RoverDriving({onClose,onPhotos,vehicle,route}:{onClose:()=>void;onPhotos:()=>void;vehicle:string;route?:Coordinate[]|undefined}){
  const {language,t}=useLanguage(),keys=useRef(new Set<string>()),host=useRef<HTMLDivElement>(null);const [paused,setPaused]=useState(false),[reset,setReset]=useState(0),[palette,setPalette]=useState<Palette|null>(null);
