@@ -1,4 +1,5 @@
 # Synergy Labs
+- [ ] Stop driving and steering immediately when the battery reaches 0%
 - [ ] Add a checkered finish flag at the chosen driving route endpoint
 - [ ] Add realistic simulated rover challenges: terrain traction, slope strain, battery management and recoverable damage
 - [ ] Make the selected calculated route clearly visible on the suspension-driving terrain
