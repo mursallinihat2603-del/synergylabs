@@ -1,4 +1,11 @@
 # Synergy Labs
+- [x] Provide audible Azerbaijani maneuver recordings without relying on installed device voices; playback, repeat and mute verified
+- [x] Ensure Azerbaijani navigation uses Azerbaijani text and matching device voice, without English fallback; missing voice is explained
+- [ ] Add WASD rover driving — awaiting choice of separate simulated scene versus keeping photographic Street view
+- [x] Add English, Russian and Azerbaijani language switching across explorer pages
+- [x] Add WASD panorama panning, without implying travel beyond NASA photographs
+- [x] Give route navigation a Google Maps-style maneuver banner and clearer trip controls
+- [x] Show names for every landmark dot in both 2D and 3D, separating landing-site labels below dots
 - [x] Add restrained panel entrances, staggered field-guide items and animated control feedback with reduced-motion support
 - [x] Improve assistant answer quality and Mars context; verified signed-in route answers, follow-ups and history restoration
 - [x] Simplify the full interface with grouped map tools, clearer navigation and expandable landmark details; desktop and mobile flows verified
