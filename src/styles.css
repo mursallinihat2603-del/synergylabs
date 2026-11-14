@@ -7,6 +7,8 @@
 @import "@fontsource/space-grotesk/600.css";
 @source "../src";
 @custom-variant dark (&:is(.dark *));
+.brand-logo{width:36px;height:44px;object-fit:contain;flex-shrink:0}
+@media(max-width:700px){.brand-logo{width:27px;height:34px}}
 @theme inline {
  --font-sans:'Manrope Variable',sans-serif;--font-display:'Space Grotesk',sans-serif;
  --color-background:var(--background);--color-foreground:var(--foreground);--color-card:var(--card);--color-card-foreground:var(--foreground);--color-popover:var(--card);--color-popover-foreground:var(--foreground);--color-primary:var(--primary);--color-primary-foreground:var(--primary-foreground);--color-secondary:var(--secondary);--color-secondary-foreground:var(--foreground);--color-muted:var(--secondary);--color-muted-foreground:var(--muted-foreground);--color-accent:var(--accent);--color-accent-foreground:var(--foreground);--color-destructive:var(--destructive);--color-border:var(--border);--color-input:var(--border);--color-ring:var(--cyan);--radius-md:6px;--radius-lg:8px;
