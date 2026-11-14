@@ -1,4 +1,6 @@
 # Synergy Labs
+- [ ] Add English, Russian and Azerbaijani language switching across explorer pages
+- [ ] Add WASD panorama panning, without implying travel beyond NASA photographs
 - [x] Add restrained panel entrances, staggered field-guide items and animated control feedback with reduced-motion support
 - [x] Improve assistant answer quality and Mars context; verified signed-in route answers, follow-ups and history restoration
 - [x] Simplify the full interface with grouped map tools, clearer navigation and expandable landmark details; desktop and mobile flows verified
