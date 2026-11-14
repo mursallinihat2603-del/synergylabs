@@ -45,3 +45,30 @@
 
 .navigation-start{margin-top:16px}.navigation-start>button{width:100%}.navigation-start>small{display:block;margin-top:7px}.navigation-guide{border-top:1px solid var(--border);margin-top:18px;padding-top:16px}.navigation-instruction{display:flex;gap:10px;align-items:center}.navigation-instruction>svg{color:var(--cyan);width:26px}.navigation-instruction h3{font-size:15px;line-height:1.5}.navigation-metrics{display:flex;justify-content:space-between;gap:8px;margin-top:15px}.navigation-metrics b,.navigation-metrics small{display:block}.navigation-metrics b{font-size:14px}.navigation-guide progress{width:100%;height:5px;accent-color:var(--cyan);margin:14px 0}.navigation-actions{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}.navigation-actions button{height:32px;font-size:9px}.navigation-actions button[data-size=icon]{width:32px}.navigation-guide>small{font-size:8px}.view-3d .map-readout{pointer-events:none}
 @media(max-width:700px){.view-3d:not(:has(.planner-panel)) .map-readout{bottom:330px;max-width:130px;font-size:6px}.navigation-instruction h3{font-size:14px}}
+
+/* Planner docking reserves real map space; pinning is explicitly opt-in. */
+.map-stage{position:absolute;inset:0;min-width:0;min-height:0;overflow:hidden}
+.map-workspace.planner-docked{display:grid;grid-template-columns:300px minmax(0,1fr)}
+.map-workspace.planner-docked .map-stage{position:relative;inset:auto;grid-column:2;grid-row:1}
+.map-workspace.planner-docked .planner-panel{position:relative;inset:auto;grid-column:1;grid-row:1;width:auto;min-width:0;height:100%;max-height:none;border:0;border-right:1px solid var(--border);border-radius:0;background:var(--background);box-shadow:none;backdrop-filter:none;padding:18px}
+.map-workspace:has(.planner-panel) .view-choice{left:18px;top:18px}
+.map-workspace:has(.planner-panel) .search-wrap{left:175px;right:210px;top:18px;width:auto;transform:none}
+.map-workspace:has(.planner-panel) .mars-globe{inset:0}
+.map-workspace:has(.planner-panel) .sol-clock{bottom:18px}
+.map-workspace:has(.planner-panel) .map-readout{top:auto;bottom:70px;right:18px}
+.planner-panel .panel-heading>button{width:28px;height:28px;flex-shrink:0;margin-left:0}
+.map-workspace.planner-pinned .planner-panel{top:90px;left:18px;bottom:auto;right:auto;width:290px;min-width:0;height:auto;max-height:calc(100% - 108px);border:1px solid var(--border);border-radius:8px;background:var(--panel-bg);box-shadow:var(--panel-shadow);backdrop-filter:blur(14px)}
+@media(max-width:900px){
+ .map-workspace.planner-docked{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) 40%}
+ .map-workspace.planner-docked .map-stage{grid-column:1;grid-row:1}
+ .map-workspace.planner-docked .planner-panel{grid-column:1;grid-row:2;border-right:0;border-top:1px solid var(--border);padding:14px 18px}
+}
+@media(max-width:700px){
+ .map-workspace:has(.planner-panel) .view-choice{top:65px;left:12px}
+ .map-workspace:has(.planner-panel) .search-wrap{top:12px;left:12px;right:12px;height:43px}
+ .map-workspace:has(.planner-panel) .layer-panel{top:106px}
+ .map-workspace:has(.planner-panel) .map-navigation{top:206px}
+ .map-workspace:has(.planner-panel) .map-readout{bottom:52px;font-size:7px}
+ .map-workspace:has(.planner-panel) .sol-clock{bottom:8px;right:12px}
+ .map-workspace.planner-pinned .planner-panel{top:206px;left:12px;right:56px;bottom:auto;width:auto;max-height:calc(100% - 218px);padding:14px}
+}
