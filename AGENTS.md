@@ -57,3 +57,5 @@ use the editor.
 - Keep updateable landmark and hazard data in src/data JSON; scientific imagery comes from verified NASA tiles with a USGS mosaic fallback.
 - Use the maintained javascript-astar engine for illustrative grid routing, and label modeled slopes separately from measured scientific data.
 - Keep personal field notes in browser storage because the requested product explicitly has local-only favorites and reports without login.
+
+- Derive sitemap URLs from explicit route staticData decisions; keep canonicals on content leaves and brand identity structured data on the homepage so public discovery stays aligned with routing.

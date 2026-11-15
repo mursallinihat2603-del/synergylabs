@@ -1,4 +1,6 @@
 # Synergy Labs
+- [x] Improve branded search signals, self-referencing page URLs and router-derived sitemap
+- [ ] Publish search-discovery changes and connect Google Search Console — owner publication and Google authorization required
 - [x] Add browser-installed desktop support with app identity and icons, without offline caching
 - [x] Enable rover voice guidance automatically with mute and volume controls retained
 - [x] Add route-based rover turn instructions and matching speech in the chosen language
