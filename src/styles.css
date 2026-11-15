@@ -99,6 +99,15 @@ body{font-size:13px}
 .map-settings .panel-heading>button{width:28px;height:28px}
 .map-settings .layer-option{width:100%;height:42px;font-size:12px;gap:10px;margin-top:4px}
 .map-settings .layer-option>svg{margin-left:auto}
+.map-settings .layer-option{height:auto;min-height:58px;white-space:normal;text-align:left}
+.layer-option-copy{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:4px}
+.source-badge,.map-settings .hazard-row .source-badge{display:inline-flex;flex:none;width:fit-content;max-width:100%;align-items:center;border:1px solid var(--border);border-radius:3px;background:var(--secondary);color:var(--muted-foreground);font-size:9px;line-height:1.4;padding:2px 5px;white-space:normal;vertical-align:middle}
+.source-scientific,.source-historic,.map-settings .hazard-row .source-historic{color:var(--cyan)}
+.source-illustrative,.map-settings .hazard-row .source-illustrative{color:var(--primary)}
+.map-settings .hazard-row .source-badge{margin-top:4px}
+.hazard-zone-label .source-badge,.feature-label .source-badge{display:flex;margin:4px auto 0}
+.nearby-hazards .source-badge{margin-left:5px}
+.library-grid article>.source-badge{margin-left:8px}
 .map-settings .compare-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:14px;padding-top:14px}
 .map-settings input[type=range]{width:100%;padding:0;margin-top:15px;accent-color:var(--cyan)}
 .map-settings input[type=checkbox]{accent-color:var(--cyan)}

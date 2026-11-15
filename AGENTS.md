@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Share provenance classification across layer controls, 2D/3D hazard labels and field-guide badges; distinguish approximate historical NASA events from illustrative polygons so overlays never imply measured hazard products.
 - Keep browser installation manifest-only with bundled icons and root head links; do not cache the app or register an app-shell service worker without an offline request.
 - Select device navigation voices by the chosen language and block unmatched fallback; missing voices keep written guidance available.
 - Play bundled generated Azerbaijani maneuver recordings so public navigation speaks without installed voices or billed public AI endpoints; retain dynamic distances as written guidance.
