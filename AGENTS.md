@@ -30,6 +30,7 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## App architecture
+- Keep named rock specimens in a source-credited catalog with photo-informed replica outlines; inspection pauses driving, and a deduplicated device-local collection never implies NASA rocks were physically removed or relocated.
 - Keep drawn-line measurements in a pure Mars-distance sampling helper; current elevation tiles are color imagery, so profiles and slopes use explicitly modeled elevations rather than decoding colors as MOLA heights.
 - Share provenance classification across layer controls, 2D/3D hazard labels and field-guide badges; distinguish approximate historical NASA events from illustrative polygons so overlays never imply measured hazard products.
 - Keep browser installation manifest-only with bundled icons and root head links; do not cache the app or register an app-shell service worker without an offline request.

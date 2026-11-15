@@ -1,5 +1,5 @@
 # Synergy Labs
-- [ ] Add inspectable, collectible rover-driving rocks with documented Mars names and reference-based forms; distinguish replicas from NASA photography
+- [x] Add inspectable, collectible rover-driving rocks with documented Mars names and reference-based forms; distinguish replicas from NASA photography
 - [ ] Add shareable landmark and route links plus a one-page homework export
 - [ ] Upgrade planning with verified numeric MOLA elevations, selectable rover slope limits and exceedance warnings
 - [ ] Overlay source-credited actual Curiosity and Perseverance traverses
