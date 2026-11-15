@@ -12,7 +12,14 @@ function rockGeometry(id:RockId) {
   ? [[-.9,0,-.5],[.85,0,-.55],[1,0,.45],[-.8,0,.65],[-.1,.55,-.1],[.65,.22,.45]]
   : [[0,0,-1],[.7,0,.6],[.25,0,.8],[-.6,0,.65],[-.2,.25,-.45],[.3,.18,.5]];
  const faces = [0,1,4,1,2,5,1,5,4,2,3,5,3,4,5,3,0,4,0,3,2,0,2,1];
- const positions=faces.flatMap(i=>vertices[i]??[0,0,0]);
+ type Point = number[];
+ const midpoint=(a:Point,b:Point)=>a.map((v,i)=>(v+(b[i]??0))/2);
+ const positions:number[]=[];
+ const subdivide=(a:Point,b:Point,c:Point,depth:number)=>{
+  if(depth){const ab=midpoint(a,b),bc=midpoint(b,c),ca=midpoint(c,a);subdivide(a,ab,ca,depth-1);subdivide(ab,b,bc,depth-1);subdivide(ca,bc,c,depth-1);subdivide(ab,bc,ca,depth-1);return;}
+  for(const point of [a,b,c]){const [x=0,y=0,z=0]=point;const relief=y>0?.018*Math.sin(x*57+z*41)*Math.cos(y*39+z*23):0;positions.push(x,y+relief,z);}
+ };
+ for(let i=0;i<faces.length;i+=3){const a=vertices[faces[i]??0],b=vertices[faces[i+1]??0],c=vertices[faces[i+2]??0];if(a&&b&&c)subdivide(a,b,c,4);}
  const geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(positions,3));geometry.computeVertexNormals();return geometry;
 }
 export default function MarsRockReplica({id,palette}:{id:RockId;palette:VehiclePalette}) {
