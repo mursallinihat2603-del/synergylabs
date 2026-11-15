@@ -31,5 +31,5 @@ export function measureLine(points: Coordinate[], elevation = modeledElevation) 
    km+=run;profile.push({km,elevation:h});
   }
  }
- return {km,ascent,descent,elevationChange:(profile.at(-1)?.elevation??0)-profile[0].elevation,steepestSlope,profile};
+ return {km,ascent,descent,elevationChange:(profile.at(-1)?.elevation??0)-(profile[0]?.elevation??0),steepestSlope,profile};
 }

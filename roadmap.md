@@ -1,5 +1,5 @@
 # Synergy Labs
-- [ ] Add drawn-line distance, modeled elevation change and sampled steepest slope with localized controls in both map views
+- [x] Add drawn-line distance, modeled elevation change and sampled steepest slope with localized controls in both map views
 - [x] Add localized provenance badges to every map layer and hazard zone in 2D, 3D and the field guide
 - [x] Improve branded search signals, self-referencing page URLs and router-derived sitemap
 - [ ] Publish search-discovery changes and connect Google Search Console — owner publication and Google authorization required
