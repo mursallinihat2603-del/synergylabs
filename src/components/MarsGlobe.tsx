@@ -69,7 +69,7 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
   const distance=shortRoute?2.08:Math.max(7.4,5.3/(size.width/size.height));camera.position.copy(direction.normalize().multiplyScalar(distance));camera.lookAt(0,0,0);controls.current?.target.set(0,0,0);controls.current?.update();invalidate();
  // eslint-disable-next-line react-hooks/exhaustive-deps
  },[viewKey,camera,controls,invalidate]);
- const selectHazard=(h:typeof hazards[number],p:Coordinate)=>props.onSelect({id:h.properties.id,name:h.properties.name,...p,elevation:modeledElevation(p),size:'Illustrative zone',type:'Hazard · '+h.properties.source,rating:h.properties.rating,description:h.properties.source});
+ const selectHazard=(h:typeof hazards[number],p:Coordinate)=>props.drawing?props.onPoint(p):props.onSelect({id:h.properties.id,name:h.properties.name,...p,elevation:modeledElevation(p),size:'Illustrative zone',type:'Hazard · '+h.properties.source,rating:h.properties.rating,description:h.properties.source});
  return <>
   <ambientLight intensity={1.1}/><directionalLight position={[5,4,6]} intensity={2}/>
   <Environment resolution={64}><Lightformer intensity={1} position={[0,5,0]} scale={[10,10,1]}/></Environment>
@@ -85,6 +85,8 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
   {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''} source="reported"/></mesh>)}
   {props.fastRoute&&<Line points={surfaceLine(props.fastRoute,2.025)} color={colors['muted-foreground']??''} lineWidth={2} dashed dashSize={0.06} gapSize={0.04}/>}
   {props.route&&<Line points={surfaceLine(props.route,shortRoute?2.0015:2.03)} color={(colors['primary']??'')} lineWidth={5}/>}
+  {props.measurement&&props.measurement.length>1&&<Line points={surfaceLine(props.measurement,shortRoute?2.002:2.012)} color={colors['cyan']??''} lineWidth={3}/>}
+  {props.measurement?.map((p,i)=><mesh key={i} position={globePosition(p,shortRoute?2.002:2.012)}><sphereGeometry args={[shortRoute?.0003:.008,8,8]}/><meshBasicMaterial color={colors['cyan']??''}/></mesh>)}
   <OrbitControls ref={controls} enablePan={false} minDistance={shortRoute?2.02:2.6} maxDistance={28} rotateSpeed={shortRoute?GLOBE_SENSITIVITY.closeRotation:GLOBE_SENSITIVITY.rotation} zoomSpeed={GLOBE_SENSITIVITY.zoom} enableDamping={false}/>
  </>;
 }

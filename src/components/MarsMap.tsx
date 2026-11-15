@@ -6,7 +6,7 @@ import {hazardProvenance,provenanceLabels,type DataProvenance} from '@/lib/data-
 import backup from '@/assets/mars-backup.asset.json';
 import {Button} from '@/components/ui/button';
 import {Plus,Minus,LocateFixed} from 'lucide-react';
-export type MarsMapProps={layer:string;active:string[];selected:Place;onSelect:(p:Place)=>void;onPoint:(p:Coordinate)=>void;route?:Coordinate[]|undefined;fastRoute?:Coordinate[]|undefined;compare:boolean;swipe:number;reports:{lat:number;lng:number;name:string}[]};
+export type MarsMapProps={layer:string;active:string[];selected:Place;onSelect:(p:Place)=>void;onPoint:(p:Coordinate)=>void;route?:Coordinate[]|undefined;fastRoute?:Coordinate[]|undefined;compare:boolean;swipe:number;reports:{lat:number;lng:number;name:string}[];measurement?:Coordinate[];drawing?:boolean};
 const products:Record<string,string>={Viking:'Mars_Viking_MDIM21_ClrMosaic_global_232m',MOLA:'Mars_MGS_MOLA_ClrShade_merge_global_463m',THEMIS:'THEMIS_DayIR_ControlledMosaics_100m_v2_oct2018'};
 export default function MarsMap(props:MarsMapProps) {
  const {t}=useLanguage();
@@ -31,6 +31,16 @@ export default function MarsMap(props:MarsMapProps) {
    setReady(true);
   });return()=>{alive=false;map.current?.remove();map.current=null;};
  },[]);
+ useEffect(()=>{if(!ready||!map.current)return;const m=map.current;let alive=true;let group:LayerGroup|undefined;
+  m.getContainer().classList.toggle('measurement-drawing',Boolean(props.drawing));
+  if(props.drawing)m.doubleClickZoom.disable();else m.doubleClickZoom.enable();
+  void import('leaflet').then(L=>{if(!alive)return;group=L.layerGroup().addTo(m);const color=getComputedStyle(document.documentElement).getPropertyValue('--cyan').trim();const points=props.measurement??[];
+   // Unwrap longitudes to render seam-crossing lines without a full-map jump.
+   let previous=points[0]?.lng??0;const coordinates=points.map(p=>{const lng=previous+((p.lng-previous+540)%360)-180;previous=lng;return [p.lat,lng] as [number,number];});
+   if(coordinates.length>1)L.polyline(coordinates,{color,weight:3,dashArray:'6 4',interactive:false}).addTo(group);
+   coordinates.forEach(p=>L.circleMarker(p,{radius:4,color,fillColor:color,fillOpacity:1,interactive:false}).addTo(group as LayerGroup));
+  });return()=>{alive=false;group?.remove();};
+ },[ready,props.measurement,props.drawing]);
  useEffect(()=>{if(!ready||!map.current)return;const m=map.current;let cancelled=false;setStatus('Loading NASA imagery…');
   void import('leaflet').then(L=>{
    tiles.current?.remove();compareTiles.current?.remove();
@@ -52,8 +62,9 @@ export default function MarsMap(props:MarsMapProps) {
    props.reports.forEach(p=>L.marker([p.lat,p.lng],{icon:L.divIcon({className:'reported-marker',html:'⚑',iconSize:[24,24]})}).bindTooltip(label(p.name,'reported'),{permanent:true,direction:'right',className:'feature-label',offset:[14,0]}).addTo(group));
    if(props.fastRoute)L.polyline(props.fastRoute.map(p=>[p.lat,p.lng] as [number,number]),{color:css.getPropertyValue('--muted-foreground').trim(),weight:3,dashArray:'8 8'}).addTo(group);
    if(props.route){L.polyline(props.route.map(p=>[p.lat,p.lng] as [number,number]),{color:css.getPropertyValue('--background').trim(),weight:9}).addTo(group);L.polyline(props.route.map(p=>[p.lat,p.lng] as [number,number]),{color:css.getPropertyValue('--primary').trim(),weight:5}).addTo(group);}
-  });
- },[ready,props.active,props.selected,props.route,props.fastRoute,props.reports,t]);
+    if(props.drawing)group.eachLayer(layer=>{if(layer instanceof L.Marker||layer instanceof L.Path){layer.off('click');layer.on('click',e=>{L.DomEvent.stopPropagation(e);current.current.onPoint(e.latlng);});}});
+   });
+  },[ready,props.active,props.selected,props.route,props.fastRoute,props.reports,props.drawing,t]);
  const routeKey=props.route?.map(p=>`${p.lat.toFixed(3)},${p.lng.toFixed(3)}`).join('|')??'';const selectedKey=`${props.selected.id}:${props.selected.lat}:${props.selected.lng}`;
  useEffect(()=>{const m=map.current;if(!ready||!m||!routeKey)return;const pts=routeKey.split('|').map(x=>x.split(',').map(Number) as [number,number]);void import('leaflet').then(L=>m.fitBounds(L.latLngBounds(pts),{padding:[90,100],maxZoom:12}));},[routeKey,ready]);
  useEffect(()=>{if(ready)map.current?.panTo([props.selected.lat,props.selected.lng],{animate:true});// eslint-disable-next-line react-hooks/exhaustive-deps
