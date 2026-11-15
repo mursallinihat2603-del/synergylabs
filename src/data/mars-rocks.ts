@@ -1,0 +1,18 @@
+import jake from '@/assets/mars-rock-jake.asset.json';
+import adirondack from '@/assets/mars-rock-adirondack.asset.json';
+import cheyava from '@/assets/mars-rock-cheyava.asset.json';
+import type {RockId} from '@/lib/rock-collection';
+import type {Language} from '@/lib/i18n';
+type LocalText = Record<Language,string>;
+export type MarsRock = {id:RockId;name:string;mission:string;site:string;image:string;credit:string;source:string;form:LocalText;facts:LocalText};
+export const MARS_ROCKS: MarsRock[] = [
+ {id:'jake',name:'Jake Matijevic',mission:'Curiosity · 2012',site:'Gale Crater',image:jake.url,credit:'NASA/JPL-Caltech/MSSS',source:'https://science.nasa.gov/resource/target-jake-matijevic-rock/',
+ form:{en:'Asymmetric pyramidal rock with sloping, pitted faces.',ru:'Асимметричный пирамидальный камень с наклонными поверхностями и ямками.',az:'Maili və çuxurlu səthləri olan asimmetrik piramida formalı qaya.'},
+ facts:{en:'Curiosity studied this rock with its contact instruments in September 2012. The reference photo is white-balanced to show differences within the rock.',ru:'Curiosity исследовал камень контактными приборами в сентябре 2012 года. Баланс белого на снимке скорректирован для выявления различий в породе.',az:'Curiosity bu qayanı 2012-ci ilin sentyabrında təmas cihazları ilə araşdırıb. Fotoda qayadakı fərqləri göstərmək üçün ağ balansı tənzimlənib.'}},
+ {id:'adirondack',name:'Adirondack',mission:'Spirit · 2004',site:'Gusev Crater',image:adirondack.url,credit:'NASA/JPL/Cornell',source:'https://science.nasa.gov/photojournal/they-of-the-great-rocks/',
+ form:{en:'Low angular rock with a broad, relatively flat sloping face.',ru:'Низкий угловатый камень с широкой, сравнительно плоской наклонной гранью.',az:'Geniş, nisbətən düz maili səthi olan alçaq bucaqlı qaya.'},
+ facts:{en:'Spirit’s first target rock, reached on January 18, 2004. Its relatively dust-free flat surface made it suitable for grinding. Named after the Adirondack mountains.',ru:'Первая целевая порода Spirit, достигнутая 18 января 2004 года. Плоская поверхность без большого количества пыли подходила для шлифования. Назван в честь гор Adirondack.',az:'Spirit-in 18 yanvar 2004-cü ildə çatdığı ilk hədəf qaya. Nisbətən tozsuz düz səthi yonulmaq üçün uyğun idi. Adirondack dağlarının adını daşıyır.'}},
+ {id:'cheyava',name:'Cheyava Falls',mission:'Perseverance · 2024',site:'Jezero Crater · Neretva Vallis',image:cheyava.url,credit:'NASA/JPL-Caltech',source:'https://science.nasa.gov/resource/perseverance-finds-a-rock-with-leopard-spots/',
+ form:{en:'Arrowhead-shaped slab with pale veins and mottled reddish bands.',ru:'Плита в форме наконечника стрелы со светлыми прожилками и пятнистыми красноватыми полосами.',az:'Açıq rəngli damarları və xallı qırmızımtıl zolaqları olan ox ucu formalı qaya.'},
+ facts:{en:'About 1 m by 0.6 m. Perseverance imaged it in July 2024 and collected a core. Its “leopard spots” are potential biosignatures, not proof of life. The photo shows a surface close-up, not the whole outline.',ru:'Около 1 × 0,6 м. Perseverance сфотографировал камень в июле 2024 года и взял керн. «Леопардовые пятна» — потенциальные биосигнатуры, а не доказательство жизни. Снимок показывает поверхность крупным планом, не весь контур.',az:'Təxminən 1 × 0,6 m. Perseverance onu 2024-cü ilin iyulunda çəkib və nüvə nümunəsi götürüb. «Bəbir xalları» potensial bioizlərdir, həyatın sübutu deyil. Foto bütün konturu deyil, səthin yaxın görünüşünü göstərir.'}},
+];
