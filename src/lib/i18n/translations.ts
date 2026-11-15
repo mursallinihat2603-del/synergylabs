@@ -1,4 +1,8 @@
 export const translations: Record<string, readonly [string, string]> = {
+  "NASA / USGS data": ["Данные NASA / USGS", "NASA / USGS məlumatları"],
+  "NASA history · approx.": ["История NASA · прибл.", "NASA tarixçəsi · təxmini"],
+  "Illustrative": ["Иллюстрация", "İllüstrativ"],
+  "User report · unverified": ["Сообщение · не проверено", "İstifadəçi hesabatı · yoxlanılmayıb"],
   "Language": [
     "Язык",
     "Dil"

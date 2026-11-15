@@ -8,6 +8,7 @@ import {Button} from '@/components/ui/button';
 import {landmarks,hazards,modeledElevation,type Coordinate} from '@/lib/mars';
 import {globePosition,globeCoordinate,surfaceLine} from '@/lib/mars-globe';
 import type {MarsMapProps} from './MarsMap';
+import {hazardProvenance,provenanceLabels,type DataProvenance} from '@/lib/data-provenance';
 import backup from '@/assets/mars-backup.asset.json';
 import {GLOBE_SENSITIVITY} from '@/lib/vehicle-physics';
 
@@ -44,10 +45,14 @@ function HazardZone({coordinates,color,onClick}:{coordinates:number[][];color:st
  return <group><mesh geometry={geometry} onClick={e=>{e.stopPropagation();onClick();}}><meshBasicMaterial color={color??''} transparent opacity={0.2} depthWrite={false} side={DoubleSide}/></mesh><Line points={surfaceLine(coordinates.map(c=>({lng:c[0]??0,lat:c[1]??0})))} color={color??''} lineWidth={1.5}/></group>;
 }
 
-function GlobeLabel({name,color,below=false}:{name:string;color:string;below?:boolean}){
+function GlobeLabel({name,color,below=false,source}:{name:string;color:string;below?:boolean;source?:DataProvenance}){
+ const {t}=useLanguage();
+ const badge=source?t(provenanceLabels[source]):'';
  const [texture,setTexture]=useState<CanvasTexture|null>(null);
- useEffect(()=>{const canvas=document.createElement('canvas');canvas.width=512;canvas.height=64;const ctx=canvas.getContext('2d');if(!ctx)return;ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillStyle=color;ctx.fillText(name,256,40);const t=new CanvasTexture(canvas);t.colorSpace=SRGBColorSpace;setTexture(t);return()=>t.dispose();},[name,color]);
- return texture?<sprite position={[0,below?-0.085:0.085,0]} scale={[0.65,0.081,1]}><spriteMaterial map={texture} transparent depthTest/></sprite>:null;
+ useEffect(()=>{const canvas=document.createElement('canvas');canvas.width=512;canvas.height=source?112:64;const ctx=canvas.getContext('2d');if(!ctx)return;ctx.font='24px sans-serif';ctx.textAlign='center';ctx.fillStyle=color;ctx.fillText(name,256,40,500);
+  if(source){ctx.font='20px sans-serif';const width=Math.min(500,ctx.measureText(badge).width+24);const css=getComputedStyle(document.documentElement);ctx.fillStyle=css.getPropertyValue('--panel-bg').trim();ctx.beginPath();ctx.roundRect(256-width/2,56,width,40,6);ctx.fill();ctx.strokeStyle=color;ctx.stroke();ctx.fillStyle=color;ctx.fillText(badge,256,83,476);}
+  const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;setTexture(texture);return()=>texture.dispose();},[name,color,source,badge]);
+ return texture?<sprite position={[0,below?-0.1:0.085,0]} scale={[0.65,source?0.142:0.081,1]}><spriteMaterial map={texture} transparent depthTest/></sprite>:null;
 }
 function CompareSurface({texture,swipe}:{texture:CanvasTexture;swipe:number}){
  const geometry=useMemo(()=>{const g=new SphereGeometry(2.003,96,48,Math.PI,Math.PI*2*swipe/100);const uv=g.attributes['uv'],pos=g.attributes['position'];if(uv&&pos)for(let i=0;i<pos.count;i++){const c=globeCoordinate({x:pos.getX(i),y:pos.getY(i),z:pos.getZ(i)});uv.setXY(i,(c.lng+180)/360,(c.lat+90)/180);}return g;},[swipe]);
@@ -72,12 +77,12 @@ function Scene({props,texture,compareTexture,colors,controls,ready,onCursor}:{pr
   {props.compare&&compareTexture&&props.swipe>0&&<CompareSurface texture={compareTexture} swipe={props.swipe}/>}
   {hazards.filter(h=>props.active.includes(h.properties.category)).map(h=>{
    const color=colors[`hazard-${h.properties.category}`]??(colors['primary']??'');
-   if(h.geometry.type==='Polygon'){const ring=h.geometry.coordinates[0] as number[][];const first=ring[0];if(!first)return null;return <HazardZone key={h.properties.id} coordinates={ring} color={color??''} onClick={()=>selectHazard(h,{lng:first[0]??0,lat:first[1]??0})}/>;}
-   const [lng,lat]=h.geometry.coordinates as number[];const p={lng:lng??0,lat:lat??0};return <mesh key={h.properties.id} position={globePosition(p,2.027)} onClick={e=>{e.stopPropagation();selectHazard(h,p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={color??''}/><GlobeLabel name={t(h.properties.name)} below color={color}/></mesh>;
+   if(h.geometry.type==='Polygon'){const ring=h.geometry.coordinates[0] as number[][];const first=ring[0];if(!first)return null;const points=ring.slice(0,-1);const center={lng:points.reduce((sum,p)=>sum+(p[0]??0),0)/points.length,lat:points.reduce((sum,p)=>sum+(p[1]??0),0)/points.length};return <group key={h.properties.id}><HazardZone coordinates={ring} color={color??''} onClick={()=>selectHazard(h,{lng:first[0]??0,lat:first[1]??0})}/><group position={globePosition(center,2.035)}><GlobeLabel name={t(h.properties.name)} color={color} source={hazardProvenance(h.properties.category)}/></group></group>;}
+   const [lng,lat]=h.geometry.coordinates as number[];const p={lng:lng??0,lat:lat??0};return <mesh key={h.properties.id} position={globePosition(p,2.027)} onClick={e=>{e.stopPropagation();selectHazard(h,p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={color??''}/><GlobeLabel name={t(h.properties.name)} below color={color} source={hazardProvenance(h.properties.category)}/></mesh>;
   })}
   {landmarks.map(p=><group key={p.id} position={globePosition(p,shortRoute?2.002:2.032)} scale={shortRoute?.015:1}><mesh onClick={e=>{e.stopPropagation();props.onSelect(p);}}><sphereGeometry args={[p.id===props.selected.id?0.025:0.014,10,8]}/><meshBasicMaterial color={p.id===props.selected.id?(colors['primary']??''):(colors['cyan']??'')}/></mesh><GlobeLabel name={t(p.name)} below={p.type==='Landing site'} color={colors['cyan']??''}/></group>)}
   {!landmarks.some(p=>p.id===props.selected.id)&&<group position={globePosition(props.selected,shortRoute?2.002:2.035)} scale={shortRoute?.015:1}><mesh><sphereGeometry args={[0.025,10,8]}/><meshBasicMaterial color={(colors['primary']??'')}/></mesh><GlobeLabel name={t(props.selected.name)} color={colors['primary']??''}/></group>}
-  {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''}/></mesh>)}
+  {props.reports.map((p,i)=><mesh key={`${p.name}-${i}`} position={globePosition(p,2.04)} onClick={e=>{e.stopPropagation();props.onPoint(p);}}><octahedronGeometry args={[0.025]}/><meshBasicMaterial color={(colors['cyan']??'')}/><GlobeLabel name={'⚑ '+p.name} color={colors['cyan']??''} source="reported"/></mesh>)}
   {props.fastRoute&&<Line points={surfaceLine(props.fastRoute,2.025)} color={colors['muted-foreground']??''} lineWidth={2} dashed dashSize={0.06} gapSize={0.04}/>}
   {props.route&&<Line points={surfaceLine(props.route,shortRoute?2.0015:2.03)} color={(colors['primary']??'')} lineWidth={5}/>}
   <OrbitControls ref={controls} enablePan={false} minDistance={shortRoute?2.02:2.6} maxDistance={28} rotateSpeed={shortRoute?GLOBE_SENSITIVITY.closeRotation:GLOBE_SENSITIVITY.rotation} zoomSpeed={GLOBE_SENSITIVITY.zoom} enableDamping={false}/>
