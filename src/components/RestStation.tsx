@@ -58,6 +58,7 @@ function Room({palette,state}:{palette:VehiclePalette;state:StationState}){
   <group position={[3,0,2.8]}><mesh position={[0,.25,0]}><cylinderGeometry args={[.25,.2,.5]}/><meshStandardMaterial color={palette.wheel}/></mesh><mesh position={[0,.8,0]}><sphereGeometry args={[.45,12,10]}/><meshStandardMaterial color={palette.ground}/></mesh></group>
   {/* bunk bed */}<group position={[3.5,0,.3]}><mesh position={[0,.35,0]}><boxGeometry args={[1,.5,2.2]}/><meshStandardMaterial color={palette.metal}/></mesh><mesh position={[0,.68,0]}><boxGeometry args={[.95,.16,2.1]}/><meshStandardMaterial color={palette.body}/></mesh><mesh position={[0,.8,-.85]}><boxGeometry args={[.7,.12,.35]}/><meshStandardMaterial color={palette.accent}/></mesh></group>
   <Person action={state.action} palette={palette}/>
+  {state.action==='sleep'&&<SleepZzz/>}
   <pointLight position={[0,3,0]} intensity={25} castShadow/>
  </>;
 }
