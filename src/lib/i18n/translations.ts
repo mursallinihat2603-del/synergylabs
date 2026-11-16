@@ -82,7 +82,7 @@ export const translations: Record<string, readonly [string, string]> = {
     "Пожалуйста, заполните все поля правильно.",
     "Zəhmət olmasa bütün sahələri düzgün doldurun."
   ],
-  "Your review couldn"t be sent. Please try again.": [
+  "Your review couldn't be sent. Please try again.": [
     "Не удалось отправить отзыв. Попробуйте ещё раз.",
     "Rəy göndərilmədi. Yenidən cəhd edin."
   ],
