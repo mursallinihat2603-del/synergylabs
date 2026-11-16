@@ -322,3 +322,7 @@ body{font-size:13px}
 .virtual-stick{display:none;position:absolute;left:20px;bottom:24px;width:130px;height:130px;border-radius:50%;background:color-mix(in oklab,var(--background) 55%,transparent);border:1px solid var(--border);touch-action:none;place-items:center;backdrop-filter:blur(6px)}
 .virtual-stick span{width:54px;height:54px;border-radius:50%;background:var(--primary);box-shadow:0 4px 14px color-mix(in oklab,var(--primary) 40%,transparent);pointer-events:none}
 @media(pointer:coarse),(max-width:700px){.virtual-stick{display:grid}.driving-pad{display:none}}
+.station-interior{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;background:var(--background);animation:fade-in .25s ease}
+.station-interior header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)}
+.station-interior small{display:block;color:var(--muted-foreground);font-size:11px;margin-top:3px}
+.station-interior canvas{flex:1;touch-action:none}
