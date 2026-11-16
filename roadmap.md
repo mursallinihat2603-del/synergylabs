@@ -67,3 +67,4 @@
 - [x] Google Maps–style spoken turns (slight/sharp/U-turn, 'In X km, turn left') and auto drive
 
 - [x] Arrow-key steering and enterable rest habitats in rover driving
+- [ ] Periodic dust storms that make shelters worthwhile
