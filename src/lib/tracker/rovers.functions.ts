@@ -12,7 +12,7 @@ export const getRoverStatus=createServerFn({method:'GET'}).handler(async()=>{
    const j=await r.json() as {features?:{properties:Record<string,unknown>}[]};
    const p=j.features?.at(-1)?.properties;if(!p)throw new Error('empty');
    const n=(v:unknown)=>typeof v==='number'&&Number.isFinite(v)?v:0;
-   return {id:f.id,name:f.name,mission:f.mission,site:f.site,lat:n(p.lat),lng:n(p.lon),sol:n(p.sol),lastDriveM:n(p.dist_m),totalKm:n(p.dist_km),elevation:typeof p.elev_geoid==='number'?Math.round(p.elev_geoid):null,note:typeof p.Note==='string'?p.Note:null,source:f.url,live:true} satisfies RoverStatus;
+   return {id:f.id,name:f.name,mission:f.mission,site:f.site,lat:n(p['lat']),lng:n(p['lon']),sol:n(p['sol']),lastDriveM:n(p['dist_m']),totalKm:n(p['dist_km']),elevation:typeof p['elev_geoid']==='number'?Math.round(p['elev_geoid']):null,note:typeof p['Note']==='string'?p['Note']:null,source:f.url,live:true} satisfies RoverStatus;
   }catch{
    return {id:f.id,name:f.name,mission:f.mission,site:f.site,...f.fallback,sol:0,lastDriveM:0,totalKm:0,elevation:null,note:'Live NASA feed unavailable — showing landing site',source:f.url,live:false} satisfies RoverStatus;
   }
