@@ -13,7 +13,7 @@ export function StationBuilding({x,z,palette}:{x:number;z:number;palette:Vehicle
   <mesh position={[2.4,4.4,0]}><cylinderGeometry args={[.04,.04,2]}/><meshStandardMaterial color={palette.metal}/></mesh>
  </RigidBody>;
 }
-function Chair({p,r,c}:{p:[number,number,number];r:number;c:string}){return <group position={p} rotation={[0,r,0]}><mesh position={[0,.45,0]}><boxGeometry args={[.5,.08,.5]}/><meshStandardMaterial color={c}/></mesh><mesh position={[0,.8,-.22]}><boxGeometry args={[.5,.7,.06]}/><meshStandardMaterial color={c}/></mesh>{[[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]].map(([a,b],i)=><mesh key={i} position={[a,.22,b]}><boxGeometry args={[.05,.44,.05]}/><meshStandardMaterial color={c}/></mesh>)}</group>;}
+function Chair({p,r,c}:{p:[number,number,number];r:number;c:string}){return <group position={p} rotation={[0,r,0]}><mesh position={[0,.45,0]}><boxGeometry args={[.5,.08,.5]}/><meshStandardMaterial color={c}/></mesh><mesh position={[0,.8,-.22]}><boxGeometry args={[.5,.7,.06]}/><meshStandardMaterial color={c}/></mesh>{([[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]] as const).map(([a,b],i)=><mesh key={i} position={[a,.22,b]}><boxGeometry args={[.05,.44,.05]}/><meshStandardMaterial color={c}/></mesh>)}</group>;}
 function Room({palette}:{palette:VehiclePalette}){
  return <>
   <mesh rotation={[-Math.PI/2,0,0]} receiveShadow><circleGeometry args={[5,48]}/><meshStandardMaterial color={palette.metal} roughness={.8}/></mesh>
