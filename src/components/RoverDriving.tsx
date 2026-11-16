@@ -97,15 +97,16 @@ function Rover({keys,paused,reset,host,vehicle,palette,telemetry,repair,finish,r
 export default function RoverDriving({onClose,onPhotos,vehicle,route}:{onClose:()=>void;onPhotos:()=>void;vehicle:string;route?:Coordinate[]|undefined}){
  const {language,t}=useLanguage(),keys=useRef(new Set<string>()),host=useRef<HTMLDivElement>(null);const [paused,setPaused]=useState(false),[reset,setReset]=useState(0),[palette,setPalette]=useState<Palette|null>(null);
  const [inspecting,setInspecting]=useState(false);const inspectingRef=useRef(false),positionRef=useRef({x:0,z:0});
- const [onFoot,setOnFoot]=useState(false),[parked,setParked]=useState<{x:number;z:number;heading:number}|null>(null),[spawn,setSpawn]=useState({x:0,z:0,n:0}),parkedRefs=useRef({suspension:{current:Array(6).fill(.55)},speed:{current:0}});
+ const [health,setHealth]=useState(100),healthRef=useRef(100),driverRef=useRef(vehicle);
+  const [onFoot,setOnFoot]=useState(false),[parked,setParked]=useState<{x:number;z:number;heading:number}|null>(null),[spawn,setSpawn]=useState({x:0,z:0,n:0}),parkedRefs=useRef({suspension:{current:Array(6).fill(.55)},speed:{current:0}});
   const driver=onFoot?'Walking EVA':vehicle,canSwitch=vehicle!=='Walking EVA';
   const toggleFoot=()=>{if(!canSwitch)return;keys.current.clear();const p=positionRef.current,heading=Number(host.current?.getAttribute('data-rover-heading')??0);if(!onFoot){setParked({x:p.x,z:p.z,heading});setSpawn(s=>({x:p.x+Math.cos(heading)*2.6,z:p.z-Math.sin(heading)*2.6,n:s.n+1}));setOnFoot(true);}else if(parked&&Math.hypot(p.x-parked.x,p.z-parked.z)<4.5){setSpawn(s=>({x:parked.x,z:parked.z,n:s.n+1}));setParked(null);setOnFoot(false);}};
   const [station,setStation]=useState<string|null>(null),[nearby,setNearby]=useState<string|null>(null);
   useEffect(()=>{if(driver!=='Walking EVA'){setNearby(null);return;}const id=setInterval(()=>{const p=positionRef.current;setNearby(nearStation(p.x,p.z)?.name??null);},300);return()=>clearInterval(id);},[driver]);
   const enterStation=(name:string)=>{keys.current.clear();inspectingRef.current=true;setStation(name);};
-  driverRef.current=driver;const pausedRef=useRef(paused||health<=0);pausedRef.current=paused||health<=0;const pausedRefInit=0;void pausedRefInit;const stationRef=useRef(station);stationRef.current=station;
+  driverRef.current=driver;const pausedRef=useRef(paused||health<=0);pausedRef.current=paused||health<=0;const stationRef=useRef(station);stationRef.current=station;
   const toggleRef=useRef(toggleFoot);toggleRef.current=toggleFoot;
-  const [health,setHealth]=useState(100),healthRef=useRef(100),driverRef=useRef(vehicle);const stormClock=useRef(0),[storm,setStorm]=useState<{phase:StormPhase;remaining:number}>({phase:'calm',remaining:STORM_CYCLE.calm});
+  const stormClock=useRef(0),[storm,setStorm]=useState<{phase:StormPhase;remaining:number}>({phase:'calm',remaining:STORM_CYCLE.calm});
   useEffect(()=>{const id=setInterval(()=>{if(!pausedRef.current&&!stationRef.current){stormClock.current+=.5;const w=stormPhase(stormClock.current);if(w.phase==='storm'){const c=telemetry.current.condition;telemetry.current.condition={...c,integrity:Math.max(0,c.integrity-STORM_CYCLE.damagePerSecond*.5*w.strength)};}if(driverRef.current==='Walking EVA'&&healthRef.current>0){healthRef.current=stepEvaHealth(healthRef.current,.5,w.phase==='storm'?w.strength:0,!!stationRef.current);setHealth(healthRef.current);}setStorm({phase:w.phase,remaining:w.remaining});}else if(stationRef.current&&healthRef.current>0&&healthRef.current<100){healthRef.current=stepEvaHealth(healthRef.current,.5,0,true);setHealth(healthRef.current);}},500);return()=>clearInterval(id);},[]);
   const [repair,setRepair]=useState(false),telemetry=useRef<DriveTelemetry>({condition:freshDriveCondition(),sand:false,slope:0,speed:0});
  const label=(en:string,ru:string,az:string)=>language==='ru'?ru:language==='az'?az:en;
