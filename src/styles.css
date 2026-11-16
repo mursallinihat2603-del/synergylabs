@@ -364,3 +364,4 @@ body{font-size:13px}
 @media(max-width:1320px){.assistant-trigger>span{display:none}.made-in-az{margin-left:6px}}
 @media(min-width:701px) and (max-width:900px){.explorer-nav>a{padding:0 8px;gap:5px}.app-header{padding:0 14px}.brand{font-size:19px;gap:8px}.made-in-az{margin-left:6px}}
 .assistant-trigger-logo{width:22px;height:18px;object-fit:contain;filter:brightness(1.6)}
+.explorer-nav{min-width:0;overflow-x:auto;scrollbar-width:none}.explorer-nav::-webkit-scrollbar{display:none}.explorer-nav>a{flex-shrink:0}.app-header{gap:10px}.header-actions{flex-shrink:0}

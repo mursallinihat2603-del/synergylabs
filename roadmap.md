@@ -71,3 +71,4 @@
 - [x] Astronauts on foot die if caught outside in a storm
 - [ ] Fit Made in Azerbaijan sign at all sizes
 - [ ] Assistant: new logo + rename to Synergy Labs AI
+- [ ] Write a review page + button (name, country, age, work/education, likes, improvements)
