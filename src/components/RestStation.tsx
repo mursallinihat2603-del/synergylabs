@@ -22,10 +22,11 @@ function Person({action,palette}:{action:StationAction;palette:VehiclePalette}){
  const arm=useRef<Group>(null),head=useRef<Group>(null);
  useFrame(({clock})=>{const t=clock.elapsedTime;if(arm.current)arm.current.rotation.x=action==='eat'||action==='drink'?-2.2+Math.sin(t*3)*.35:action==='sleep'?0:-.1;if(head.current)head.current.position.y=action==='sleep'?1.55+Math.sin(t*1.2)*.02:1.55;});
  const seated=action!=='stand'&&action!=='sleep';
- const pose:{p:[number,number,number];r:[number,number,number]}=action==='sleep'?{p:[3.5,.95,.3],r:[-Math.PI/2,0,Math.PI/2]}:seated?{p:[0,-.2,1.5],r:[0,0,0]}:{p:[0,0,2.8],r:[0,0,0]};
+ // stand: near the table; sit: on the chair at z=1.5 facing the table; sleep: lying flat on the bunk bed
+ const pose:{p:[number,number,number];r:[number,number,number]}=action==='sleep'?{p:[3.5,.72,.3],r:[-Math.PI/2,0,0]}:seated?{p:[0,-.25,1.5],r:[0,Math.PI,0]}:{p:[0,0,2.8],r:[0,0,0]};
  const legs=seated?[-Math.PI/2,-Math.PI/2]:[0,0];
  return <group position={pose.p} rotation={pose.r}>
-  <group ref={head}><mesh position={[0,0,0]}><sphereGeometry args={[.24,20,14]}/><meshStandardMaterial color={palette.body}/></mesh><mesh position={[0,0,-.18]}><sphereGeometry args={[.15,16,10]}/><meshStandardMaterial color={palette.wheel} metalness={.6} roughness={.2}/></mesh></group>
+  <group ref={head} position={[0,1.72,0]}><mesh position={[0,0,0]}><sphereGeometry args={[.24,20,14]}/><meshStandardMaterial color={palette.body}/></mesh><mesh position={[0,0,-.18]}><sphereGeometry args={[.15,16,10]}/><meshStandardMaterial color={palette.wheel} metalness={.6} roughness={.2}/></mesh></group>
   <mesh position={[0,1.05,0]}><boxGeometry args={[.5,.65,.32]}/><meshStandardMaterial color={palette.body}/></mesh>
   <mesh position={[0,1.1,.2]}><boxGeometry args={[.4,.5,.12]}/><meshStandardMaterial color={palette.metal}/></mesh>
   <group ref={arm} position={[.32,1.3,0]}><mesh position={[0,-.28,0]}><boxGeometry args={[.13,.56,.13]}/><meshStandardMaterial color={palette.body}/></mesh>
