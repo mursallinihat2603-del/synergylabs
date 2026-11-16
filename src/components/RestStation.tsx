@@ -20,20 +20,22 @@ export function StationBuilding({x,z,palette}:{x:number;z:number;palette:Vehicle
 function Chair({p,r,c}:{p:[number,number,number];r:number;c:string}){return <group position={p} rotation={[0,r,0]}><mesh position={[0,.45,0]}><boxGeometry args={[.5,.08,.5]}/><meshStandardMaterial color={c}/></mesh><mesh position={[0,.8,-.22]}><boxGeometry args={[.5,.7,.06]}/><meshStandardMaterial color={c}/></mesh>{([[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]] as const).map(([a,b],i)=><mesh key={i} position={[a,.22,b]}><boxGeometry args={[.05,.44,.05]}/><meshStandardMaterial color={c}/></mesh>)}</group>;}
 function Person({action,palette}:{action:StationAction;palette:VehiclePalette}){
  const arm=useRef<Group>(null),head=useRef<Group>(null);
- useFrame(({clock})=>{const t=clock.elapsedTime;if(arm.current)arm.current.rotation.x=action==='eat'||action==='drink'?-2.2+Math.sin(t*3)*.35:action==='sleep'?0:-.1;if(head.current)head.current.position.y=action==='sleep'?1.55+Math.sin(t*1.2)*.02:1.55;});
+ useFrame(({clock})=>{const t=clock.elapsedTime;if(arm.current)arm.current.rotation.x=action==='eat'||action==='drink'?-2.2+Math.sin(t*3)*.35:action==='sleep'?0:-.1;if(head.current)head.current.position.y=1.72+(action==='sleep'?Math.sin(t*1.2)*.02:0);});
  const seated=action!=='stand'&&action!=='sleep';
- const pose:{p:[number,number,number];r:[number,number,number]}=action==='sleep'?{p:[3.5,.95,.3],r:[-Math.PI/2,0,Math.PI/2]}:seated?{p:[0,-.2,1.5],r:[0,0,0]}:{p:[0,0,2.8],r:[0,0,0]};
+ // stand: near the table; sit: on the chair at z=1.5 facing the table; sleep: lying flat on the bunk bed
+ const pose:{p:[number,number,number];r:[number,number,number]}=action==='sleep'?{p:[3.5,.78,-.56],r:[Math.PI/2,0,0]}:seated?{p:[0,-.25,1.5],r:[0,Math.PI,0]}:{p:[0,0,2.8],r:[0,0,0]};
  const legs=seated?[-Math.PI/2,-Math.PI/2]:[0,0];
  return <group position={pose.p} rotation={pose.r}>
-  <group ref={head}><mesh position={[0,0,0]}><sphereGeometry args={[.24,20,14]}/><meshStandardMaterial color={palette.body}/></mesh><mesh position={[0,0,-.18]}><sphereGeometry args={[.15,16,10]}/><meshStandardMaterial color={palette.wheel} metalness={.6} roughness={.2}/></mesh></group>
+  <group ref={head} position={[0,1.72,0]}><mesh position={[0,0,0]}><sphereGeometry args={[.24,20,14]}/><meshStandardMaterial color={palette.body}/></mesh><mesh position={[0,0,-.18]}><sphereGeometry args={[.15,16,10]}/><meshStandardMaterial color={palette.wheel} metalness={.6} roughness={.2}/></mesh></group>
   <mesh position={[0,1.05,0]}><boxGeometry args={[.5,.65,.32]}/><meshStandardMaterial color={palette.body}/></mesh>
   <mesh position={[0,1.1,.2]}><boxGeometry args={[.4,.5,.12]}/><meshStandardMaterial color={palette.metal}/></mesh>
   <group ref={arm} position={[.32,1.3,0]}><mesh position={[0,-.28,0]}><boxGeometry args={[.13,.56,.13]}/><meshStandardMaterial color={palette.body}/></mesh>
    {(action==='eat'||action==='drink')&&<mesh position={[0,-.6,0]}>{action==='eat'?<sphereGeometry args={[.08,12,8]}/>:<cylinderGeometry args={[.07,.06,.16,12]}/>}<meshStandardMaterial color={action==='eat'?palette.rock:palette.accent}/></mesh>}</group>
   <mesh position={[-.32,1.02,0]}><boxGeometry args={[.13,.56,.13]}/><meshStandardMaterial color={palette.body}/></mesh>
   {[-.13,.13].map((x,i)=><group key={x} position={[x,.72,0]} rotation={[legs[i]??0,0,0]}><mesh position={[0,-.36,0]}><boxGeometry args={[.17,.72,.17]}/><meshStandardMaterial color={palette.body}/></mesh></group>)}
-  {action==='sleep'&&<Html position={[0,1.9,0]} center><span className="station-zzz">Z z z</span></Html>}
  </group>;
+}
+function SleepZzz(){return <Html position={[3.5,1.6,.3]} center><span className="station-zzz">Z z z</span></Html>;
 }
 function Room({palette,state}:{palette:VehiclePalette;state:StationState}){
  return <>
@@ -56,6 +58,7 @@ function Room({palette,state}:{palette:VehiclePalette;state:StationState}){
   <group position={[3,0,2.8]}><mesh position={[0,.25,0]}><cylinderGeometry args={[.25,.2,.5]}/><meshStandardMaterial color={palette.wheel}/></mesh><mesh position={[0,.8,0]}><sphereGeometry args={[.45,12,10]}/><meshStandardMaterial color={palette.ground}/></mesh></group>
   {/* bunk bed */}<group position={[3.5,0,.3]}><mesh position={[0,.35,0]}><boxGeometry args={[1,.5,2.2]}/><meshStandardMaterial color={palette.metal}/></mesh><mesh position={[0,.68,0]}><boxGeometry args={[.95,.16,2.1]}/><meshStandardMaterial color={palette.body}/></mesh><mesh position={[0,.8,-.85]}><boxGeometry args={[.7,.12,.35]}/><meshStandardMaterial color={palette.accent}/></mesh></group>
   <Person action={state.action} palette={palette}/>
+  {state.action==='sleep'&&<SleepZzz/>}
   <pointLight position={[0,3,0]} intensity={25} castShadow/>
  </>;
 }
