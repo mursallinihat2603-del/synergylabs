@@ -1,0 +1,3 @@
+import {createFileRoute} from '@tanstack/react-router';
+import {ReviewForm} from '@/components/ReviewForm';
+export const Route=createFileRoute('/review')({staticData:{sitemap:true},head:()=>({links:[{rel:"canonical",href:"https://synergylabs.lovable.app/review"}],meta:[{title:'Write a Review | Synergy Labs'},{name:'description',content:'Share what you like about the Synergy Labs Mars explorer and what we can improve.'},{property:'og:title',content:'Review Synergy Labs'},{property:'og:description',content:'Tell the Synergy Labs team what you think of the Mars explorer.'},{property:'og:url',content:'https://synergylabs.lovable.app/review'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),component:ReviewForm});
