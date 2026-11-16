@@ -19,6 +19,7 @@ function Room({palette}:{palette:VehiclePalette}){
   <mesh rotation={[-Math.PI/2,0,0]} receiveShadow><circleGeometry args={[5,48]}/><meshStandardMaterial color={palette.metal} roughness={.8}/></mesh>
   <mesh position={[0,1.8,0]}><cylinderGeometry args={[5,5,3.6,48,1,true]}/><meshStandardMaterial color={palette.body} side={1} roughness={.7}/></mesh>
   <mesh position={[0,1.6,-4.9]}><circleGeometry args={[.8,32]}/><meshStandardMaterial color={palette.ground} emissive={palette.ground} emissiveIntensity={.6}/></mesh>
+  <mesh position={[0,3.6,0]} rotation={[Math.PI/2,0,0]}><circleGeometry args={[5,48]}/><meshStandardMaterial color={palette.metal}/></mesh>
   {/* table with food and drinks */}
   <mesh position={[0,.75,0]} castShadow><cylinderGeometry args={[1,1,.08,32]}/><meshStandardMaterial color={palette.wheel}/></mesh>
   <mesh position={[0,.37,0]}><cylinderGeometry args={[.08,.2,.74]}/><meshStandardMaterial color={palette.metal}/></mesh>
