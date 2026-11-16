@@ -47,12 +47,12 @@ export const translations: Record<string, readonly [string, string]> = {
     "MARS KƏŞFİ"
   ],
   "AI assistant": [
-    "ИИ-помощник",
-    "Süni intellekt köməkçisi"
+    "Synergy Labs AI",
+    "Synergy Labs AI"
   ],
   "Open AI assistant": [
-    "Открыть ИИ-помощника",
-    "Süni intellekt köməkçisini aç"
+    "Открыть Synergy Labs AI",
+    "Synergy Labs AI-ı aç"
   ],
   "Search Mars": [
     "Поиск по Марсу",
@@ -623,12 +623,12 @@ export const translations: Record<string, readonly [string, string]> = {
     "Rover görünüşü yüklənir…"
   ],
   "Mars assistant": [
-    "Помощник по Марсу",
-    "Mars köməkçisi"
+    "Synergy Labs AI",
+    "Synergy Labs AI"
   ],
   "Mars AI assistant": [
-    "ИИ-помощник по Марсу",
-    "Mars süni intellekt köməkçisi"
+    "Synergy Labs AI",
+    "Synergy Labs AI"
   ],
   "Mars field assistant": [
     "Полевой помощник по Марсу",

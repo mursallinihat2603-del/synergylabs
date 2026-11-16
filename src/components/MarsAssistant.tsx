@@ -15,7 +15,7 @@ import {useAccount} from './AccountProvider';
 import {supabase} from '@/integrations/supabase/client';
 import {lovable} from '@/integrations/lovable';
 import {getAssistantHistory,saveAssistantHistory} from '@/lib/assistant/history.functions';
-import logo from '@/assets/synergy-logo-symbol.asset.json';
+import logo from '@/assets/synergy-ai-logo.png.asset.json';
 import type {AssistantExplorerContext} from '@/lib/assistant/context';
 
 function Chat({userId,initial,selectedName,explorerContext}:{userId:string;initial:UIMessage[];selectedName:string;explorerContext:AssistantExplorerContext}){
