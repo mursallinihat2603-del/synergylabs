@@ -1165,5 +1165,10 @@ export const translations: Record<string, readonly [string, string]> = {
   "turn sharp right": [
     "поверните резко направо",
     "kəskin sağa dönün"
+  ],
+  "Made in Azerbaijan": ["Сделано в Азербайджане", "Azərbaycanda hazırlanıb"],
+  "Synergy Labs was designed and built in Baku, Azerbaijan. Mars imagery comes from NASA and USGS; the maps, rover simulation, spoken guidance and interface are our own work.": [
+    "Synergy Labs спроектирован и создан в Баку, Азербайджан. Снимки Марса предоставлены NASA и USGS; карты, симуляция вождения, голосовые подсказки и интерфейс — наша собственная работа.",
+    "Synergy Labs Bakıda, Azərbaycanda layihələndirilib və hazırlanıb. Mars təsvirləri NASA və USGS-dəndir; xəritələr, sürmə simulyasiyası, səsli yönləndirmə və interfeys bizim öz işimizdir."
   ]
 };

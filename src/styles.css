@@ -354,3 +354,10 @@ body{font-size:13px}
 .tracker-map-wrap{min-height:520px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
 .tracker-map{height:100%;min-height:520px;width:100%}
 @media (max-width:860px){.tracker-layout{grid-template-columns:1fr}.tracker-header{flex-direction:column}.tracker-map,.tracker-map-wrap{min-height:380px}}
+
+/* Made in Azerbaijan credit */
+.made-in-az{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px;border:1px solid var(--border);border-radius:999px;background:var(--panel-bg);color:var(--muted-foreground);font-size:9px;letter-spacing:.8px;white-space:nowrap;flex-shrink:0}
+.made-in-az .az-flag{width:22px;height:15px;border-radius:2px;box-shadow:0 0 0 1px color-mix(in oklch,var(--cyan) 22%,transparent)}
+.made-in-az:hover{color:var(--foreground);border-color:color-mix(in oklch,var(--cyan) 45%,var(--border))}
+.az-flag-lg{width:34px;height:23px;border-radius:3px}
+@media(max-width:1100px){.made-in-az{padding:0 6px}.made-in-az-label{display:none}}
