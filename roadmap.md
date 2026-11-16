@@ -69,3 +69,5 @@
 - [x] Arrow-key steering and enterable rest habitats in rover driving
 - [x] Periodic dust storms that make shelters worthwhile
 - [x] Astronauts on foot die if caught outside in a storm
+- [ ] Fit Made in Azerbaijan sign at all sizes
+- [ ] Assistant: new logo + rename to Synergy Labs AI
