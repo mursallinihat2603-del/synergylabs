@@ -360,4 +360,4 @@ body{font-size:13px}
 .made-in-az .az-flag{width:22px;height:15px;border-radius:2px;box-shadow:0 0 0 1px color-mix(in oklch,var(--cyan) 22%,transparent)}
 .made-in-az:hover{color:var(--foreground);border-color:color-mix(in oklch,var(--cyan) 45%,var(--border))}
 .az-flag-lg{width:34px;height:23px;border-radius:3px}
-@media(max-width:1500px){.made-in-az{padding:0 6px}.made-in-az-label{display:none}}
+@media(max-width:900px){.made-in-az{padding:0 6px}.made-in-az-label{display:none}}
