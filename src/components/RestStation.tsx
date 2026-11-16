@@ -33,8 +33,9 @@ function Person({action,palette}:{action:StationAction;palette:VehiclePalette}){
    {(action==='eat'||action==='drink')&&<mesh position={[0,-.6,0]}>{action==='eat'?<sphereGeometry args={[.08,12,8]}/>:<cylinderGeometry args={[.07,.06,.16,12]}/>}<meshStandardMaterial color={action==='eat'?palette.rock:palette.accent}/></mesh>}</group>
   <mesh position={[-.32,1.02,0]}><boxGeometry args={[.13,.56,.13]}/><meshStandardMaterial color={palette.body}/></mesh>
   {[-.13,.13].map((x,i)=><group key={x} position={[x,.72,0]} rotation={[legs[i]??0,0,0]}><mesh position={[0,-.36,0]}><boxGeometry args={[.17,.72,.17]}/><meshStandardMaterial color={palette.body}/></mesh></group>)}
-  {action==='sleep'&&<Html position={[0,1.9,0]} center><span className="station-zzz">Z z z</span></Html>}
  </group>;
+}
+function SleepZzz(){return <Html position={[3.5,1.6,.3]} center><span className="station-zzz">Z z z</span></Html>;
 }
 function Room({palette,state}:{palette:VehiclePalette;state:StationState}){
  return <>
