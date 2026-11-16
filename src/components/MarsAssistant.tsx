@@ -15,7 +15,7 @@ import {useAccount} from './AccountProvider';
 import {supabase} from '@/integrations/supabase/client';
 import {lovable} from '@/integrations/lovable';
 import {getAssistantHistory,saveAssistantHistory} from '@/lib/assistant/history.functions';
-import logo from '@/assets/synergy-logo-symbol.asset.json';
+import logo from '@/assets/synergy-ai-logo.png.asset.json';
 import type {AssistantExplorerContext} from '@/lib/assistant/context';
 
 function Chat({userId,initial,selectedName,explorerContext}:{userId:string;initial:UIMessage[];selectedName:string;explorerContext:AssistantExplorerContext}){
@@ -45,7 +45,7 @@ export default function MarsAssistant({selectedName,explorerContext,onClose}:{se
  const history=useQuery({queryKey:['assistant-history',user?.id],queryFn:()=>load(),enabled:!!user,staleTime:0});
  const signIn=async(provider:'google'|'lovable')=>{setError('');try{const result=await lovable.auth.signInWithOAuth(provider,{redirect_uri:window.location.origin});if(result.error)setError(result.error.message);}catch(e){setError(e instanceof Error?e.message:'Sign-in failed.');}};
  const signOut=async()=>{await queryClient.cancelQueries();queryClient.clear();const {error}=await supabase.auth.signOut();if(error)setError(error.message);};
- return <aside className="assistant-panel" role="dialog" aria-label={t("Mars AI assistant")}><header className="assistant-heading"><div><img src={logo.url} alt=""/><span>{t("Mars assistant")}</span></div><div>{user&&<Button variant="ghost" size="icon" title={t("Sign out")} onClick={signOut}><LogOut/></Button>}<Button variant="ghost" size="icon" title={t("Close assistant")} onClick={onClose}><X/></Button></div></header>
+ return <aside className="assistant-panel" role="dialog" aria-label={t("Mars AI assistant")}><header className="assistant-heading"><div><img src={logo.url} alt=""/><span>Synergy Labs AI</span></div><div>{user&&<Button variant="ghost" size="icon" title={t("Sign out")} onClick={signOut}><LogOut/></Button>}<Button variant="ghost" size="icon" title={t("Close assistant")} onClick={onClose}><X/></Button></div></header>
  {!ready?<div className="assistant-empty"><Shimmer>{t("Checking account…")}</Shimmer></div>:!user?<div className="assistant-login"><MessageCircle/><h2>{t("Your Mars conversation")}</h2><p>{t("Sign in to save your assistant history across devices.")}</p><Button onClick={()=>signIn('google')}>{t("Continue with Google")}</Button><Button variant="outline" onClick={()=>signIn('lovable')}>{t("Continue with Lovable")}</Button><small>{t("AI replies use workspace credits.")}</small></div>:history.isPending?<div className="assistant-empty"><Shimmer>{t("Loading saved conversation…")}</Shimmer></div>:history.error?<div className="assistant-empty"><p role="alert">{history.error.message}</p><Button onClick={()=>history.refetch()}>{t("Try again")}</Button></div>:<Chat key={user.id} userId={user.id} initial={history.data as unknown as UIMessage[]} selectedName={selectedName} explorerContext={explorerContext}/>}
  {error&&<p className="assistant-error" role="alert">{error}</p>}
  </aside>;

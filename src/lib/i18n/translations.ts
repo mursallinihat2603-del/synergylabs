@@ -34,6 +34,66 @@ export const translations: Record<string, readonly [string, string]> = {
     "Полевой справочник",
     "Sahə bələdçisi"
   ],
+  "Write a review": [
+    "Оставить отзыв",
+    "Rəy yaz"
+  ],
+  "Tell us what you think of Synergy Labs. All fields are required.": [
+    "Расскажите, что вы думаете о Synergy Labs. Все поля обязательны.",
+    "Synergy Labs haqqında fikrinizi bildirin. Bütün sahələr məcburidir."
+  ],
+  "Thank you for your review!": [
+    "Спасибо за отзыв!",
+    "Rəyiniz üçün təşəkkür edirik!"
+  ],
+  "Back to the map": [
+    "Назад к карте",
+    "Xəritəyə qayıt"
+  ],
+  "First name": [
+    "Имя",
+    "Ad"
+  ],
+  "Last name": [
+    "Фамилия",
+    "Soyad"
+  ],
+  "Country": [
+    "Страна",
+    "Ölkə"
+  ],
+  "Age": [
+    "Возраст",
+    "Yaş"
+  ],
+  "Place of work or education": [
+    "Место работы или учёбы",
+    "İş və ya təhsil yeri"
+  ],
+  "What do you like about the site?": [
+    "Что вам нравится на сайте?",
+    "Saytda nəyi bəyənirsiniz?"
+  ],
+  "What can we improve?": [
+    "Что можно улучшить?",
+    "Nəyi yaxşılaşdıra bilərik?"
+  ],
+  "Please fill in every field correctly.": [
+    "Пожалуйста, заполните все поля правильно.",
+    "Zəhmət olmasa bütün sahələri düzgün doldurun."
+  ],
+  "Your review couldn't be sent. Please try again.": [
+    "Не удалось отправить отзыв. Попробуйте ещё раз.",
+    "Rəy göndərilmədi. Yenidən cəhd edin."
+  ],
+  "Sending…": [
+    "Отправка…",
+    "Göndərilir…"
+  ],
+  "Send review": [
+    "Отправить отзыв",
+    "Rəyi göndər"
+  ],
   "About": [
     "О проекте",
     "Haqqında"
@@ -47,12 +107,12 @@ export const translations: Record<string, readonly [string, string]> = {
     "MARS KƏŞFİ"
   ],
   "AI assistant": [
-    "ИИ-помощник",
-    "Süni intellekt köməkçisi"
+    "Synergy Labs AI",
+    "Synergy Labs AI"
   ],
   "Open AI assistant": [
-    "Открыть ИИ-помощника",
-    "Süni intellekt köməkçisini aç"
+    "Открыть Synergy Labs AI",
+    "Synergy Labs AI-ı aç"
   ],
   "Search Mars": [
     "Поиск по Марсу",
@@ -623,12 +683,12 @@ export const translations: Record<string, readonly [string, string]> = {
     "Rover görünüşü yüklənir…"
   ],
   "Mars assistant": [
-    "Помощник по Марсу",
-    "Mars köməkçisi"
+    "Synergy Labs AI",
+    "Synergy Labs AI"
   ],
   "Mars AI assistant": [
-    "ИИ-помощник по Марсу",
-    "Mars süni intellekt köməkçisi"
+    "Synergy Labs AI",
+    "Synergy Labs AI"
   ],
   "Mars field assistant": [
     "Полевой помощник по Марсу",

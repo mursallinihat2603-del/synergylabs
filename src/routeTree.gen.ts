@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TrackerRouteImport } from './routes/tracker'
 import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
@@ -37,6 +38,11 @@ const PlannerRoute = PlannerRouteImport.update({
   path: '/planner',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReviewRoute = ReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/library': typeof LibraryRoute
   '/planner': typeof PlannerRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tracker': typeof TrackerRoute
   '/api/assistant': typeof ApiAssistantRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/library': typeof LibraryRoute
   '/planner': typeof PlannerRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tracker': typeof TrackerRoute
   '/api/assistant': typeof ApiAssistantRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/library': typeof LibraryRoute
   '/planner': typeof PlannerRoute
+  '/review': typeof ReviewRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/tracker': typeof TrackerRoute
   '/api/assistant': typeof ApiAssistantRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/library'
     | '/planner'
+    | '/review'
     | '/sitemap.xml'
     | '/tracker'
     | '/api/assistant'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/library'
     | '/planner'
+    | '/review'
     | '/sitemap.xml'
     | '/tracker'
     | '/api/assistant'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/library'
     | '/planner'
+    | '/review'
     | '/sitemap.xml'
     | '/tracker'
     | '/api/assistant'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   LibraryRoute: typeof LibraryRoute
   PlannerRoute: typeof PlannerRoute
+  ReviewRoute: typeof ReviewRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TrackerRoute: typeof TrackerRoute
   ApiAssistantRoute: typeof ApiAssistantRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlannerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   LibraryRoute: LibraryRoute,
   PlannerRoute: PlannerRoute,
+  ReviewRoute: ReviewRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TrackerRoute: TrackerRoute,
   ApiAssistantRoute: ApiAssistantRoute,
