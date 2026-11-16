@@ -1,5 +1,5 @@
 export function roverInput(keys:ReadonlySet<string>){return {throttle:Number(keys.has('KeyW'))-Number(keys.has('KeyS')),steer:Number(keys.has('KeyA'))-Number(keys.has('KeyD'))};}
 export const ROVER_PHYSICS={gravity:3.71,suspensionLength:.55,stiffness:30,compression:4.4,relaxation:4.8,maxTravel:.35,boost:1.8};
-export function roverTargetSpeed(vehicle:string,keys:ReadonlySet<string>){const base=vehicle==='Heavy Rover'?2:vehicle==='Walking EVA'?.8:3.3;return base*(keys.has('ShiftLeft')||keys.has('ShiftRight')?ROVER_PHYSICS.boost:1);}
+export function roverTargetSpeed(vehicle:string,keys:ReadonlySet<string>){const base=vehicle==='Heavy Rover'?3.4:vehicle==='Walking EVA'?.8:5.5;return base*(keys.has('ShiftLeft')||keys.has('ShiftRight')?ROVER_PHYSICS.boost:1);}
 export function roverTerrainHeight(x:number,z:number){return .15*Math.sin(x*.22)*Math.cos(z*.19)+.09*Math.sin(z*.6)+.05*Math.cos(x*.9+z*.3)+4*Math.exp(-(x*x/100+(z+42)**2/64))-1.7*Math.exp(-((x-23)**2/64+(z+65)**2/64));}/** Map a virtual stick (x right, y down, -1..1) to drive keys with a dead zone. */
 export function stickKeys(x:number,y:number,dead=.3){const k:string[]=[];if(y<-dead)k.push('KeyW');if(y>dead)k.push('KeyS');if(x<-dead)k.push('KeyA');if(x>dead)k.push('KeyD');return k;}
