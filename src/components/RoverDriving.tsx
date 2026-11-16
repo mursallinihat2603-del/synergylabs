@@ -95,7 +95,7 @@ export default function RoverDriving({onClose,onPhotos,vehicle,route}:{onClose:(
   const driver=onFoot?'Walking EVA':vehicle,canSwitch=vehicle!=='Walking EVA';
   const toggleFoot=()=>{if(!canSwitch)return;keys.current.clear();const p=positionRef.current,heading=Number(host.current?.getAttribute('data-rover-heading')??0);if(!onFoot){setParked({x:p.x,z:p.z,heading});setSpawn(s=>({x:p.x+Math.cos(heading)*2.6,z:p.z-Math.sin(heading)*2.6,n:s.n+1}));setOnFoot(true);}else if(parked&&Math.hypot(p.x-parked.x,p.z-parked.z)<4.5){setSpawn(s=>({x:parked.x,z:parked.z,n:s.n+1}));setParked(null);setOnFoot(false);}};
   const [station,setStation]=useState<string|null>(null),[nearby,setNearby]=useState<string|null>(null);
-  useEffect(()=>{if(!onFoot){setNearby(null);return;}const id=setInterval(()=>{const p=positionRef.current;setNearby(nearStation(p.x,p.z)?.name??null);},300);return()=>clearInterval(id);},[onFoot]);
+  useEffect(()=>{if(driver!=='Walking EVA'){setNearby(null);return;}const id=setInterval(()=>{const p=positionRef.current;setNearby(nearStation(p.x,p.z)?.name??null);},300);return()=>clearInterval(id);},[driver]);
   const enterStation=(name:string)=>{keys.current.clear();inspectingRef.current=true;setStation(name);};
   const toggleRef=useRef(toggleFoot);toggleRef.current=toggleFoot;
   const [repair,setRepair]=useState(false),telemetry=useRef<DriveTelemetry>({condition:freshDriveCondition(),sand:false,slope:0,speed:0});
