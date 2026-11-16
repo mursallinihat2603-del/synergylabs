@@ -86,6 +86,12 @@ export default function VehicleAppearance({vehicle,palette,suspension,speed}:Pro
         <mesh position={[.5,1.98,.65]} rotation={[-.6,0,0]}><sphereGeometry args={[.22,20,12,0,Math.PI*2,0,Math.PI/2]}/><meshStandardMaterial color={palette.body} side={2}/></mesh>
       </>}
       {[-.6,.6].map(x=><Panel key={x} position={[x,.32,heavy?-1.55:-1.42]} size={[.23,.14,.08]} color={palette.body}/>)}
+      {/* extra detail: glowing headlights, tail lights, rocker-bogie arms, mast camera, roof solar cells */}
+      {[-.6,.6].map(x=><mesh key={`h${x}`} position={[x,.32,heavy?-1.6:-1.47]}><circleGeometry args={[.07,16]}/><meshStandardMaterial color={palette.accent} emissive={palette.accent} emissiveIntensity={2.5}/></mesh>)}
+      {[-.65,.65].map(x=><mesh key={`t${x}`} position={[x,.3,heavy?1.54:1.41]}><boxGeometry args={[.18,.06,.02]}/><meshStandardMaterial color={palette.rock} emissive={palette.rock} emissiveIntensity={1.5}/></mesh>)}
+      {[-1,1].map(side=><group key={`r${side}`}><Panel position={[side*.98,0,-.5]} size={[.06,.06,1.1]} color={palette.metal}/><Panel position={[side*.98,0,.5]} size={[.06,.06,1.1]} color={palette.metal}/><mesh position={[side*.98,.02,0]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.08,.08,.1,12]}/><meshStandardMaterial color={palette.metal} metalness={.8} roughness={.25}/></mesh></group>)}
+      <group position={[-.55,heavy?.9:1.42,heavy?-.4:-.7]}><mesh position={[0,.35,0]}><cylinderGeometry args={[.035,.04,.7,12]}/><meshStandardMaterial color={palette.metal} metalness={.7}/></mesh><Panel position={[0,.75,0]} size={[.3,.14,.16]} color={palette.body}/>{[-.07,.07].map(x=><mesh key={x} position={[x,.75,-.085]}><circleGeometry args={[.035,12]}/><meshStandardMaterial color={palette.wheel} metalness={1} roughness={.05}/></mesh>)}</group>
+      {!heavy&&Array.from({length:6},(_,i)=><Panel key={`s${i}`} position={[-.42+(i%3)*.42,1.43,-.15+Math.floor(i/3)*.6]} size={[.38,.015,.55]} color={palette.wheel} metalness={.9}/>)}
     </group>
   </group>;
 }
