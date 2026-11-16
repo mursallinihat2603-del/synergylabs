@@ -319,3 +319,6 @@ body{font-size:13px}
 .measurement-profile{width:100%;height:52px;border-bottom:1px solid var(--border);margin-bottom:8px}.measurement-profile polyline{stroke:var(--cyan);stroke-width:2;fill:none}
 .measurement-actions{display:flex;gap:6px}.measurement-actions button:last-child{flex:1;white-space:normal;height:auto;min-height:36px}.measurement-drawing{cursor:crosshair}
 @media(max-width:760px){.measurement-panel{left:12px;bottom:60px;width:284px;padding:10px;max-height:calc(100% - 122px);overflow:auto}.measurement-stats{gap:8px}.measurement-stats dd{font-size:15px}.measurement-profile{height:36px}.map-tools>button:first-child{width:32px;padding:0}.map-tools>button span{font-size:9px}}
+.virtual-stick{display:none;position:absolute;left:20px;bottom:24px;width:130px;height:130px;border-radius:50%;background:color-mix(in oklab,var(--background) 55%,transparent);border:1px solid var(--border);touch-action:none;place-items:center;backdrop-filter:blur(6px)}
+.virtual-stick span{width:54px;height:54px;border-radius:50%;background:var(--primary);box-shadow:0 4px 14px color-mix(in oklab,var(--primary) 40%,transparent);pointer-events:none}
+@media(pointer:coarse),(max-width:700px){.virtual-stick{display:grid}.driving-pad{display:none}}
