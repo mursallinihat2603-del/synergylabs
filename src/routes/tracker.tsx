@@ -1,0 +1,4 @@
+import {createFileRoute} from '@tanstack/react-router';
+import {MissionTracker,roverStatusQuery} from '@/components/MissionTracker';
+const url='https://synergylabs.lovable.app/tracker';
+export const Route=createFileRoute('/tracker')({staticData:{sitemap:true},loader:({context})=>context.queryClient.ensureQueryData(roverStatusQuery),head:()=>({links:[{rel:'canonical',href:url}],meta:[{title:'Live Mars Rover Tracker | Synergy Labs'},{name:'description',content:'Track NASA Perseverance and Curiosity: latest sol, drive distance and current location on a Mars map.'},{property:'og:url',content:url},{property:'og:title',content:'Live Mars Rover Tracker | Synergy Labs'},{property:'og:description',content:'Where are Perseverance and Curiosity right now? Live NASA waypoint data on a Mars map.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:MissionTracker});
