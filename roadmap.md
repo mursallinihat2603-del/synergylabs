@@ -68,3 +68,4 @@
 
 - [x] Arrow-key steering and enterable rest habitats in rover driving
 - [ ] Periodic dust storms that make shelters worthwhile
+- [ ] Astronauts on foot die if caught outside in a storm

@@ -7,3 +7,6 @@ export function stormPhase(t:number):{phase:StormPhase;strength:number;remaining
  if(x<calm+warning)return {phase:'warning',strength:(x-calm)/warning*.3,remaining:calm+warning-x};
  const s=x-calm-warning;return {phase:'storm',strength:Math.min(1,.3+s/4,(storm-s)/4+.1),remaining:storm-s};
 }
+/** Seconds an unsheltered astronaut survives at full storm strength. */
+export const EVA_STORM_SURVIVAL=15;
+export function stepEvaHealth(health:number,dt:number,strength:number,sheltered:boolean){return sheltered?Math.min(100,health+dt*10):Math.max(0,health-dt*strength*100/EVA_STORM_SURVIVAL);}
