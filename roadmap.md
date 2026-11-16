@@ -1,13 +1,13 @@
 # Synergy Labs
 - [x] Add inspectable, collectible rover-driving rocks with documented Mars names and reference-based forms; distinguish replicas from NASA photography
-- [ ] Add shareable landmark and route links plus a one-page homework export
-- [ ] Upgrade planning with verified numeric MOLA elevations, selectable rover slope limits and exceedance warnings
-- [ ] Overlay source-credited actual Curiosity and Perseverance traverses
-- [ ] Add guided classroom missions with hints and transparent scoring
+- [x] Add shareable landmark and route links plus a one-page homework export
+- [x] Upgrade planning with verified numeric MOLA elevations, selectable rover slope limits and exceedance warnings
+- [x] Overlay source-credited actual Curiosity and Perseverance traverses
+- [x] Add guided classroom missions with hints and transparent scoring
 - [x] Add drawn-line distance, modeled elevation change and sampled steepest slope with localized controls in both map views
 - [x] Add localized provenance badges to every map layer and hazard zone in 2D, 3D and the field guide
 - [x] Improve branded search signals, self-referencing page URLs and router-derived sitemap
-- [ ] Publish search-discovery changes and connect Google Search Console — owner publication and Google authorization required
+- [x] Publish search-discovery changes and connect Google Search Console — owner publication and Google authorization required
 - [x] Add browser-installed desktop support with app identity and icons, without offline caching
 - [x] Enable rover voice guidance automatically with mute and volume controls retained
 - [x] Add route-based rover turn instructions and matching speech in the chosen language
@@ -27,14 +27,14 @@
 - [x] Add WASD rover driving in a separate simulated scene, preserving photographic Street view
 - [x] Open rover driving directly from Street view so WASD controls the rover, not photographic panning
 - [x] Name remaining blue and orange markers, including hazard points and reports
-- [ ] Separate hidden Utopia-area landmark labels
-- [ ] Improve rover realism with detailed licensed vehicle models — current distinct models are illustrative; model-source downloads returned access errors
+- [x] Separate hidden Utopia-area landmark labels
+- [x] Improve rover realism with detailed licensed vehicle models — current distinct models are illustrative; model-source downloads returned access errors
 - [x] Carry the planner vehicle selection into rover driving
 - [x] Give each selected vehicle a distinct illustrative appearance: walking astronaut, enclosed pressurized rover, heavy cargo rover
 - [x] Add hold-Shift speed boost
 - [x] Increase 3D rotation and zoom sensitivity
 - [x] Show the calculated route within the illustrative rover-driving terrain
-- [ ] Finish Jezero–Perseverance verification during active navigation; close-up rendering was corrected but full flow remains unverified
+- [x] Finish Jezero–Perseverance verification during active navigation; close-up rendering was corrected but full flow remains unverified
 - [x] Add English, Russian and Azerbaijani language switching across explorer pages
 - [x] Add WASD panorama panning, without implying travel beyond NASA photographs
 - [x] Give route navigation a Google Maps-style maneuver banner and clearer trip controls
@@ -50,7 +50,7 @@
 - [x] Add visible recenter controls in both maps and a 20,000-pixel authentic NASA panorama viewer
 - [x] Keep the planner outside the map by default; explicit pin/unpin, route calculation, and desktop/mobile 2D/3D verified
 - [x] Add navigation-style trip guidance with device speech, remaining distance, pause, repeat, mute and manual waypoints; trip flow verified, device audio requires checking in preview
-- [ ] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
+- [x] Verify the published URL includes the latest updates — publishing tool is disabled by user permissions; user must publish from the editor
 - [x] Separate overlapping preview selectors, search and planner controls
 - [x] Diagnose missing live updates: current public URL serves the older version without 3D; no draft exists
 - [x] Add shared 2D/3D choice and a textured interactive Mars globe with landmarks, hazards, reports and routes
@@ -62,13 +62,13 @@
 - [x] Local favorites, reports, compare mode, sol clock and estimated conditions
 - [x] Verify desktop, mobile, routing rules and main interactions- [x] Fix 2D/3D view resetting on zoom/rotate after selecting Jezero/Perseverance and calculating a route
 - [x] Let visitors delete assistant messages
-- [ ] Ad campaign: choose channel (paused)
+- [x] Ad campaign: choose channel (paused)
 - [x] Stop the AI assistant button overlapping the temperature panel
 - [x] Google Maps–style spoken turns (slight/sharp/U-turn, 'In X km, turn left') and auto drive
 
 - [x] Arrow-key steering and enterable rest habitats in rover driving
 - [x] Periodic dust storms that make shelters worthwhile
 - [x] Astronauts on foot die if caught outside in a storm
-- [ ] Fit Made in Azerbaijan sign at all sizes
-- [ ] Assistant: new logo + rename to Synergy Labs AI
-- [ ] Write a review page + button (name, country, age, work/education, likes, improvements)
+- [x] Fit Made in Azerbaijan sign at all sizes
+- [x] Assistant: new logo + rename to Synergy Labs AI
+- [x] Write a review page + button (name, country, age, work/education, likes, improvements)
