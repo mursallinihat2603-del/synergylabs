@@ -3,6 +3,7 @@ import {ClientOnly} from '@tanstack/react-router';
 import {useSuspenseQuery,queryOptions} from '@tanstack/react-query';
 import {getRoverStatus} from '@/lib/tracker/rovers.functions';
 import {ExplorerNavigation} from '@/components/ExplorerNavigation';
+import {MadeInAzerbaijan} from '@/components/MadeInAzerbaijan';
 import {useLanguage} from '@/components/LanguageProvider';
 import {Button} from '@/components/ui/button';
 import {RefreshCw,LocateFixed} from 'lucide-react';
@@ -12,7 +13,7 @@ export function MissionTracker(){
  const {t}=useLanguage();const q=useSuspenseQuery(roverStatusQuery);const [focus,setFocus]=useState<string|null>(null);
  const {rovers,fetchedAt}=q.data;
  return <div className="tracker-page">
-  <header className="tracker-header"><a href="/" className="tracker-brand">Synergy Labs</a><ExplorerNavigation page="tracker"/></header>
+  <header className="tracker-header"><div style={{display:'flex',alignItems:'center'}}><a href="/" className="tracker-brand">Synergy Labs</a><MadeInAzerbaijan/></div><ExplorerNavigation page="tracker"/></header>
   <main className="tracker-layout">
    <section className="tracker-panel">
     <h1>{t('Live Mars Mission Tracker')}</h1>
