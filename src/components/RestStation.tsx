@@ -20,7 +20,7 @@ export function StationBuilding({x,z,palette}:{x:number;z:number;palette:Vehicle
 function Chair({p,r,c}:{p:[number,number,number];r:number;c:string}){return <group position={p} rotation={[0,r,0]}><mesh position={[0,.45,0]}><boxGeometry args={[.5,.08,.5]}/><meshStandardMaterial color={c}/></mesh><mesh position={[0,.8,-.22]}><boxGeometry args={[.5,.7,.06]}/><meshStandardMaterial color={c}/></mesh>{([[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]] as const).map(([a,b],i)=><mesh key={i} position={[a,.22,b]}><boxGeometry args={[.05,.44,.05]}/><meshStandardMaterial color={c}/></mesh>)}</group>;}
 function Person({action,palette}:{action:StationAction;palette:VehiclePalette}){
  const arm=useRef<Group>(null),head=useRef<Group>(null);
- useFrame(({clock})=>{const t=clock.elapsedTime;if(arm.current)arm.current.rotation.x=action==='eat'||action==='drink'?-2.2+Math.sin(t*3)*.35:action==='sleep'?0:-.1;if(head.current)head.current.position.y=action==='sleep'?1.55+Math.sin(t*1.2)*.02:1.55;});
+ useFrame(({clock})=>{const t=clock.elapsedTime;if(arm.current)arm.current.rotation.x=action==='eat'||action==='drink'?-2.2+Math.sin(t*3)*.35:action==='sleep'?0:-.1;if(head.current)head.current.position.y=1.72+(action==='sleep'?Math.sin(t*1.2)*.02:0);});
  const seated=action!=='stand'&&action!=='sleep';
  // stand: near the table; sit: on the chair at z=1.5 facing the table; sleep: lying flat on the bunk bed
  const pose:{p:[number,number,number];r:[number,number,number]}=action==='sleep'?{p:[3.5,.72,.3],r:[-Math.PI/2,0,0]}:seated?{p:[0,-.25,1.5],r:[0,Math.PI,0]}:{p:[0,0,2.8],r:[0,0,0]};
