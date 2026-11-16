@@ -62,3 +62,4 @@ use the editor.
 - Keep personal field notes in browser storage because the requested product explicitly has local-only favorites and reports without login.
 
 - Derive sitemap URLs from explicit route staticData decisions; keep canonicals on content leaves and brand identity structured data on the homepage so public discovery stays aligned with routing.
+- Keep driving weather, suit health and habitat actions in pure dust-storm/station-actions helpers; dev window.__storm(t) jumps the weather clock because sandbox frames are too slow for real-time waits.

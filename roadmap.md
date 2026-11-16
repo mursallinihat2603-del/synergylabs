@@ -67,5 +67,5 @@
 - [x] Google Maps–style spoken turns (slight/sharp/U-turn, 'In X km, turn left') and auto drive
 
 - [x] Arrow-key steering and enterable rest habitats in rover driving
-- [ ] Periodic dust storms that make shelters worthwhile
-- [ ] Astronauts on foot die if caught outside in a storm
+- [x] Periodic dust storms that make shelters worthwhile
+- [x] Astronauts on foot die if caught outside in a storm
