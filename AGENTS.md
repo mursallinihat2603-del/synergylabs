@@ -36,7 +36,7 @@ use the editor.
 - Keep browser installation manifest-only with bundled icons and root head links; do not cache the app or register an app-shell service worker without an offline request.
 - Select device navigation voices by the chosen language and block unmatched fallback; missing voices keep written guidance available.
 - Play bundled generated Azerbaijani maneuver recordings so public navigation speaks without installed voices or billed public AI endpoints; retain dynamic distances as written guidance.
-- Keep rover driving in a lazy-loaded client-only R3F scene with Rapier collisions and Mars gravity; label the terrain as simulated and retain real photographic Street view separately.
+- Keep rover driving in a lazy-loaded client-only R3F scene with Rapier collisions and Mars gravity; texture ground and horizon with credited NASA Curiosity photo crops while labeling the relief as simulated; retain real photographic Street view separately.
 - Render planner vehicle choices through VehicleAppearance with distinct illustrative astronaut, enclosed-cabin and cargo silhouettes; shared driving physics and suspension remain independent of appearance.
 - Keep driving challenge rules and compressed route projection in pure rover-challenges helpers; render telemetry separately so status updates do not rebuild the Canvas. Terrain and route use the same height sampler.
 - Detect driving arrival against the compressed route endpoint, latch it in telemetry until recenter or route change, and render the message through the shared language context.
